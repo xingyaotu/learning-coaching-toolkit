@@ -1,0 +1,34 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-sop-index.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.0 道层零漂移",
+  "last_updated": "2026-05-16",
+  "_meta": {
+    "total_sops": 14,
+    "eight_step_sops": 8,
+    "flywheel_sops": 6
+  },
+  "eight_step_sops": [
+    {"sop_id": "SOP_01", "eight_step_id": 1, "name_zh": "穿透", "primary_flywheel_id": 2, "stage_range": [1, 3], "file": "eight-step-sops/SOP_01-穿透.md"},
+    {"sop_id": "SOP_02", "eight_step_id": 2, "name_zh": "提取", "primary_flywheel_id": 2, "stage_range": [2, 4], "file": "eight-step-sops/SOP_02-提取.md"},
+    {"sop_id": "SOP_03", "eight_step_id": 3, "name_zh": "整理", "primary_flywheel_id": 3, "stage_range": [3, 4], "file": "eight-step-sops/SOP_03-整理.md"},
+    {"sop_id": "SOP_04", "eight_step_id": 4, "name_zh": "审题", "primary_flywheel_id": 5, "stage_range": [4, 5], "file": "eight-step-sops/SOP_04-审题.md"},
+    {"sop_id": "SOP_05", "eight_step_id": 5, "name_zh": "流程", "primary_flywheel_id": 5, "stage_range": [4, 6], "file": "eight-step-sops/SOP_05-流程.md", "★_critical_note": "第5步是'流程'绝不是'演示'"},
+    {"sop_id": "SOP_06", "eight_step_id": 6, "name_zh": "批改", "primary_flywheel_id": 5, "stage_range": [4, 6], "file": "eight-step-sops/SOP_06-批改.md"},
+    {"sop_id": "SOP_07", "eight_step_id": 7, "name_zh": "分析", "primary_flywheel_id": 6, "stage_range": [5, 7], "file": "eight-step-sops/SOP_07-分析.md"},
+    {"sop_id": "SOP_08", "eight_step_id": 8, "name_zh": "估分", "primary_flywheel_id": 6, "stage_range": [5, 7], "file": "eight-step-sops/SOP_08-估分.md"}
+  ],
+  "flywheel_sops": [
+    {"sop_id": "SOP_FW1", "six_flywheel_id": 1, "name_zh": "计划飞轮", "stage_range": [1, 7], "file": "flywheel-sops/SOP_FW1-计划飞轮.md"},
+    {"sop_id": "SOP_FW2", "six_flywheel_id": 2, "name_zh": "预习飞轮", "stage_range": [1, 4], "file": "flywheel-sops/SOP_FW2-预习飞轮.md"},
+    {"sop_id": "SOP_FW3", "six_flywheel_id": 3, "name_zh": "复习飞轮", "stage_range": [2, 6], "file": "flywheel-sops/SOP_FW3-复习飞轮.md"},
+    {"sop_id": "SOP_FW4", "six_flywheel_id": 4, "name_zh": "听课飞轮", "stage_range": [1, 5], "file": "flywheel-sops/SOP_FW4-听课飞轮.md"},
+    {"sop_id": "SOP_FW5", "six_flywheel_id": 5, "name_zh": "作业飞轮", "stage_range": [3, 6], "file": "flywheel-sops/SOP_FW5-作业飞轮.md"},
+    {"sop_id": "SOP_FW6", "six_flywheel_id": 6, "name_zh": "考试飞轮", "stage_range": [4, 7], "file": "flywheel-sops/SOP_FW6-考试飞轮.md"}
+  ],
+  "_cross_reference": {
+    "eight_step_names": ["穿透", "提取", "整理", "审题", "流程", "批改", "分析", "估分"],
+    "six_flywheel_names": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
+    "seven_stage_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"]
+  }
+}
