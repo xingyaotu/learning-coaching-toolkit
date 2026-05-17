@@ -13,7 +13,7 @@
     {"sop_id": "SOP_02", "eight_step_id": 2, "name_zh": "提取", "primary_flywheel_id": 2, "stage_range": [2, 4], "file": "eight-step-sops/SOP_02-提取.md"},
     {"sop_id": "SOP_03", "eight_step_id": 3, "name_zh": "整理", "primary_flywheel_id": 3, "stage_range": [3, 4], "file": "eight-step-sops/SOP_03-整理.md"},
     {"sop_id": "SOP_04", "eight_step_id": 4, "name_zh": "审题", "primary_flywheel_id": 5, "stage_range": [4, 5], "file": "eight-step-sops/SOP_04-审题.md"},
-    {"sop_id": "SOP_05", "eight_step_id": 5, "name_zh": "流程", "primary_flywheel_id": 5, "stage_range": [4, 6], "file": "eight-step-sops/SOP_05-流程.md", "★_critical_note": "第5步是'流程'绝不是'演示'"},
+    {"sop_id": "SOP_05", "eight_step_id": 5, "name_zh": "流程", "primary_flywheel_id": 5, "stage_range": [4, 6], "file": "eight-step-sops/SOP_05-流程.md", "★_critical_note": "第5步名称严格锁定=流程"},
     {"sop_id": "SOP_06", "eight_step_id": 6, "name_zh": "批改", "primary_flywheel_id": 5, "stage_range": [4, 6], "file": "eight-step-sops/SOP_06-批改.md"},
     {"sop_id": "SOP_07", "eight_step_id": 7, "name_zh": "分析", "primary_flywheel_id": 6, "stage_range": [5, 7], "file": "eight-step-sops/SOP_07-分析.md"},
     {"sop_id": "SOP_08", "eight_step_id": 8, "name_zh": "估分", "primary_flywheel_id": 6, "stage_range": [5, 7], "file": "eight-step-sops/SOP_08-估分.md"}
