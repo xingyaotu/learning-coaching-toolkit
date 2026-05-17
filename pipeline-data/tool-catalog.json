@@ -2,7 +2,7 @@
   "$schema": "https://xingyaotu.cn/schemas/coach-tool-catalog.v1.0.json",
   "version": "1.0",
   "compliance": "v5.0 道层零漂移",
-  "last_updated": "2026-05-16",
+  "last_updated": "2026-05-17",
   "note": "学习力教练工具包目录 — 按八步+六飞轮双维度索引",
   "tools": [
     {
@@ -94,7 +94,7 @@
       "eight_step_coverage": [7],
       "flywheel_coverage": ["作业飞轮"],
       "stage_range": [5, 6],
-      "description": "第⑦步分析: 错题分析,找前置知识与运用问题"
+      "description": "第⑦步分析: 题目思路分析,找前置知识与运用问题"
     },
     {
       "tool_id": "T11",
@@ -103,7 +103,7 @@
       "eight_step_coverage": [3, 7],
       "flywheel_coverage": ["复习飞轮", "作业飞轮"],
       "stage_range": [5, 7],
-      "description": "第③⑦步 整理+分析: 深度错题分析与知识点定位"
+      "description": "第③⑦步 整理+分析: 深度题目分析与知识点定位"
     },
     {
       "tool_id": "T12",
@@ -170,9 +170,5 @@
     }
   ],
   "eight_step_name_enum": ["穿透", "提取", "整理", "审题", "流程", "批改", "分析", "估分"],
-  "six_flywheel_name_enum": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
-  "anti_drift": {
-    "step_5_correct": "流程",
-    "step_5_forbidden": ["演示", "示范", "导入", "讲解", "拆解"]
-  }
+  "six_flywheel_name_enum": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"]
 }
