@@ -16,7 +16,7 @@
   - SOP_FW4-听课飞轮.md | SOP_FW5-作业飞轮.md | SOP_FW6-考试飞轮.md
 
 ### 道层合规汇总
-- [八步] SOP_05 第5步名称 = “流程” ✅
+- [八步] SOP_05 第5步名称 = "流程" ✅
 - [六飞轮] 六飞轮 = 计划/预习/复习/听课/作业/考试(严格枚举) ✅
 - [FIRE-UP] 6 字母 F=Family/I=Individual/R=Resources/E=Ecosystem/U=Usability/P=Pathways ✅
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
@@ -42,9 +42,21 @@
 [Done] 全量扫描所有 SOP .md 文件第道层合规说明中的漂移关键词字面量(共 7 个文件修复):
   - SOP_01/SOP_02/SOP_05/SOP_FW3/SOP_FW5: 删除禁用飞轮名称字面量,改为枚举式
   - STATUS.md: 删除字面量 + 去除 SOP_05 对应行中的多余轾示词
-[Note] 根本原因: 合规说明常用"无 X"或“不得使用 X”表述导致 X 字面出现,触发模式
+[Note] 根本原因: 合规说明常用"无 X"或"不得使用 X"表述导致 X 字面出现,触发模式
        正确写法: 改用枚举合法元素(计划/预习/复习/听课/作业/考试),不赞载字面量
 [Next] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 [Next] 伴读标准化指导剋手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
+
+## 2026-05-17T_PHASE05Z · Phase 0.5 colleague-skill Hermes 接口集成 [完成]
+
+[Done] 全部 14 个 SOP 添加 portal: xyt-coach + quadruple_context
+[Done] 八步 SOP × 8:eight_step_id + six_flywheel_id + stage_range
+[Done] 飞轮 SOP × 6:six_flywheel_id + stage_range
+[Done] description 升级:多行 |block + "Use when" 触发条件内联
+[Done] status: stub → status: active
+[Done] coaching-sops/index.json 新增 phase_0_5_status: active
+[道层] 6/6 0 命中(无演示/飞轮误用/FIRE-UP 5字母等漂移)
+[cso-required] 0 触发(纯 YAML 元数据操作)
+[Next-after] Phase 4 W2 — Hermes tool calling layer(待 PR #60 合并后)

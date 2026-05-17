@@ -1,6 +1,8 @@
 ---
 name: SOP_FW5-作业飞轮
-description: 六飞轮第5飞轮:作业飞轮 SOP — 高质量作业执行与即时反馈闭环
+description: |
+  六飞轮第5飞轮:作业飞轮 SOP — 高质量作业执行与即时反馈闭环。
+  Use when 学员处于第3-6阶(清晰/框架/运用/熟练),日常作业完成质量需系统提升。
 version: "1.0"
 six_flywheel_id: 5
 six_flywheel_name: 作业飞轮
@@ -8,8 +10,12 @@ stage_range: [3, 6]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  six_flywheel_id: 5
+  stage_range: [3, 6]
 allowed-tools: [nuwa-skill, DeepTutor, nanobot, OpenClaw]
 ---
 
@@ -21,7 +27,7 @@ allowed-tools: [nuwa-skill, DeepTutor, nanobot, OpenClaw]
 - 需要提升作业质量,降低重复错误率
 
 ## 核心目标
-将作业从“完成任务”转化为“诊断+提升”的双重价值。
+将作业从"完成任务"转化为"诊断+提升"的双重价值。
 
 ## 飞轮五步
 
@@ -29,7 +35,7 @@ allowed-tools: [nuwa-skill, DeepTutor, nanobot, OpenClaw]
 2. **流程执行**: 按 SOP_05 标准流程解题(第5步=流程)
 3. **自批自改**: 完成后用 SOP_06 逐辑自批,错误即时归因
 4. **薄弱标记**: 错题标记 knowledge_point_id + 错误类型(实时标记,非静态汇总)
-5. **当日总结**: 每日作业结束记录“今日暴露薄弱点”,纳入 SOP_07 分析
+5. **当日总结**: 每日作业结束记录"今日暴露薄弱点",纳入 SOP_07 分析
 
 ## 接口规范
 

@@ -1,6 +1,8 @@
 ---
 name: SOP_02-提取
-description: 八步学习法第2步:知识点提取 SOP — 从材料中精准提取核心知识结构
+description: |
+  八步学习法第2步:知识点提取 SOP — 从材料中精准提取核心知识结构。
+  Use when 学员处于第2-4阶(模糊/清晰/框架),需从文本或题目中提取核心知识结构。
 version: "1.0"
 eight_step_id: 2
 eight_step_name: 提取
@@ -10,8 +12,13 @@ stage_range: [2, 4]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  eight_step_id: 2
+  six_flywheel_id: 2
+  stage_range: [2, 4]
 allowed-tools: [nuwa-skill, DeepTutor, nanobot]
 ---
 

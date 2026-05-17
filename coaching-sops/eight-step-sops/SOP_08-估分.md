@@ -1,6 +1,8 @@
 ---
 name: SOP_08-估分
-description: 八步学习法第8步:考前估分 SOP — 基于IRT与历史数据预测考试得分
+description: |
+  八步学习法第8步:考前估分 SOP — 基于IRT与历史数据预测考试得分。
+  Use when 学员处于第5-7阶(运用/熟练/创新),考前或考后需估分预测与校准。
 version: "1.0"
 eight_step_id: 8
 eight_step_name: 估分
@@ -10,8 +12,13 @@ stage_range: [5, 7]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  eight_step_id: 8
+  six_flywheel_id: 6
+  stage_range: [5, 7]
 allowed-tools: [nuwa-skill, gbrain, Hermes, nanobot]
 ---
 

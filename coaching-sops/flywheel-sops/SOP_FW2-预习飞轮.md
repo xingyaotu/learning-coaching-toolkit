@@ -1,6 +1,8 @@
 ---
 name: SOP_FW2-预习飞轮
-description: 六飞轮第2飞轮:预习飞轮 SOP — 高效课前预习提升课堂吸收率
+description: |
+  六飞轮第2飞轮:预习飞轮 SOP — 高效课前预习提升课堂吸收率。
+  Use when 学员处于第1-4阶(不会/模糊/清晰/框架),新课前需系统预习引导。
 version: "1.0"
 six_flywheel_id: 2
 six_flywheel_name: 预习飞轮
@@ -8,8 +10,12 @@ stage_range: [1, 4]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  six_flywheel_id: 2
+  stage_range: [1, 4]
 allowed-tools: [nuwa-skill, DeepTutor, nanobot]
 ---
 

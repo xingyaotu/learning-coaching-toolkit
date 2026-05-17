@@ -1,6 +1,8 @@
 ---
 name: SOP_FW3-复习飞轮
-description: 六飞轮第3飞轮:复习飞轮 SOP — 基于遗忘曲线的间隔复习体系
+description: |
+  六飞轮第3飞轮:复习飞轮 SOP — 基于遗忘曲线的间隔复习体系。
+  Use when 学员处于第2-6阶(模糊/清晰/框架/运用/熟练),学完后需周期性复习强化。
 version: "1.0"
 six_flywheel_id: 3
 six_flywheel_name: 复习飞轮
@@ -8,8 +10,12 @@ stage_range: [2, 6]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  six_flywheel_id: 3
+  stage_range: [2, 6]
 allowed-tools: [nuwa-skill, DeepTutor, gbrain]
 ---
 
@@ -18,7 +24,7 @@ allowed-tools: [nuwa-skill, DeepTutor, gbrain]
 ## Use when
 - 课后当天 / 3天后 / 7天后 / 30天后(四次复习周期)
 - 学员处于第2阶(模糊)至第6阶(熟练)
-- 知识点掌握度需要从“清晰”推进到“熟练”
+- 知识点掌握度需要从"清晰"推进到"熟练"
 
 ## 核心目标
 通过艾宾浩斯间隔复习,将工作记忆转化为长期记忆。
@@ -46,5 +52,5 @@ interface ReviewFlywheel {
 ```
 
 ## 道层合规说明
-- 六飞轮第3个=“复习飞轮”,名称严格锁定,不得改变为其他叫法
+- 六飞轮第3个="复习飞轮",名称严格锁定,不得改变为其他叫法
 - 六飞轮 = 计划/预习/复习/听课/作业/考试(严格枚举)

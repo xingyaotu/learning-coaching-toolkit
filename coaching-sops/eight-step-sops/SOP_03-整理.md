@@ -1,6 +1,8 @@
 ---
 name: SOP_03-整理
-description: 八步学习法第3步:知识框架整理 SOP — 将提取的知识点组织为结构化框架
+description: |
+  八步学习法第3步:知识框架整理 SOP — 将提取的知识点组织为结构化框架。
+  Use when 学员处于第3-4阶(清晰/框架),已理解知识点需整理形成体系。
 version: "1.0"
 eight_step_id: 3
 eight_step_name: 整理
@@ -10,8 +12,13 @@ stage_range: [3, 4]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  eight_step_id: 3
+  six_flywheel_id: 3
+  stage_range: [3, 4]
 allowed-tools: [nuwa-skill, DeepTutor, gbrain]
 ---
 

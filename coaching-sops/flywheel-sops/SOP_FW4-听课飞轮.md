@@ -1,6 +1,8 @@
 ---
 name: SOP_FW4-听课飞轮
-description: 六飞轮第4飞轮:听课飞轮 SOP — 最大化课堂学习效率的主动听课策略
+description: |
+  六飞轮第4飞轮:听课飞轮 SOP — 最大化课堂学习效率的主动听课策略。
+  Use when 学员处于第1-5阶(不会/模糊/清晰/框架/运用),课堂听课质量需提升。
 version: "1.0"
 six_flywheel_id: 4
 six_flywheel_name: 听课飞轮
@@ -8,8 +10,12 @@ stage_range: [1, 5]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  six_flywheel_id: 4
+  stage_range: [1, 5]
 allowed-tools: [nuwa-skill, colleague-skill]
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: SOP_04-审题
-description: 八步学习法第4步:审题训练 SOP — 培养学员精准读题、提取关键信息的能力
+description: |
+  八步学习法第4步:审题训练 SOP — 培养学员精准读题、提取关键信息的能力。
+  Use when 学员处于第4-5阶(框架/运用),开始独立解题但审题不准确。
 version: "1.0"
 eight_step_id: 4
 eight_step_name: 审题
@@ -10,8 +12,13 @@ stage_range: [4, 5]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  eight_step_id: 4
+  six_flywheel_id: 5
+  stage_range: [4, 5]
 allowed-tools: [nuwa-skill, DeepTutor, nanobot]
 ---
 

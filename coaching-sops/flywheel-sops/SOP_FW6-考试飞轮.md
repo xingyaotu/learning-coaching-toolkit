@@ -1,6 +1,8 @@
 ---
 name: SOP_FW6-考试飞轮
-description: 六飞轮第6飞轮:考试飞轮 SOP — 考前冲刺、考中策略、考后分析三段闭环
+description: |
+  六飞轮第6飞轮:考试飞轮 SOP — 考前冲刺、考中策略、考后分析三段闭环。
+  Use when 学员处于第4-7阶(框架/运用/熟练/创新),备考或考后复盘阶段。
 version: "1.0"
 six_flywheel_id: 6
 six_flywheel_name: 考试飞轮
@@ -8,8 +10,12 @@ stage_range: [4, 7]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  six_flywheel_id: 6
+  stage_range: [4, 7]
 allowed-tools: [nuwa-skill, gbrain, Hermes, colleague-skill]
 ---
 

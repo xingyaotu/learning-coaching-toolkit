@@ -1,6 +1,8 @@
 ---
 name: SOP_06-批改
-description: 八步学习法第6步:作业批改 SOP — AI 辅助精准批改与错误归因
+description: |
+  八步学习法第6步:作业批改 SOP — AI 辅助精准批改与错误归因。
+  Use when 学员处于第4-6阶(框架/运用/熟练),完成作业后需系统性批改指导。
 version: "1.0"
 eight_step_id: 6
 eight_step_name: 批改
@@ -10,8 +12,13 @@ stage_range: [4, 6]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  eight_step_id: 6
+  six_flywheel_id: 5
+  stage_range: [4, 6]
 allowed-tools: [nuwa-skill, DeepTutor, OpenClaw, nanobot]
 ---
 

@@ -2,7 +2,8 @@
   "$schema": "https://xingyaotu.cn/schemas/coaching-sop-index.v1.0.json",
   "version": "1.0",
   "compliance": "v5.0 道层零漂移",
-  "last_updated": "2026-05-16",
+  "last_updated": "2026-05-17",
+  "phase_0_5_status": "active",
   "_meta": {
     "total_sops": 14,
     "eight_step_sops": 8,

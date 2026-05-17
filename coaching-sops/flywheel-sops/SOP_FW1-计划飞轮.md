@@ -1,6 +1,8 @@
 ---
 name: SOP_FW1-计划飞轮
-description: 六飞轮第1飞轮:计划飞轮 SOP — 建立高质量学习计划执行体系
+description: |
+  六飞轮第1飞轮:计划飞轮 SOP — 建立高质量学习计划执行体系。
+  Use when 新学期或新阶段开始,或学员计划执行率低于60%。
 version: "1.0"
 six_flywheel_id: 1
 six_flywheel_name: 计划飞轮
@@ -8,8 +10,12 @@ stage_range: [1, 7]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  six_flywheel_id: 1
+  stage_range: [1, 7]
 allowed-tools: [colleague-skill, nuwa-skill, gbrain]
 ---
 

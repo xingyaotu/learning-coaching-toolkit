@@ -1,6 +1,8 @@
 ---
 name: SOP_07-分析
-description: 八步学习法第7步:试卷分析 SOP — 系统性分析学习数据,识别薄弱点
+description: |
+  八步学习法第7步:试卷分析 SOP — 系统性分析学习数据,识别薄弱点。
+  Use when 学员处于第5-7阶(运用/熟练/创新),考后需深度分析失分点。
 version: "1.0"
 eight_step_id: 7
 eight_step_name: 分析
@@ -10,8 +12,13 @@ stage_range: [5, 7]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  eight_step_id: 7
+  six_flywheel_id: 6
+  stage_range: [5, 7]
 allowed-tools: [nuwa-skill, gbrain, Hermes]
 ---
 

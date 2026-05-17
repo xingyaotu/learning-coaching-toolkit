@@ -1,6 +1,8 @@
 ---
 name: SOP_01-穿透
-description: 八步学习法第1步:概念穿透 SOP — 帮助学员突破表层记忆,深度理解知识点本质
+description: |
+  八步学习法第1步:概念穿透 SOP — 帮助学员突破表层记忆,深度理解知识点本质。
+  Use when 学员处于第1-3阶(不会/模糊/清晰),知识点首次接触或掌握度低于清晰阶。
 version: "1.0"
 eight_step_id: 1
 eight_step_name: 穿透
@@ -10,8 +12,13 @@ stage_range: [1, 3]
 license: Apache-2.0
 tier: A
 phase: "Phase 0"
-status: stub
+status: active
 compliance: "v5.0 道层零漂移"
+portal: xyt-coach
+quadruple_context:
+  eight_step_id: 1
+  six_flywheel_id: 2
+  stage_range: [1, 3]
 allowed-tools: [nuwa-skill, DeepTutor, nanobot]
 ---
 
