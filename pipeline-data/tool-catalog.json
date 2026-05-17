@@ -1,0 +1,178 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coach-tool-catalog.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.0 道层零漂移",
+  "last_updated": "2026-05-16",
+  "note": "学习力教练工具包目录 — 按八步+六飞轮双维度索引",
+  "tools": [
+    {
+      "tool_id": "T01",
+      "name": "初阶学习流程八大步骤",
+      "files": ["01初阶学习流程八大步骤.doc", "01初阶学习流程八大步骤.pdf"],
+      "eight_step_coverage": [1, 2, 3, 4, 5, 6, 7, 8],
+      "flywheel_coverage": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
+      "stage_range": [1, 7],
+      "description": "八大步骤完整流程指导:穿透/提取/整理/审题/流程/批改/分析/估分",
+      "★_critical": "第5步是'流程',绝不是'演示'"
+    },
+    {
+      "tool_id": "T02",
+      "name": "学习高手自学六大飞轮",
+      "files": ["02学习高手自学六大飞轮.doc", "02学习高手自学六大飞轮.pdf"],
+      "eight_step_coverage": [1, 2, 3, 4, 5, 6, 7, 8],
+      "flywheel_coverage": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
+      "stage_range": [1, 7],
+      "description": "六大飞轮自学方法论总纲"
+    },
+    {
+      "tool_id": "T03",
+      "name": "概念穿透清单",
+      "files": ["01-概念穿透清单.pdf"],
+      "eight_step_coverage": [1],
+      "flywheel_coverage": ["预习飞轮", "听课飞轮"],
+      "stage_range": [1, 3],
+      "description": "第①步穿透: 帮助学生从不会→模糊→清晰的概念穿透工具"
+    },
+    {
+      "tool_id": "T04",
+      "name": "公式定理推导穿透清单",
+      "files": ["02-公式定理推导穿透清单.pdf"],
+      "eight_step_coverage": [1, 2],
+      "flywheel_coverage": ["预习飞轮", "复习飞轮"],
+      "stage_range": [2, 4],
+      "description": "公式定理的穿透与提取框架"
+    },
+    {
+      "tool_id": "T05",
+      "name": "提取框架步骤流程",
+      "files": ["03-提取框架步骤流程.pdf"],
+      "eight_step_coverage": [2],
+      "flywheel_coverage": ["复习飞轮", "听课飞轮"],
+      "stage_range": [3, 5],
+      "description": "第②步提取: 从清晰→熟练,建立知识框架"
+    },
+    {
+      "tool_id": "T06",
+      "name": "审题训练表",
+      "files": ["04-审题训练表.pdf"],
+      "eight_step_coverage": [4],
+      "flywheel_coverage": ["作业飞轮", "考试飞轮"],
+      "stage_range": [5, 6],
+      "description": "第④步审题: 从知识点到题目运用的审题训练"
+    },
+    {
+      "tool_id": "T07",
+      "name": "审题做题流程训练表（高阶版）",
+      "files": ["05-审题做题流程训练表（高阶版）.pdf"],
+      "eight_step_coverage": [4, 5],
+      "flywheel_coverage": ["作业飞轮", "考试飞轮"],
+      "stage_range": [5, 7],
+      "description": "第④⑤步 审题+流程: 把控做题习惯,避免丢分"
+    },
+    {
+      "tool_id": "T08",
+      "name": "估分执行流程详解",
+      "files": ["06-估分执行流程详解.pdf"],
+      "eight_step_coverage": [8],
+      "flywheel_coverage": ["考试飞轮"],
+      "stage_range": [6, 7],
+      "description": "第⑧步估分: 做题后复盘思考,提升复盘能力"
+    },
+    {
+      "tool_id": "T09",
+      "name": "估分记录表",
+      "files": ["07-估分记录表.pdf"],
+      "eight_step_coverage": [8],
+      "flywheel_coverage": ["考试飞轮"],
+      "stage_range": [6, 7],
+      "description": "估分记录与复盘工具表"
+    },
+    {
+      "tool_id": "T10",
+      "name": "错题思路训练表（初级版）",
+      "files": ["08-错题思路训练表（初级版）.pdf"],
+      "eight_step_coverage": [7],
+      "flywheel_coverage": ["作业飞轮"],
+      "stage_range": [5, 6],
+      "description": "第⑦步分析: 错题分析,找前置知识与运用问题"
+    },
+    {
+      "tool_id": "T11",
+      "name": "错题深度分析指南",
+      "files": ["09-错题深度分析指南.pdf"],
+      "eight_step_coverage": [3, 7],
+      "flywheel_coverage": ["复习飞轮", "作业飞轮"],
+      "stage_range": [5, 7],
+      "description": "第③⑦步 整理+分析: 深度错题分析与知识点定位"
+    },
+    {
+      "tool_id": "T12",
+      "name": "预习清单",
+      "files": ["10-预习清单.pdf"],
+      "eight_step_coverage": [1, 2],
+      "flywheel_coverage": ["预习飞轮"],
+      "stage_range": [1, 3],
+      "description": "预习飞轮标准工具:知识点穿透+提取"
+    },
+    {
+      "tool_id": "T13",
+      "name": "语言类学科预习清单",
+      "files": ["11-语言类学科预习清单.pdf"],
+      "eight_step_coverage": [1, 2],
+      "flywheel_coverage": ["预习飞轮"],
+      "stage_range": [1, 3],
+      "description": "语文/英语等语言学科专用预习清单"
+    },
+    {
+      "tool_id": "T14",
+      "name": "课后复习思考清单",
+      "files": ["12-课后复习思考清单.pdf"],
+      "eight_step_coverage": [2, 3],
+      "flywheel_coverage": ["复习飞轮"],
+      "stage_range": [3, 5],
+      "description": "复习飞轮标准工具:提取+整理再激活"
+    },
+    {
+      "tool_id": "T15",
+      "name": "试卷分析升级版",
+      "files": ["13-试卷分析升级版.pdf"],
+      "eight_step_coverage": [6, 7, 8],
+      "flywheel_coverage": ["考试飞轮"],
+      "stage_range": [6, 7],
+      "description": "第⑥⑦⑧步 批改+分析+估分: 试卷全面复盘分析"
+    },
+    {
+      "tool_id": "T16",
+      "name": "计划清单",
+      "files": ["14-计划清单.pdf"],
+      "eight_step_coverage": [1, 2, 3, 4, 5, 6, 7, 8],
+      "flywheel_coverage": ["计划飞轮"],
+      "stage_range": [1, 7],
+      "description": "计划飞轮标准工具:时间管理与学习方案"
+    },
+    {
+      "tool_id": "T17",
+      "name": "754法则计算训练",
+      "files": ["754法则计算训练（有答案）32页.pdf"],
+      "eight_step_coverage": [4, 5],
+      "flywheel_coverage": ["作业飞轮", "考试飞轮"],
+      "stage_range": [5, 7],
+      "description": "754法则强化计算能力训练(含答案)"
+    },
+    {
+      "tool_id": "T18",
+      "name": "九大学科诊断模板",
+      "files": ["九大学科诊断模板.xlsx"],
+      "eight_step_coverage": [1, 2, 3, 4, 5, 6, 7, 8],
+      "flywheel_coverage": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
+      "stage_range": [1, 7],
+      "description": "九大学科(语数英物化生史地政)学情诊断模板"
+    }
+  ],
+  "eight_step_name_enum": ["穿透", "提取", "整理", "审题", "流程", "批改", "分析", "估分"],
+  "six_flywheel_name_enum": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
+  "anti_drift": {
+    "step_5_correct": "流程",
+    "step_5_forbidden": ["演示", "示范", "导入", "讲解", "拆解"]
+  }
+}
