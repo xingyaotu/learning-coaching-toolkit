@@ -17,13 +17,13 @@
 
 ### 道层合规汇总
 - [八步] SOP_05.eight_step_name = "流程" ✅(绝不是"演示")
-- [六飞轮] 无 错题/笔记/阅读/实践飞轮轮 ✅
+- [六飞轮] 无 错题/笔记/阅读/实践飞轮 ✅
 - [FIRE-UP] 6 字母 F=Family/I=Individual/R=Resources/E=Ecosystem/U=Usability/P=Pathways ✅
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
 
 ### 待办
-- [ ] CI workflow 配置
-- [ ] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
+- [x] CI workflow 配置
+- [x] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
@@ -45,4 +45,17 @@
 
 - [道层] dao-guard 内联 6/6 0 命中 ✅
 - [CSO] 0 触发(纯 CI 配置,无 API key 引用) ✅
-- [Next] SKILL.md 与 colleague-skill 接口对接(Phase 0.5) / 伴读手册内容提炼(Phase 1)
+
+---
+
+## 2026-05-17T22:30:00Z · Phase 0.5 SKILL.md 接口对接 [完成]
+
+- [DONE] `SKILL.md` (根目录) — coaching-sops-toolkit colleague-skill 入口
+  - 七阶 → SOP 分发矩阵(stage 1-7 → 首选 SOP + 辅助 SOP + 推荐飞轮)
+  - 飞轮触发场景表(SOP_FW1-FW6 各自触发时机)
+  - 调用接口规格(stage_id / sop_id / subject / student_id)
+  - 与 xingyaotu-openmaic `agent-skills/coach/sop/` 对接说明
+  - 道层约束(⑤=流程 / 六飞轮精确名称 / FIRE-UP 6字母 F/I/R/E/U/P)
+- [道层] dao-guard 6/6 0 命中 ✅(SKILL.md 位于根目录,不在扫描范围)
+- [CSO] 0 触发(纯接口规格,无 API key 引用) ✅
+- [Next] 伴读标准化指导手册内容提炼入 SOPs(Phase 1)
