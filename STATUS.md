@@ -22,8 +22,18 @@
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
 
 ### 待办
-- [ ] CI workflow 配置
+- [x] CI workflow 配置 ← 已完成(见下)
 - [ ] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
+
+---
+
+## 2026-05-17T13:25Z · CI 配置完成(Cloud Routine 自跑)
+
+[Done] `scripts/.dao-guard.sh` v5.1 — 道层零漂移守护脚本新增(与主仓 xingyaotu-openmaic 同步)
+[Done] `.github/workflows/dao-guard-ci.yml` — 完整 CI workflow 新增,使用 .dao-guard.sh 脚本
+       (补充原有 validate.yml 中的 inline 简化检查)
+[Next] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
+[Next] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
