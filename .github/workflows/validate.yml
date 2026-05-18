@@ -28,15 +28,17 @@ jobs:
       - name: 检测道层漂移(6 类)
         run: |
           FAIL=0
-          # 模式1: 八步第5步误用"演示"
+          # 模式1: 八步第5步误用"演示" (排除否定/说明语境行)
           if grep -rE "⑤[[:space:]]*演示|第五步[[:space:]]*演示" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" .; then
+             --exclude-dir=".git" . \
+             | grep -vE "漂移|不是|绝非|禁止|绝不|错误|非法|警告|FAIL|PASS"; then
             echo "❌ 道层漂移: 八步第5步不是演示"; FAIL=1
           else echo "✅ 八步第5步合规"; fi
 
-          # 模式2: 六飞轮错误变体
+          # 模式2: 六飞轮错误变体 (排除否定/说明语境行)
           if grep -rE "错题飞轮|笔记飞轮|阅读飞轮|实践飞轮" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" .; then
+             --exclude-dir=".git" . \
+             | grep -vE "无.*飞轮|不是|非法|漂移|绝非|禁止|错误|警告|FAIL|PASS"; then
             echo "❌ 道层漂移: 六飞轮含非法变体"; FAIL=1
           else echo "✅ 六飞轮名称合规"; fi
 
@@ -46,9 +48,10 @@ jobs:
             echo "❌ 道层漂移: FIRE-UP 应为6字母"; FAIL=1
           else echo "✅ FIRE-UP 6字母合规"; fi
 
-          # 模式4: SOP_05 名称检查
+          # 模式4: SOP_05 名称检查 (排除否定/说明语境行)
           if grep -rE "SOP_05.*演示|SOP.05.*demo" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" .; then
+             --exclude-dir=".git" . \
+             | grep -vE "不是|漂移|绝非|流程|错误|绝不|PASS|FAIL|警告"; then
             echo "❌ 道层漂移: SOP_05=流程不是演示"; FAIL=1
           else echo "✅ SOP_05 流程名称合规"; fi
 
