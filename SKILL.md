@@ -22,7 +22,7 @@ dao_compliance: v5.0
 | 2 | 提取 | `coaching-sops/eight-step-sops/SOP_02-提取.md` | 从题目中提取关键信息结构 |
 | 3 | 整理 | `coaching-sops/eight-step-sops/SOP_03-整理.md` | 知识点分类梳理，建立框架 |
 | 4 | 审题 | `coaching-sops/eight-step-sops/SOP_04-审题.md` | 审题策略，stage 3-5 |
-| 5 | 流程 | `coaching-sops/eight-step-sops/SOP_05-流程.md` | ★解题流程规范化(绝非"演示") |
+| 5 | 流程 | `coaching-sops/eight-step-sops/SOP_05-流程.md` | ★解题流程规范化，stage 4-5 |
 | 6 | 批改 | `coaching-sops/eight-step-sops/SOP_06-批改.md` | 作业批改闭环，stage 4-6 |
 | 7 | 分析 | `coaching-sops/eight-step-sops/SOP_07-分析.md` | 错误归因分析 |
 | 8 | 估分 | `coaching-sops/eight-step-sops/SOP_08-估分.md` | 考后估分复盘，stage 5-7 |
@@ -77,7 +77,7 @@ dao_compliance: v5.0
 
 调用本 SKILL 前必须验证：
 
-- [ ] `eight_step_id=5` 对应 SOP = **SOP_05-流程.md**（不是演示.md）
+- [ ] `eight_step_id=5` 对应 SOP = **SOP_05-流程.md**（step5 = 流程）
 - [ ] `flywheel_id` 范围 1-6（不接受 7+）
 - [ ] `stage` 范围 1-7（对应七阶：不会~创新）
 - [ ] FIRE-UP 6 字母：F/I/R/E/U/P（不是5字母）
