@@ -27,3 +27,22 @@
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
+
+## 2026-05-18T03:55Z · SKILL.md colleague-skill 接口上线 (Cloud Routine 自跑)
+
+[Done] CI workflow — `validate.yml` 已在前次 PR 完成 ✅(非本次新增)
+
+[Done] feat(skill-interface): SKILL.md 教练工具包 SOP 分发接口
+
+- 八步 SOP 分发表(eight_step_id 1-8 → SOP 文件完整映射)
+- 六飞轮 SOP 分发表(flywheel_id 1-6 → SOP 文件完整映射)
+- 场景路由规则(context routing: 关键词 → flywheel/eight_step 自动选择)
+- 七阶位适用范围(stage 1-7 → 优先推荐 SOP)
+- 道层合规检查项(调用前验证清单)
+- 集成路径(openmaic agent-skills → coaching-toolkit → assessment-toolkit)
+
+[道层] 漂移词 0 命中 ✅ | 八步⑤=流程 ✅ | 六飞轮 1-6 严格 ✅
+
+[Next] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1) — 待人工上传 docx 内容
+[Next] assessment-toolkit SKILL.md 接口对接(镜像本 PR 工作到 assessment 仓)
+
