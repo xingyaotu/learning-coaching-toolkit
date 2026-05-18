@@ -27,3 +27,24 @@
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
+
+---
+
+## 2026-05-18T16:30:00Z · Cloud Routine Phase 1 — 伴读手册 SOP 提炼
+
+- [道层 Compliance] 新文件无 演示/错题飞轮/F-I-R-E 违规 PASS
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO1-新生入学流程.md` — 6步入学闭环
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO2-每日伴读流程.md` — 4阶段每日标准流程
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO3-任务执行流程.md` — 5步提供+6步结束+7类异常处理
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO4-沟通情绪处理.md` — 问题诊断+情绪处理+正面强化公式
+- [来源] 伴读标准化指导手册.docx 全文提炼 (211段)
+- [PR] 待推送 → claude/trusting-albattani-c3CNn → PR 创建
+
+### 完成 STATUS.md 待办
+- [x] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
+
+### 待办
+- [ ] tool-catalog.json 增加 4 个 CO SOPs 条目
+- [ ] CI workflow 增加 coach-ops-sops 内容检查
+
+---
