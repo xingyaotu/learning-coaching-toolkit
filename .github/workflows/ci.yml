@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate JSON files
+      - name: JSON 文件格式验证
         run: |
           echo "=== JSON 格式验证 ==="
           ERROR=0
@@ -27,23 +27,41 @@ jobs:
           done < <(find . -name "*.json" -not -path "./.github/*" -print0)
           [ $ERROR -eq 0 ] || exit 1
 
-      - name: 道层漂移关键词检查
+      - name: 道层漂移关键词检测（精准模式）
         run: |
-          echo "=== 道层漂移关键词检查 ==="
-          DRIFT=$(grep -rn \
-            --include="*.json" \
-            --include="*.md" \
-            --exclude="CLAUDE.md" \
-            --exclude="README.md" \
-            --exclude-dir=".github" \
-            -E "导入|拆解|讲解|类比|演示|Judge|Understand|Match|Execute|Qualify" \
-            . 2>/dev/null || true)
-          if [ -n "$DRIFT" ]; then
-            echo "❌ 道层漂移词检测:"
-            echo "$DRIFT"
-            exit 1
+          echo "=== 道层漂移关键词检测（仅扫工程目录）==="
+          # 仅扫 pipeline-data/ coaching-sops/ .github/ 中的工程文件
+          # 不扫大型知识库 MD（教育内容，非工程代码）
+          SCAN_DIRS=""
+          for d in pipeline-data coaching-sops .github; do
+            [ -d "$d" ] && SCAN_DIRS="$SCAN_DIRS $d"
+          done
+
+          if [ -z "$SCAN_DIRS" ]; then
+            echo "⚠️  无可扫目录，跳过"
+            exit 0
           fi
-          echo "✅ 道层漂移检查 0 命中"
+
+          # 精准正则（与 xingyaotu-openmaic/.dao-guard.sh v5.1 对齐）
+          # 单词不起步，必须是锁定了方法论语境的组合模式
+          DRIFT_05='导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巳固|⑤[[:space:]]*演示|第五步[[:space:]]*演示'
+          DRIFT_06='F-错题|F-笔记|F-阅读|F-实践|错题飞轮|笔记飞轮|阅读飞轮|实践飞轮'
+
+          ERROR=0
+          for PAT in "$DRIFT_05" "$DRIFT_06"; do
+            HIT=$(grep -rnE "$PAT" \
+              --include="*.md" --include="*.json" --include="*.yml" --include="*.yaml" \
+              --exclude-dir=".git" \
+              $SCAN_DIRS 2>/dev/null || true)
+            if [ -n "$HIT" ]; then
+              echo "❌ 道层漂移检测到:"
+              echo "$HIT"
+              ERROR=1
+            fi
+          done
+
+          [ $ERROR -eq 0 ] && echo "✅ 道层漂移检查 0 命中"
+          [ $ERROR -eq 0 ] || exit 1
 
       - name: 八步⑤=流程 守护
         run: |
@@ -53,7 +71,6 @@ jobs:
 import json, sys
 with open('pipeline-data/tool-catalog.json') as f:
     data = json.load(f)
-# Check eight_step entries: step 5 must be 流程, not 演示
 tools = data.get('tools', data.get('items', []))
 errors = []
 for t in tools:
@@ -62,35 +79,31 @@ for t in tools:
         step5 = steps[4] if isinstance(steps[4], str) else steps[4].get('name', '')
         if '演示' in step5:
             errors.append(f"❌ Tool {t.get('id','?')}: step5='{step5}' contains 演示")
-        elif '流程' not in step5 and step5:
-            pass  # Optional: warn if not exactly 流程
 if errors:
     for e in errors: print(e)
     sys.exit(1)
 print('✅ 八步⑤=流程 守护通过')
 EOF
           else
-            echo "⚠️  pipeline-data/tool-catalog.json not found, skipping step guard"
+            echo "⚠️  pipeline-data/tool-catalog.json not found, skipping"
           fi
 
       - name: 六飞轮完整性
         run: |
-          echo "=== 六飞轮完整性：计划/预习/复习/听课/作业/考试 ==="
+          echo "=== 六飞轮完整性：无错题/笔记/阅读/实践 ==="
           python3 - <<'EOF'
 import json, glob, sys
-FLYWHEELS = {'计划', '预习', '复习', '听课', '作业', '考试'}
-BAD_FLYWHEELS = {'错题', '笔记', '阅读', '实践'}
+BAD = ['错题飞轮', '笔记飞轮', '阅读飞轮', '实践飞轮', 'F-错题', 'F-笔记', 'F-阅读', 'F-实践']
 found_bad = []
-for f in glob.glob('**/*.json', recursive=True):
-    if '.github' in f: continue
-    try:
-        with open(f) as fp:
-            text = fp.read()
-        for bad in BAD_FLYWHEELS:
-            if bad in text:
-                found_bad.append(f"{f}: contains '{bad}'")
-    except:
-        pass
+for pattern in ['pipeline-data/**/*.json', 'coaching-sops/**/*.json', 'coaching-sops/**/*.md']:
+    for f in glob.glob(pattern, recursive=True):
+        try:
+            text = open(f).read()
+            for bad in BAD:
+                if bad in text:
+                    found_bad.append(f"{f}: contains '{bad}'")
+        except Exception:
+            pass
 if found_bad:
     print('❌ 非法飞轮词检测:')
     for e in found_bad: print(e)
