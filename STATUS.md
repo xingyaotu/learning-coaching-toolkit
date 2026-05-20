@@ -27,3 +27,20 @@
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
+
+---
+
+## 2026-05-20T17:22:00Z · coaching-toolkit — SOP 完整性验证脚本
+
+### feat(scripts+ci): validate-sop-completeness.py — 14 SOP 文件完整性道层验证
+
+- `scripts/validate-sop-completeness.py`: 14 SOP 完整性验证脚本
+  - 八步 SOP 8/8: SOP_01~SOP_08 文件存在性
+  - ⑤守护: SOP_05-流程.md 存在，漂移文件名不存在
+  - 六飞轮 SOP 6/6: SOP_FW1~SOP_FW6 文件存在性
+  - index.json 条目: 14/14 (八步8 + 飞轮6) + SOP_05.name_zh='流程'
+- `.github/workflows/validate.yml`: 新增 `sop-completeness` CI job
+- 本地验证: 20/20 通过 ✅
+
+- [道层] SOP 完整性全部通过 ✅ | CSO 0触发 ✅
+- [Next] coaching-toolkit → 继续推进其他待办任务

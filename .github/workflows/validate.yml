@@ -53,3 +53,11 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  sop-completeness:
+    name: SOP 完整性验证(14个SOP + ⑤流程)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行 SOP 完整性验证脚本
+        run: python3 scripts/validate-sop-completeness.py
