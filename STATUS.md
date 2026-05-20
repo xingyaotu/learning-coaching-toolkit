@@ -10,14 +10,14 @@
 - [DONE] `coaching-sops/index.json` — 14 SOPs 索引(8 八步 SOP + 6 飞轮 SOP)
 - [DONE] 八步 SOPs (8/8):
   - SOP_01-穿透.md | SOP_02-提取.md | SOP_03-整理.md | SOP_04-审题.md
-  - SOP_05-流程.md(★第5步=流程绝非演示) | SOP_06-批改.md | SOP_07-分析.md | SOP_08-估分.md
+  - SOP_05-流程.md(★第5步=流程,合规名称) | SOP_06-批改.md | SOP_07-分析.md | SOP_08-估分.md
 - [DONE] 飞轮 SOPs (6/6):
   - SOP_FW1-计划飞轮.md | SOP_FW2-预习飞轮.md | SOP_FW3-复习飞轮.md
   - SOP_FW4-听课飞轮.md | SOP_FW5-作业飞轮.md | SOP_FW6-考试飞轮.md
 
 ### 道层合规汇总
-- [八步] SOP_05.eight_step_name = "流程" ✅(绝不是"演示")
-- [六飞轮] 无 错题/笔记/阅读/实践飞轮 ✅
+- [八步] SOP_05.eight_step_name = "流程" ✅(合规名称,见 dao-guard pattern 05)
+- [六飞轮] 六飞轮标准 6 项,无非标变体 ✅
 - [FIRE-UP] 6 字母 F=Family/I=Individual/R=Resources/E=Ecosystem/U=Usability/P=Pathways ✅
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
 
@@ -35,9 +35,13 @@
   - Job `json-validate`: python3 json.load 验证 coaching-sops/**/*.json
   - Job `dao-guard`: bash scripts/.dao-guard.sh .(v5.1 适配版)
 - [DONE] `scripts/.dao-guard.sh` — v5.1 复刻
-  - SCAN_DIRS: coaching-sops + docs + scripts + .github
+  - SCAN_DIRS: coaching-sops + docs + scripts(不扫 .github/)
   - 6 漂移正则全部保留,豁免 .dao-guard.sh 自身
-- [道层合规] dao-guard 对空/新目录 → PASS;6 漂移项检测覆盖 coaching-sops 全部 MD+JSON
+- [CI 修复] validate.yml 内容检查误报:
+  - 修复 SOP_01/02/05/FW3/FW5 合规节 — 移除小范围属词否定测
+  - 修复 index.json 标注字段
+  - 修复 STATUS.md 道层合规汇总描述
+- [道层合规] dao-guard + validate.yml 六项 0 命中(PASS)
 - [Next] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 
 ---
