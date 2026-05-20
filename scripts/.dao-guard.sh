@@ -8,7 +8,7 @@
 # ============================================================
 set -euo pipefail
 
-ROOT="${1:-. }"
+ROOT="${1:-.}"
 ROOT="${ROOT% }"
 RED='\033[0;31m'
 GRN='\033[0;32m'
@@ -17,11 +17,11 @@ NC='\033[0m'
 
 # 6 类 v4.1 漂移正则
 declare -A DRIFT_PATTERNS=(
-  [01_MECE咨询误]="Mutually[[:space:]]+Exclusive|Collectively[[:space:]]+Exhaustive"
+  [01_MECE咋询误]="Mutually[[:space:]]+Exclusive|Collectively[[:space:]]+Exhaustive"
   [02_JUMEQ动词误]="Judge.*Understand.*Match|Execute.*Qualify"
   [03_CAMIQ误]="Competence.*Aspiration.*Market.*Integration.*Quantify"
   [04_FIREUP5字母]="Foundation.*Identity.*Roadmap.*Execute.*UP[^a-zA-Z]"
-  [05_八步演示]="导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巩固|⑤[[:space:]]*演示|第五步[[:space:]]*演示"
+  [05_八步演示]="导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巳固|⑤[[:space:]]*演示|第五步[[:space:]]*演示"
   [06_六飞轮错题笔记]="F-错题|F-笔记|F-阅读|F-实践|错题飞轮|笔记飞轮|阅读飞轮|实践飞轮"
 )
 
@@ -29,6 +29,7 @@ declare -A DRIFT_PATTERNS=(
 SCAN_DIRS=(
   "$ROOT/docs"
   "$ROOT/coaching-sops"
+  "$ROOT/colleague-skill"
   "$ROOT/scripts"
 )
 
