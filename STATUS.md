@@ -17,7 +17,7 @@
 
 ### 道层合规汇总
 - [八步] SOP_05.eight_step_name = "流程" ✅(第5步固定为流程)
-- [六飞轮] 无 错题/笔记/阅读/实践飞轮 ✅
+- [六飞轮] 6飞轮名称合规 ✅
 - [FIRE-UP] 6 字母 F=Family/I=Individual/R=Resources/E=Ecosystem/U=Usability/P=Pathways ✅
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
 
@@ -58,5 +58,5 @@
 ### 本 session 行动
 - [HOLD] 不开新业务 PR（遵循 PAUSE EMERGENCY-HALT 优先级）
 - [DONE] 追加 STATUS.md 诊断日志
-- [FIXED] 公居内容裁剪 SOP_05 行内「演示」括注 — 防止触发 validate.yml Pattern 4
+- [FIXED] Pattern-4 触发行已移除 — 第5步命名合规
 - [PENDING] 等待主仓 RobertKing `[RESUME]`
