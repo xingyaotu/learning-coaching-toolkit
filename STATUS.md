@@ -17,7 +17,7 @@
 
 ### 道层合规汇总
 - [八步] SOP_05.eight_step_name = "流程" ✅(绝不是"演示")
-- [六飞轮] 无 错题/笔记/阅读/实践飞轮 ✅
+- [六飞轮] 六飞轮名称合规(无非法变体) ✅
 - [FIRE-UP] 6 字母 F=Family/I=Individual/R=Resources/E=Ecosystem/U=Usability/P=Pathways ✅
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
 
