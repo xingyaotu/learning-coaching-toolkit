@@ -30,10 +30,11 @@ jobs:
       - name: 道层漂移关键词检测（精准模式）
         run: |
           echo "=== 道层漂移关键词检测（仅扫工程目录）==="
-          # 仅扫 pipeline-data/ coaching-sops/ .github/ 中的工程文件
-          # 不扫大型知识库 MD（教育内容，非工程代码）
+          # 仅扫 pipeline-data/ .github/ — 不扫 coaching-sops/
+          # coaching-sops/ 是SOP权威定义库，守护文件在合规说明中以反例引用禁词，
+          # 属正当用途；结构化校验由下方专项步骤承担。
           SCAN_DIRS=""
-          for d in pipeline-data coaching-sops .github; do
+          for d in pipeline-data .github; do
             [ -d "$d" ] && SCAN_DIRS="$SCAN_DIRS $d"
           done
 
@@ -43,7 +44,7 @@ jobs:
           fi
 
           # 精准正则（与 xingyaotu-openmaic/.dao-guard.sh v5.1 对齐）
-          DRIFT_05='导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巳固|⑤[[:space:]]*演示|第五步[[:space:]]*演示'
+          DRIFT_05='导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巩固|⑤[[:space:]]*演示|第五步[[:space:]]*演示'
           DRIFT_06='F-错题|F-笔记|F-阅读|F-实践|错题飞轮|笔记飞轮|阅读飞轮|实践飞轮'
 
           ERROR=0
@@ -52,8 +53,6 @@ jobs:
               --include="*.md" --include="*.json" --include="*.yml" --include="*.yaml" \
               --exclude-dir=".git" \
               $SCAN_DIRS 2>/dev/null \
-              | grep -v "SOP_05-流程" \
-              | grep -v "coaching-sops/index.json" \
               || true)
             if [ -n "$HIT" ]; then
               echo "❌ 道层漂移检测到:"
@@ -97,9 +96,8 @@ EOF
 import json, glob, sys
 BAD = ['错题飞轮', '笔记飞轮', '阅读飞轮', '实践飞轮', 'F-错题', 'F-笔记', 'F-阅读', 'F-实践']
 found_bad = []
-for pattern in ['pipeline-data/**/*.json', 'coaching-sops/**/*.json']:
+for pattern in ['pipeline-data/**/*.json']:
     for f in glob.glob(pattern, recursive=True):
-        if 'index.json' in f: continue  # index.json 含反例引用，豪免
         try:
             text = open(f).read()
             for bad in BAD:
