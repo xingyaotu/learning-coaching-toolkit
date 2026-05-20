@@ -49,5 +49,5 @@ interface HomeworkFlywheel {
 ```
 
 ## 道层合规说明
-- ⑤ = 流程(SOP_05),不是演示
+- ⑤ = 流程(SOP_05) ✅ 道层合规
 - 六飞轮无非法变体
