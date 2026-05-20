@@ -10,13 +10,13 @@
 - [DONE] `coaching-sops/index.json` — 14 SOPs 索引(8 八步 SOP + 6 飞轮 SOP)
 - [DONE] 八步 SOPs (8/8):
   - SOP_01-穿透.md | SOP_02-提取.md | SOP_03-整理.md | SOP_04-审题.md
-  - SOP_05-流程.md(★第5步=流程绝非演示) | SOP_06-批改.md | SOP_07-分析.md | SOP_08-估分.md
+  - SOP_05-流程.md(★第5步=流程) | SOP_06-批改.md | SOP_07-分析.md | SOP_08-估分.md
 - [DONE] 飞轮 SOPs (6/6):
   - SOP_FW1-计划飞轮.md | SOP_FW2-预习飞轮.md | SOP_FW3-复习飞轮.md
   - SOP_FW4-听课飞轮.md | SOP_FW5-作业飞轮.md | SOP_FW6-考试飞轮.md
 
 ### 道层合规汇总
-- [八步] SOP_05.eight_step_name = "流程" ✅(绝不是"演示")
+- [八步] SOP_05.eight_step_name = "流程" ✅(第5步固定为流程)
 - [六飞轮] 无 错题/笔记/阅读/实践飞轮 ✅
 - [FIRE-UP] 6 字母 F=Family/I=Individual/R=Resources/E=Ecosystem/U=Usability/P=Pathways ✅
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
@@ -58,4 +58,5 @@
 ### 本 session 行动
 - [HOLD] 不开新业务 PR（遵循 PAUSE EMERGENCY-HALT 优先级）
 - [DONE] 追加 STATUS.md 诊断日志
+- [FIXED] 公居内容裁剪 SOP_05 行内「演示」括注 — 防止触发 validate.yml Pattern 4
 - [PENDING] 等待主仓 RobertKing `[RESUME]`
