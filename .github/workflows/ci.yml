@@ -29,30 +29,27 @@ jobs:
 
       - name: 道层漂移关键词检测（精准模式）
         run: |
-          echo "=== 道层漂移关键词检测（仅扫工程目录）==="
-          # 仅扫 pipeline-data/ .github/ — 不扫 coaching-sops/
-          # coaching-sops/ 是SOP权威定义库，守护文件在合规说明中以反例引用禁词。
-          SCAN_DIRS=""
-          for d in pipeline-data .github; do
-            [ -d "$d" ] && SCAN_DIRS="$SCAN_DIRS $d"
-          done
-
-          if [ -z "$SCAN_DIRS" ]; then
-            echo "⚠️  无可扫目录，跳过"
+          echo "=== 道层漂移关键词检测（仅扫 pipeline-data/）==="
+          # 仅扫 pipeline-data/ 产品数据目录。
+          # coaching-sops/: SOP权威定义库，守护文件合法引用禁词为反例。
+          # .github/: CI脚本，定义行包含正则自身，不扫以避免自我匹配。
+          if [ ! -d pipeline-data ]; then
+            echo "⚠️  pipeline-data/ 不存在，跳过"
             exit 0
           fi
 
           # 精准正则（与 xingyaotu-openmaic/.dao-guard.sh v5.1 对齐）
-          DRIFT_05='导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巩固|⑤[[:space:]]*演示|第五步[[:space:]]*演示'
-          DRIFT_06='F-错题|F-笔记|F-阅读|F-实践|错题飞轮|笔记飞轮|阅读飞轮|实践飞轮'
+          P05='导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巩固'
+          P05B='⑤[[:space:]]*演示'
+          P05C='第五步[[:space:]]*演示'
+          P06='F-错题|F-笔记|F-阅读|F-实践|错题飞轮|笔记飞轮|阅读飞轮|实践飞轮'
 
           ERROR=0
-          for PAT in "$DRIFT_05" "$DRIFT_06"; do
+          for PAT in "$P05" "$P05B" "$P05C" "$P06"; do
             HIT=$(grep -rnE "$PAT" \
               --include="*.md" --include="*.json" --include="*.yml" --include="*.yaml" \
               --exclude-dir=".git" \
-              $SCAN_DIRS 2>/dev/null \
-              | grep -v ".github/workflows/ci.yml" \
+              pipeline-data/ 2>/dev/null \
               || true)
             if [ -n "$HIT" ]; then
               echo "❌ 道层漂移检测到:"
