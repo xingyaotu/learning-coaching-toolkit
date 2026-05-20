@@ -25,12 +25,11 @@ declare -A DRIFT_PATTERNS=(
   [06_六飞轮错题笔记]="F-错题|F-笔记|F-阅读|F-实践|错题飞轮|笔记飞轮|阅读飞轮|实践飞轮"
 )
 
-# 适配本仓库的扫描目录(含 coaching-sops)
+# 适配本仓库的扫描目录(不扫 .github/,避免将守护脚本自身当漂移误报)
 SCAN_DIRS=(
   "$ROOT/docs"
   "$ROOT/coaching-sops"
   "$ROOT/scripts"
-  "$ROOT/.github"
 )
 
 FILE_GLOBS=(
