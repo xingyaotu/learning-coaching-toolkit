@@ -31,8 +31,7 @@ jobs:
         run: |
           echo "=== 道层漂移关键词检测（仅扫工程目录）==="
           # 仅扫 pipeline-data/ .github/ — 不扫 coaching-sops/
-          # coaching-sops/ 是SOP权威定义库，守护文件在合规说明中以反例引用禁词，
-          # 属正当用途；结构化校验由下方专项步骤承担。
+          # coaching-sops/ 是SOP权威定义库，守护文件在合规说明中以反例引用禁词。
           SCAN_DIRS=""
           for d in pipeline-data .github; do
             [ -d "$d" ] && SCAN_DIRS="$SCAN_DIRS $d"
@@ -53,6 +52,7 @@ jobs:
               --include="*.md" --include="*.json" --include="*.yml" --include="*.yaml" \
               --exclude-dir=".git" \
               $SCAN_DIRS 2>/dev/null \
+              | grep -v ".github/workflows/ci.yml" \
               || true)
             if [ -n "$HIT" ]; then
               echo "❌ 道层漂移检测到:"
