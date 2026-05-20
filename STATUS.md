@@ -44,3 +44,20 @@
 
 - [道层] SOP 完整性全部通过 ✅ | CSO 0触发 ✅
 - [Next] coaching-toolkit → 继续推进其他待办任务
+
+---
+
+## 2026-05-20T17:50:00Z · coaching-toolkit — SOP SKILL 目录接口
+
+### feat(pipeline-data): sop-skill-catalog.json — 14 SOP colleague-skill 接口目录
+
+- `pipeline-data/sop-skill-catalog.json`: 14 SOP 的 colleague-skill 接口目录
+  - 全部 14 条: $schema + 8 八步 SOP + 6 飞轮 SOP
+  - 每条含: sop_id / name / description / use_when / stage_range / allowed_tools / file
+  - ⑤守护: SOP_05.eight_step_name = "流程" ✅, ★_note 无漂移字面量
+  - 六飞轮: six_flywheel_name 全用单词(计划/预习/复习/听课/作业/考试)
+- 道层漂移: 0 命中 ✅ | JSON 格式: 有效 ✅
+
+### [Next] coaching-toolkit
+- [ ] validate-sop-completeness.py 扩展: 校验 sop-skill-catalog.json 条目与 SOP 文件一致性
+- [ ] colleague-skill 正式接口对接(Phase 0.5)
