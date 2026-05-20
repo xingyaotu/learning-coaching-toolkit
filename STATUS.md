@@ -22,8 +22,22 @@
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
 
 ### 待办
-- [ ] CI workflow 配置
+- [x] CI workflow 配置 ← 见下方 2026-05-20 条目
 - [ ] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
+
+---
+
+## 2026-05-20T00:00:00Z · CI Workflow 配置 W1
+
+- [触发] Cloud routine dev branch `claude/vibrant-edison-5IDBD`
+- [DONE] `.github/workflows/ci.yml` — 两 Job CI 配置:
+  - Job `json-validate`: python3 json.load 验证 coaching-sops/**/*.json
+  - Job `dao-guard`: bash scripts/.dao-guard.sh .(v5.1 适配版)
+- [DONE] `scripts/.dao-guard.sh` — v5.1 复刻
+  - SCAN_DIRS: coaching-sops + docs + scripts + .github
+  - 6 漂移正则全部保留,豁免 .dao-guard.sh 自身
+- [道层合规] dao-guard 对空/新目录 → PASS;6 漂移项检测覆盖 coaching-sops 全部 MD+JSON
+- [Next] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 
 ---
