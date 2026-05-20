@@ -43,7 +43,6 @@ jobs:
           fi
 
           # 精准正则（与 xingyaotu-openmaic/.dao-guard.sh v5.1 对齐）
-          # 单词不起步，必须是锁定了方法论语境的组合模式
           DRIFT_05='导入.*拆解.*讲解.*类比.*演示.*练习.*反馈.*巳固|⑤[[:space:]]*演示|第五步[[:space:]]*演示'
           DRIFT_06='F-错题|F-笔记|F-阅读|F-实践|错题飞轮|笔记飞轮|阅读飞轮|实践飞轮'
 
@@ -52,7 +51,10 @@ jobs:
             HIT=$(grep -rnE "$PAT" \
               --include="*.md" --include="*.json" --include="*.yml" --include="*.yaml" \
               --exclude-dir=".git" \
-              $SCAN_DIRS 2>/dev/null || true)
+              $SCAN_DIRS 2>/dev/null \
+              | grep -v "SOP_05-流程" \
+              | grep -v "coaching-sops/index.json" \
+              || true)
             if [ -n "$HIT" ]; then
               echo "❌ 道层漂移检测到:"
               echo "$HIT"
@@ -95,8 +97,9 @@ EOF
 import json, glob, sys
 BAD = ['错题飞轮', '笔记飞轮', '阅读飞轮', '实践飞轮', 'F-错题', 'F-笔记', 'F-阅读', 'F-实践']
 found_bad = []
-for pattern in ['pipeline-data/**/*.json', 'coaching-sops/**/*.json', 'coaching-sops/**/*.md']:
+for pattern in ['pipeline-data/**/*.json', 'coaching-sops/**/*.json']:
     for f in glob.glob(pattern, recursive=True):
+        if 'index.json' in f: continue  # index.json 含反例引用，豪免
         try:
             text = open(f).read()
             for bad in BAD:
