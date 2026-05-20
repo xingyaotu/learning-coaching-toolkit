@@ -23,7 +23,7 @@
 
 ### 待办
 - [x] CI workflow 配置 ← 见下方 2026-05-20 条目
-- [ ] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
+- [x] SKILL.md 与 colleague-skill 接口对接(Phase 0.5) ← 见下方 2026-05-20 条目
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
@@ -42,7 +42,6 @@
   - 修复 index.json 标注字段
   - 修复 STATUS.md 道层合规描述
 - [道层合规] dao-guard + validate.yml 六项 0 命中(PASS)
-- [Next] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 
 ---
 
@@ -51,6 +50,22 @@
 - [✅ CI GREEN] PR #7 全部 6 job PASS:
   - ci.yml: JSON 语法验证 ✅ / 道层零漂移守护 ✅
   - validate.yml: JSON 文件格式验证 ✅ / 道层漂移关键词检测 ✅
-- [Next] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
+
+---
+
+## 2026-05-20T14:05:00Z · colleague-skill Phase 0.5 接口对接
+
+- [DONE] `colleague-skill/work-skill/` — 教练工作流 4 件:
+  - coach-1on1.md: 1V1伴学课三段式工作流(课前/课中/课后)
+  - coach-group.md: 小组课差异化分层教学工作流
+  - homework-assign.md: 作业飞轮布置四步工作流
+  - parent-communication.md: 家长沟通三类模板(周报/月课/里程碑)
+- [DONE] `colleague-skill/persona/` — 教练人格 3 件:
+  - style-xingyao.md: 星耀通用基线风格(数据驱动/七阶精准)
+  - style-guoju.md: 国举老师风格(严格系统/高执行力驱动)
+  - style-meihong.md: 梅鸿老师风格(温暖引导/苏格拉底式)
+- [道层合规] 7 件 SKILL.md 全部: ⑤=流程 / 六飞轮标准6项 / 0漂移
+- [接口] nanobot 教练分身从 colleague-skill/ 加载人格+工作流
+- [Next] 36学科×分数段 SKILL.md 库(Phase 1,需学科数据支持)
 
 ---
