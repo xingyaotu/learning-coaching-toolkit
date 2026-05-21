@@ -46,3 +46,11 @@
 [Next] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1) — 待人工上传 docx 内容
 [Next] assessment-toolkit SKILL.md 接口对接(镜像本 PR 工作到 assessment 仓)
 
+
+## 2026-05-21T · PR #5 关闭记录
+
+PR #5 (feat: SKILL.md SOP 分发接口 + SOP dao-guard 修复, branch: claude/vibrant-edison-ncJzm) 已关闭(closed without merging)。
+SKILL.md 及所有 SOP 修复代码保留在本分支。
+
+[状态] CLOSED — 等待后续明确指令方可重新开启或新建 PR
+[行动] 不 reopen / 不新建 PR — 代码已保全在分支
