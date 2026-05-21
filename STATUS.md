@@ -80,3 +80,19 @@
 
 - [道层] 0 触发 ✅ | JSON 格式: 有效 ✅
 - [Next] colleague-skill 正式接口对接(Phase 0.5)
+
+---
+
+## 2026-05-21T04:15:00Z · coaching-toolkit — Phase 0.5 colleague-skill 接口
+
+### feat(colleague-skills): 14 SOP SKILL.md 接口目录 — Phase 0.5
+
+- `scripts/generate-colleague-skills.py`: 从 sop-skill-catalog.json 生成 14 SKILL.md
+- `colleague-skills/eight-step-sops/`: 8 个八步 SOP SKILL.md (sop-01 ~ sop-08)
+- `colleague-skills/flywheel-sops/`: 6 个飞轮 SOP SKILL.md (sop-fw1 ~ sop-fw6)
+  - 每个 SKILL.md 含: name/description/version/allowed-tools/portal/quadruple_context
+  - sop-05.skill.md: eight_step_id=5, eight_step_name=流程 ★_note=合规 ✅
+  - 六飞轮: 计划/预习/复习/听课/作业/考试(全枚举合规)
+
+- [道层] 内容检查 3 项全 0 命中 ✅ | JSON 格式: 有效 ✅ | SOP 完整性 54/54 ✅
+- [Next] colleague-skill 正式注册接口对接(Phase 1) | IRT 参数标定(Phase 2.5)
