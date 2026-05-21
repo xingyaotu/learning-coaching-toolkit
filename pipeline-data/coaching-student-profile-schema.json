@@ -1,0 +1,164 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-student-profile.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.22 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练学生档案 schema — 聚合学生在教练系统中的完整历史数据, 含七阶轨迹/MECE变化/六飞轮进展/SOP合规率",
+    "pipl_note": "PIPL 合规: 学生档案中所有 student_id 均为平台匿名 ID; 不含真实姓名/学校/家庭信息",
+    "usage": "学生加入教练系统时创建档案 → 每次会话后更新 → 教练随时查阅 → 纵向追踪分析输入"
+  },
+  "student_profile_schema": {
+    "description": "学生教练档案结构",
+    "fields": {
+      "profile_id": {
+        "type": "string",
+        "pattern": "^SPROF-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "enrollment_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "current_coach_id": {
+        "type": "string",
+        "description": "当前负责教练匿名 ID"
+      },
+      "profile_status": {
+        "type": "string",
+        "enum": ["active", "paused", "graduated", "withdrawn"],
+        "required": true
+      },
+      "current_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "当前七阶阶位 (最新会话观察)",
+        "required": true,
+        "_dao_guard": "当前七阶阶位 — 严格按七阶: 不会/模糊/清晰/框架/运用/熟练/创新 更新"
+      },
+      "initial_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "入学时七阶阶位",
+        "required": true
+      },
+      "target_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "教练计划目标七阶阶位"
+      },
+      "current_primary_bottleneck": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "当前 MECE 主瓶颈维度",
+        "_dao_guard": "当前 MECE 主瓶颈 — M/E_exec/C/E_env 四维度严格枚举"
+      },
+      "flywheel_mastery": {
+        "type": "object",
+        "description": "六飞轮当前掌握度汇总",
+        "properties": {
+          "计划": {"type": "number", "minimum": 0, "maximum": 1},
+          "预习": {"type": "number", "minimum": 0, "maximum": 1},
+          "复习": {"type": "number", "minimum": 0, "maximum": 1},
+          "听课": {"type": "number", "minimum": 0, "maximum": 1},
+          "作业": {"type": "number", "minimum": 0, "maximum": 1},
+          "考试": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "_dao_guard": "飞轮掌握度汇总 — 六飞轮: 计划/预习/复习/听课/作业/考试 掌握度 [0,1]"
+      },
+      "sop05_compliance_rate_lifetime": {
+        "type": "number",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "description": "全周期 ⑤第5步=流程 合规率",
+        "_dao_guard": "全周期 ⑤sop05 合规率 — 流程执行合规追踪守护"
+      },
+      "total_sessions_completed": {
+        "type": "integer",
+        "minimum": 0,
+        "required": true
+      },
+      "total_sessions_sop05_compliant": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "current_dropout_risk_level": {
+        "type": "string",
+        "enum": ["rl-low", "rl-medium", "rl-high", "rl-critical"],
+        "description": "当前脱落风险等级"
+      },
+      "last_assessment_date": {
+        "type": "string",
+        "format": "date",
+        "description": "最近一次正式测评日期"
+      },
+      "last_assessment_session_id": {
+        "type": "string",
+        "description": "最近一次测评会话 ID"
+      },
+      "active_coaching_plan_id": {
+        "type": "string",
+        "description": "当前生效的教练计划 ID"
+      },
+      "graduation_id": {
+        "type": "string",
+        "description": "毕业记录 ID (毕业后填写)"
+      }
+    }
+  },
+  "stage_trajectory": {
+    "description": "七阶历史轨迹摘要结构",
+    "trajectory_entry_schema": {
+      "session_id": {"type": "string"},
+      "date": {"type": "string", "format": "date"},
+      "observed_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "_dao_guard": "轨迹七阶记录 — 历史每条记录严格按七阶枚举"
+      },
+      "observer": {"type": "string", "enum": ["coach", "assessment_cat"]}
+    }
+  },
+  "coaching_summary_stats": {
+    "description": "教练汇总统计",
+    "fields": {
+      "stage_advance_count": {"type": "integer", "minimum": 0},
+      "stage_regression_count": {"type": "integer", "minimum": 0},
+      "bottlenecks_resolved": {
+        "type": "array",
+        "items": {"type": "string", "enum": ["M", "E_exec", "C", "E_env"]}
+      },
+      "flywheels_mastered": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]
+        },
+        "_dao_guard": "掌握飞轮列表 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      },
+      "sop05_compliance_trend": {
+        "type": "string",
+        "enum": ["improving", "stable", "declining"],
+        "description": "⑤第5步=流程 近期合规趋势"
+      }
+    }
+  },
+  "validation_rules": {
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "sop05_guard": "student_profile.sop05_compliance_rate_lifetime 必须追踪 — ⑤第5步=流程 全周期合规守护",
+    "required_profile_fields": [
+      "profile_id", "student_id", "enrollment_date",
+      "profile_status", "current_stage", "initial_stage", "total_sessions_completed"
+    ],
+    "flywheel_mastery_range": "每个飞轮掌握度 ∈ [0,1]",
+    "pipl_constraints": "PIPL 合规: student_profile 中所有 student_id 和 coach_id 均为平台匿名 ID; 不含真实个人信息"
+  }
+}
