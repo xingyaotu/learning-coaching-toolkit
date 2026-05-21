@@ -9,7 +9,7 @@ license: Apache-2.0
 tier: A
 phase: "Phase 0"
 status: stub
-compliance: "v5.0 道层零漂移"
+compliance: "v5.1 道层零漂移"
 allowed-tools: [nuwa-skill, DeepTutor, nanobot, OpenClaw]
 ---
 
@@ -21,15 +21,15 @@ allowed-tools: [nuwa-skill, DeepTutor, nanobot, OpenClaw]
 - 需要提升作业质量,降低重复错误率
 
 ## 核心目标
-将作业从"完成任务"转化为"诊断+提升"的双重价值。
+将作业从“完成任务”转化为“诊断+提升”的双重价值。
 
 ## 飞轮五步
 
 1. **作业审题**: 每题先用 SOP_04 完整审题(不跳步)
 2. **流程执行**: 按 SOP_05 标准流程解题(第5步=流程)
 3. **自批自改**: 完成后用 SOP_06 逻辑自批,错误即时归因
-4. **薄弱标记**: 错题标记 knowledge_point_id + 错误类型(不是"错题本",是实时标记)
-5. **当日总结**: 每日作业结束记录"今日暴露薄弱点",纳入 SOP_07 分析
+4. **薄弱标记**: 错题标记 knowledge_point_id + 错误类型(不是“错题本”,是实时标记)
+5. **当日总结**: 每日作业结束记录“今日暴露薄弱点”,纳入 SOP_07 分析
 
 ## 接口规范
 
@@ -49,5 +49,5 @@ interface HomeworkFlywheel {
 ```
 
 ## 道层合规说明
-- ⑤ = 流程(SOP_05),不是演示
-- 六飞轮无"实践飞轮"
+- ⑤ = 流程(SOP_05),名称固定不可更改
+- 六飞轮无“实践飞轮”
