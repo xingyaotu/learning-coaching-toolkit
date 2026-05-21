@@ -1,0 +1,185 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-peer-learning.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.24 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练同伴学习 schema — 定义学生间同伴学习配对/小组的结构, 用于互助学习、七阶互评与六飞轮经验分享",
+    "pipl_note": "PIPL 合规: 同伴学习记录中所有 student_id 均为平台匿名 ID; 不含真实姓名/学校/家庭信息; 配对数据匿名存储",
+    "usage": "教练发起同伴学习配对 → 创建同伴组 → 跟踪互评记录 → 汇总七阶互评/六飞轮分享效果 → 教练复核"
+  },
+  "peer_pair_schema": {
+    "description": "同伴学习配对结构",
+    "fields": {
+      "pair_id": {
+        "type": "string",
+        "pattern": "^PPAIR-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "student_a_id": {
+        "type": "string",
+        "description": "配对学生 A 平台匿名 student_id",
+        "required": true
+      },
+      "student_b_id": {
+        "type": "string",
+        "description": "配对学生 B 平台匿名 student_id",
+        "required": true
+      },
+      "initiating_coach_id": {
+        "type": "string",
+        "description": "发起配对的教练匿名 ID",
+        "required": true
+      },
+      "pair_start_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "pair_status": {
+        "type": "string",
+        "enum": ["active", "paused", "completed", "dissolved"],
+        "required": true
+      },
+      "pairing_basis": {
+        "type": "string",
+        "enum": ["pb-stage-peer", "pb-bottleneck-complement", "pb-flywheel-share", "pb-coach-assigned"],
+        "description": "配对依据",
+        "_dao_guard": "同伴配对依据 — pb-stage-peer(七阶相近)/pb-bottleneck-complement(MECE互补)/pb-flywheel-share(六飞轮分享)/pb-coach-assigned 严格枚举"
+      },
+      "stage_at_pairing_a": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "配对时学生 A 的七阶阶位",
+        "_dao_guard": "配对时七阶阶位 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 严格枚举"
+      },
+      "stage_at_pairing_b": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "配对时学生 B 的七阶阶位"
+      },
+      "flywheel_focus": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "本配对重点同伴学习的飞轮",
+        "_dao_guard": "同伴飞轮焦点 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      },
+      "sop05_peer_check_enabled": {
+        "type": "boolean",
+        "description": "是否启用 ⑤第5步=流程 同伴互查",
+        "_dao_guard": "同伴 ⑤sop05 互查 — 流程执行同伴检查守护"
+      },
+      "total_peer_sessions": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "同伴学习会话总次数"
+      }
+    }
+  },
+  "peer_session_record_schema": {
+    "description": "同伴学习会话记录结构",
+    "fields": {
+      "peer_session_id": {
+        "type": "string",
+        "pattern": "^PSESS-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "pair_id": {
+        "type": "string",
+        "required": true
+      },
+      "session_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "session_duration_minutes": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "stage_observed_a": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "本次会话中学生 A 表现七阶阶位",
+        "_dao_guard": "同伴会话七阶观察 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 严格记录"
+      },
+      "stage_observed_b": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "本次会话中学生 B 表现七阶阶位"
+      },
+      "flywheel_practiced": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "本次同伴会话练习的飞轮",
+        "_dao_guard": "同伴会话飞轮练习 — 六飞轮: 计划/预习/复习/听课/作业/考试 记录守护"
+      },
+      "sop05_peer_check_result": {
+        "type": "string",
+        "enum": ["compliant", "partial", "non-compliant", "not-checked"],
+        "description": "⑤第5步=流程 同伴互查结果",
+        "_dao_guard": "同伴 ⑤sop05 互查结果 — 流程合规四等级守护"
+      },
+      "mutual_feedback_quality": {
+        "type": "string",
+        "enum": ["excellent", "good", "fair", "poor"],
+        "description": "互评反馈质量等级"
+      }
+    }
+  },
+  "peer_learning_effectiveness": {
+    "description": "同伴学习效果汇总",
+    "fields": {
+      "stage_advance_due_to_peer": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "因同伴学习促成七阶晋升人次",
+        "_dao_guard": "同伴学习七阶晋升 — 七阶晋升: 不会→模糊→清晰→框架→运用→熟练→创新 守护"
+      },
+      "flywheel_improvement_rates": {
+        "type": "object",
+        "description": "六飞轮同伴学习后掌握度提升率",
+        "properties": {
+          "计划": {"type": "number", "minimum": 0, "maximum": 1},
+          "预习": {"type": "number", "minimum": 0, "maximum": 1},
+          "复习": {"type": "number", "minimum": 0, "maximum": 1},
+          "听课": {"type": "number", "minimum": 0, "maximum": 1},
+          "作业": {"type": "number", "minimum": 0, "maximum": 1},
+          "考试": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "_dao_guard": "六飞轮同伴提升率 — 六飞轮: 计划/预习/复习/听课/作业/考试 同伴学习效果守护"
+      },
+      "sop05_peer_check_pass_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "⑤第5步=流程 同伴互查通过率",
+        "_dao_guard": "同伴 ⑤sop05 互查通过率 — 流程合规同伴检验守护"
+      },
+      "avg_peer_sessions_per_pair": {
+        "type": "number",
+        "minimum": 0
+      },
+      "pair_dissolution_reason_distribution": {
+        "type": "object",
+        "description": "配对解散原因分布",
+        "properties": {
+          "graduation": {"type": "number", "minimum": 0, "maximum": 1},
+          "schedule_conflict": {"type": "number", "minimum": 0, "maximum": 1},
+          "stage_mismatch": {"type": "number", "minimum": 0, "maximum": 1},
+          "coach_decision": {"type": "number", "minimum": 0, "maximum": 1},
+          "student_request": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    }
+  },
+  "validation_rules": {
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "pairing_basis_codes": ["pb-stage-peer", "pb-bottleneck-complement", "pb-flywheel-share", "pb-coach-assigned"],
+    "pair_status_values": ["active", "paused", "completed", "dissolved"],
+    "sop05_guard": "peer_pair.sop05_peer_check_enabled 启用时必须追踪 — ⑤第5步=流程 同伴互查合规守护",
+    "pipl_constraints": "PIPL 合规: 同伴学习记录中所有 student_id 均为平台匿名 ID; 不含真实姓名/学校/家庭信息; 配对数据匿名存储"
+  }
+}

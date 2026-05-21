@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.4 | JSON 验证 + 内容检查 + 同伴学习 schema 验证 + 内容库 schema 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,19 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  peer-learning-schema:
+    name: 教练同伴学习 schema 验证(配对字段/⑤守护/七阶/MECE/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练同伴学习 schema 验证脚本
+        run: python3 scripts/validate-peer-learning-schema.py
+
+  content-library-schema:
+    name: 教练内容库 schema 验证(内容条目/分配/⑤守护/七阶范围/MECE标签/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练内容库 schema 验证脚本
+        run: python3 scripts/validate-content-library-schema.py
