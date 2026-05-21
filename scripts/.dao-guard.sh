@@ -24,7 +24,7 @@ scan_pattern() {
   fi
   local hits
   hits=$(grep -rEl --include="*.json" --include="*.md" --include="*.ts" --include="*.py" \
-    "$pattern" "${dirs[@]}" 2>/dev/null | wc -l | tr -d ' ')
+    "$pattern" "${dirs[@]}" 2>/dev/null | wc -l | tr -d ' ') || true
   if [ "$hits" -gt 0 ]; then
     echo "❌ [$label] 漂移命中 $hits 文件:"
     grep -rEl --include="*.json" --include="*.md" --include="*.ts" --include="*.py" \
