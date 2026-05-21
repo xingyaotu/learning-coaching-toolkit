@@ -1,63 +1,45 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.1 | JSON 验证 + 内容检查
 on:
   pull_request:
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
-
 jobs:
   json-validate:
-    name: JSON 文件格式验证
+    name: JSON 格式验证
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: 验证 JSON 文件
+      - name: 验证所有 JSON 文件
         run: |
-          FAIL=0
-          for f in $(find . -name "*.json" -not -path "./.git/*"); do
-            python3 -c "import json,sys; json.load(open('$f'))" 2>&1 && echo "✅ $f" || { echo "❌ $f"; FAIL=1; }
+          find . -name '*.json' -not -path './.git/*' | while read f; do
+            python3 -c "import json,sys; json.load(open('$f'))" || { echo "❌ $f"; exit 1; }
           done
-          exit $FAIL
-
+          echo "✅ 所有 JSON 格式正确"
   content-check:
-    name: 道层漂移关键词检测
+    name: 内容漂移检查
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: 检测道层漂移(6 类)
+      - name: 检查漂移词
         run: |
-          # 仅扫 pipeline-data/ 产品数据目录。
-          # coaching-sops/ 是SOP权威定义库，守护文件在合规说明中合法引用禁词为反例。
-          # 知识库大型MD文件含正常教学术语，不影响工程数据合规性。
-          if [ ! -d pipeline-data ]; then
-            echo "⚠️ pipeline-data/ 不存在，跳过"
-            exit 0
-          fi
-
           FAIL=0
-          # 模式1: 八步第5步误用"演示"
-          if grep -rE "⑤[[:space:]]*演示|第五步[[:space:]]*演示" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" pipeline-data/; then
-            echo "❌ 道层漂移: 八步第5步不是演示"; FAIL=1
-          else echo "✅ 八步第5步合规"; fi
-
-          # 模式2: 六飞轮错误变体
-          if grep -rE "错题飞轮|笔记飞轮|阅读飞轮|实践飞轮" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" pipeline-data/; then
-            echo "❌ 道层漂移: 六飞轮含非法变体"; FAIL=1
-          else echo "✅ 六飞轮名称合规"; fi
-
-          # 模式3: FIRE-UP 5字母误用
-          if grep -rE "Foundation.*Identity.*Roadmap.*Execute.*UP[^a-zA-Z]" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" pipeline-data/; then
-            echo "❌ 道层漂移: FIRE-UP 应为6字母"; FAIL=1
-          else echo "✅ FIRE-UP 6字母合规"; fi
-
-          # 模式4: SOP_05 名称检查
-          if grep -rE "SOP_05.*演示|SOP.05.*demo" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" pipeline-data/; then
-            echo "❌ 道层漂移: SOP_05=流程不是演示"; FAIL=1
-          else echo "✅ SOP_05 流程名称合规"; fi
-
-          exit $FAIL
+          for d in pipeline-data schemas coaching-sops docs; do
+            [ -d "$d" ] || continue
+            if grep -rEl '演示' "$d" --include='*.json' --include='*.md' 2>/dev/null | grep -q .; then
+              echo "❌ 发现 '演示' 漂移词"
+              FAIL=1
+            fi
+            if grep -rEl 'Mutually Exclusive' "$d" --include='*.json' --include='*.md' 2>/dev/null | grep -q .; then
+              echo "❌ 发现 'Mutually Exclusive' 漂移词"
+              FAIL=1
+            fi
+            if grep -rEl '错题飞轮|笔记飞轮|阅读飞轮|实践飞轮' "$d" --include='*.json' --include='*.md' 2>/dev/null | grep -q .; then
+              echo "❌ 发现六飞轮漂移词"
+              FAIL=1
+            fi
+          done
+          [ "$FAIL" -eq 0 ] && echo "✅ 内容检查通过" || exit 1
