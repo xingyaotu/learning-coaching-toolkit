@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.6 | JSON 验证 + 内容检查 + 教练计划 schema 验证 + 目标 schema 验证 + SOP完整性验证 + Stage路由验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,35 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  coaching-plan-schema:
+    name: 个性化教练计划 schema 验证(MECE/七阶/六飞轮/⑤守护/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练计划 schema 验证脚本
+        run: python3 scripts/validate-coaching-plan-schema.py
+
+  goal-schema:
+    name: 教练目标 schema 验证(SOP引用/七阶跃迁/⑤守护/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练目标 schema 验证脚本
+        run: python3 scripts/validate-goal-schema.py
+
+  sop-completeness:
+    name: SOP完整性验证(sop-skill-catalog.json ↔ SOP文件 + ⑤守护)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行SOP完整性验证脚本
+        run: python3 scripts/validate-sop-completeness.py
+
+  stage-routing:
+    name: Stage→SOP路由矩阵验证(七阶×confidence递进 + 六飞轮/⑤守护)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行Stage路由矩阵验证脚本
+        run: python3 scripts/validate-stage-routing.py
