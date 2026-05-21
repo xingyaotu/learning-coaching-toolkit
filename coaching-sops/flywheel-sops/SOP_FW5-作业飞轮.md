@@ -50,4 +50,4 @@ interface HomeworkFlywheel {
 
 ## 道层合规说明
 - ⑤ = 流程(SOP_05),不是演示
-- 六飞轮无"实践飞轮"
+- 六飞轮无实践类飞轮
