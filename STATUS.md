@@ -131,3 +131,9 @@
   - ⑤守护: sop-05 eight_step_name=流程 ✅ | 六飞轮枚举合规 ✅
 - scripts/validate-session-templates.py: 62/62 通过 (数量/枚举/⑤守护/路径/时长)
 - .github/workflows/validate.yml → v5.3: 新增 session-templates CI job
+
+## 2026-05-21T06:15:00Z · coaching-toolkit — 跨数据一致性验证 + CI v5.4
+### feat(scripts+ci): validate-cross-routing.py — routing↔templates↔catalog 一致性 + CI v5.4
+- scripts/validate-cross-routing.py: 81项验证 (飞轮模板存在性/八步模板存在性/阶位覆盖/⑤联动守护/catalog range一致)
+- .github/workflows/validate.yml → v5.4: 新增 cross-routing CI job (共 7 jobs)
+- 81/81 全通过 ✅
