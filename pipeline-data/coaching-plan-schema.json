@@ -1,0 +1,206 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-plan.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.15 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "个性化教练计划 schema — 定义基于 MECE 诊断与七阶阶位的教练计划结构与进度追踪",
+    "pipl_note": "PIPL 合规: 教练计划中 student_id 与 coach_id 均为平台匿名 ID; 不含真实姓名或联系方式",
+    "usage": "MECE 诊断完成 → 教练制定个性化计划 → 本 schema 记录 → 定期复核 → 目标达成确认"
+  },
+  "coaching_plan_schema": {
+    "description": "个性化教练计划记录结构",
+    "fields": {
+      "plan_id": {
+        "type": "string",
+        "pattern": "^PLN-[0-9]{8}-[A-Z0-9]{8}$",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "coach_id": {
+        "type": "string",
+        "description": "平台匿名 coach_id",
+        "required": true
+      },
+      "plan_created_at": {"type": "string", "format": "date", "required": true},
+      "plan_version": {"type": "integer", "minimum": 1, "description": "计划版本号 (每次重大调整递增)"},
+      "diagnosis_basis": {
+        "type": "object",
+        "description": "制定计划所依据的诊断数据",
+        "properties": {
+          "mece_profile": {
+            "type": "object",
+            "properties": {
+              "M_theta": {"type": "number"},
+              "E_exec_theta": {"type": "number"},
+              "C_theta": {"type": "number"},
+              "E_env_theta": {"type": "number"},
+              "primary_bottleneck": {
+                "type": "string",
+                "enum": ["M", "E_exec", "C", "E_env"]
+              }
+            },
+            "_dao_guard": "MECE 四维度 M/E_exec/C/E_env 诊断基础 — 道层守护"
+          },
+          "initial_stage": {
+            "type": "string",
+            "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"]
+          },
+          "initial_flywheel_priorities": {
+            "type": "array",
+            "items": {"type": "string", "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]},
+            "maxItems": 6,
+            "_dao_guard": "六飞轮优先级 — 计划/预习/复习/听课/作业/考试 道层守护"
+          },
+          "assessment_session_id": {"type": "string", "description": "依据的测评会话 ID"}
+        }
+      },
+      "plan_goals": {
+        "type": "array",
+        "description": "计划目标列表 (1-5个)",
+        "minItems": 1,
+        "maxItems": 5,
+        "items": {
+          "goal_id": {"type": "string"},
+          "goal_description": {"type": "string"},
+          "target_stage": {
+            "type": "string",
+            "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"]
+          },
+          "target_mece_dimension": {
+            "type": "string",
+            "enum": ["M", "E_exec", "C", "E_env", "composite"]
+          },
+          "target_theta_gain": {"type": "number", "minimum": 0},
+          "target_date": {"type": "string", "format": "date"},
+          "associated_sops": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "achieved", "revised", "deferred", "abandoned"]
+          }
+        }
+      },
+      "sop_schedule": {
+        "type": "object",
+        "description": "SOP 执行计划 — 每类会话对应的 SOP 序列",
+        "properties": {
+          "primary_sop_sequence": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "主要 SOP 序列 (如 ['sop-01', 'sop-05', 'sop-08'])"
+          },
+          "sop05_plan_note": {
+            "type": "string",
+            "description": "⑤第5步=流程的具体计划说明",
+            "_dao_guard": "sop05_plan_note — ⑤第5步=流程计划守护"
+          },
+          "estimated_sessions_to_goal": {"type": "integer", "minimum": 1}
+        }
+      },
+      "flywheel_focus_schedule": {
+        "type": "object",
+        "description": "六飞轮重点教练计划",
+        "properties": {
+          "phase1_flywheels": {
+            "type": "array",
+            "items": {"type": "string", "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]}
+          },
+          "phase2_flywheels": {
+            "type": "array",
+            "items": {"type": "string", "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]}
+          },
+          "phase3_flywheels": {
+            "type": "array",
+            "items": {"type": "string", "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]}
+          }
+        }
+      },
+      "review_schedule": {
+        "type": "object",
+        "description": "计划复核时间表",
+        "properties": {
+          "weekly_check_enabled": {"type": "boolean"},
+          "monthly_milestone_review": {"type": "boolean"},
+          "plan_revision_trigger": {
+            "type": "string",
+            "description": "触发计划修订的条件"
+          }
+        }
+      },
+      "plan_status": {
+        "type": "string",
+        "enum": ["draft", "active", "on_hold", "completed", "archived"],
+        "required": true
+      }
+    }
+  },
+  "plan_template_defaults": {
+    "description": "基于七阶阶位的计划默认配置",
+    "stage_defaults": [
+      {
+        "stage": "不会",
+        "recommended_first_sop": "sop-01",
+        "recommended_flywheel_start": ["计划", "复习"],
+        "estimated_initial_sessions": 8,
+        "_dao_guard": "不会阶位 — 从 sop-01 起始; 飞轮优先计划/复习"
+      },
+      {
+        "stage": "模糊",
+        "recommended_first_sop": "sop-02",
+        "recommended_flywheel_start": ["计划", "听课"],
+        "estimated_initial_sessions": 6
+      },
+      {
+        "stage": "清晰",
+        "recommended_first_sop": "sop-03",
+        "recommended_flywheel_start": ["预习", "听课"],
+        "estimated_initial_sessions": 5
+      },
+      {
+        "stage": "框架",
+        "recommended_first_sop": "sop-04",
+        "recommended_flywheel_start": ["预习", "作业"],
+        "estimated_initial_sessions": 5
+      },
+      {
+        "stage": "运用",
+        "recommended_first_sop": "sop-05",
+        "recommended_flywheel_start": ["作业", "考试"],
+        "estimated_initial_sessions": 4,
+        "_dao_guard": "运用阶位 — 推荐 sop-05=流程; ⑤道层守护"
+      },
+      {
+        "stage": "熟练",
+        "recommended_first_sop": "sop-06",
+        "recommended_flywheel_start": ["作业", "考试"],
+        "estimated_initial_sessions": 4
+      },
+      {
+        "stage": "创新",
+        "recommended_first_sop": "sop-07",
+        "recommended_flywheel_start": ["考试", "复习"],
+        "estimated_initial_sessions": 3
+      }
+    ]
+  },
+  "validation_rules": {
+    "required_fields": [
+      "plan_id", "student_id", "coach_id", "plan_created_at",
+      "diagnosis_basis", "plan_goals", "sop_schedule", "plan_status"
+    ],
+    "stage_defaults_count": 7,
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "sop05_plan_guard": "sop_schedule.sop05_plan_note 守护 ⑤第5步=流程 — 计划阶段道层守护",
+    "flywheel_schedule_guard": "flywheel_focus_schedule 中飞轮名称严格枚举: 计划/预习/复习/听课/作业/考试",
+    "pipl_constraints": "PIPL 合规: student_id 与 coach_id 均为平台匿名 ID; 教练计划不含真实个人识别信息"
+  }
+}
