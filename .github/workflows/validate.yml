@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.9 | JSON 验证 + 内容检查 + 升级协议验证 + 同伴督导 schema 验证 + 干预手册验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,27 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  escalation-protocol:
+    name: 教练升级处置协议验证(5等级/HALT-CSO触发/⑤守护/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行升级处置协议验证脚本
+        run: python3 scripts/validate-escalation-protocol.py
+
+  peer-supervision:
+    name: 教练同伴督导 schema 验证(配对规则/督导记录/⑤守护/飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行同伴督导 schema 验证脚本
+        run: python3 scripts/validate-peer-supervision.py
+
+  intervention-library:
+    name: 教练干预手册验证(七阶×MECE干预矩阵/⑤守护/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行干预手册验证脚本
+        run: python3 scripts/validate-intervention-library.py

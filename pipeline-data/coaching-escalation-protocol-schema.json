@@ -1,0 +1,187 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-escalation-protocol.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.12 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练升级处置协议 schema — 定义超出教练处置范围的情形触发条件与升级路径",
+    "pipl_note": "PIPL 合规: 升级记录中 student_id 与 coach_id 均为平台匿名 ID; 不含真实姓名或联系方式",
+    "usage": "教练判断当前情形超出自身处置范围 → 查本协议确定升级等级 → 按步骤执行 → 记录升级事件"
+  },
+  "escalation_levels": [
+    {
+      "level_id": "esc-L1",
+      "level_name": "自主处置",
+      "severity": 1,
+      "description": "教练在现有 SOP 框架内可独立处置",
+      "trigger_conditions": [
+        "学生进度落后 ≤ 1个飞轮周期",
+        "单次会话 SOP 执行得分 ≥ 5.5 (qa-d1 评分合规)",
+        "学生自评 ≥ 5/10"
+      ],
+      "protocol_steps": [
+        "参照 stage-to-sop-routing 调整当次 SOP",
+        "记录 session_progress_record",
+        "下次会话前复核飞轮进度"
+      ],
+      "required_documentation": ["session_progress_record"],
+      "timeline_hours": 24,
+      "escalation_to": null,
+      "_dao_guard": "L1 自主处置 — ⑤第5步=流程核查后方可确认无需升级"
+    },
+    {
+      "level_id": "esc-L2",
+      "level_name": "同伴咨询",
+      "severity": 2,
+      "description": "教练向同伴教练寻求建议，不需要管理层介入",
+      "trigger_conditions": [
+        "连续 2 次会话 weighted_score < 6.0 (qa_thresholds.min_weighted_score_per_session)",
+        "SOP ⑤第5步=流程执行连续失误 ≥ 2 次",
+        "学生飞轮停滞 > 2 周无进展",
+        "教练对 MECE 瓶颈诊断不确定"
+      ],
+      "protocol_steps": [
+        "在 48 小时内联系同伴教练安排同伴督导 (qar-peer)",
+        "分享匿名化 session_progress_record (去除真实学生 ID)",
+        "记录同伴意见并更新教练计划",
+        "⑤流程执行问题须特别说明并由同伴确认修正方案"
+      ],
+      "required_documentation": ["session_progress_record", "peer_review_record"],
+      "timeline_hours": 48,
+      "escalation_to": "esc-L3",
+      "_dao_guard": "L2 同伴咨询 — 触发条件含 ⑤第5步=流程连续失误守护"
+    },
+    {
+      "level_id": "esc-L3",
+      "level_name": "督导评审",
+      "severity": 3,
+      "description": "上报高级督导，由督导主导后续处置方案",
+      "trigger_conditions": [
+        "月均 weighted_score < 7.0 (qa_thresholds.min_monthly_avg_score)",
+        "L2 同伴咨询后 4 周内未改善",
+        "sop05_compliance_rate < 0.80 (⑤第5步=流程 执行合规率连续一个月不足)",
+        "学生阶位下降 ≥ 2 个七阶等级",
+        "学生或家长明确要求更换教练"
+      ],
+      "protocol_steps": [
+        "24 小时内提交督导评审申请 (qar-supervisor)",
+        "提供最近 4 次会话的匿名化 session_progress_record",
+        "督导在 72 小时内完成审查并给出书面改进计划",
+        "执行改进计划并在 2 周后复核",
+        "⑤流程执行不合规需专项改进计划"
+      ],
+      "required_documentation": [
+        "session_progress_record",
+        "peer_review_record",
+        "supervisor_review_record",
+        "improvement_plan"
+      ],
+      "timeline_hours": 72,
+      "escalation_to": "esc-L4",
+      "_dao_guard": "L3 督导评审 — sop05_compliance_rate 阈值守护 ⑤第5步=流程合规率"
+    },
+    {
+      "level_id": "esc-L4",
+      "level_name": "专家介入",
+      "severity": 4,
+      "description": "特殊情形需要学科专家或心理健康专家介入",
+      "trigger_conditions": [
+        "疑似学习障碍 (阅读障碍/注意缺陷等) — 需专业评估",
+        "学生呈现明显情绪困扰迹象 ≥ 3 次会话",
+        "L3 督导评审后 6 周内学生阶位仍无改善",
+        "MECE 四维度全部处于最低七阶等级 (不会) 超过 4 周"
+      ],
+      "protocol_steps": [
+        "向督导和教学主管汇报，触发专家转介评估",
+        "暂停当前 SOP 进度推进，维持稳定支持性会话",
+        "匿名化学生数据提交专家团队审查",
+        "专家给出介入建议后重新制定教练目标",
+        "更新 coaching-goal-schema 中的 goal_status='paused' 或 'adjusted'"
+      ],
+      "required_documentation": [
+        "supervisor_review_record",
+        "specialist_referral_record",
+        "updated_coaching_goal"
+      ],
+      "timeline_hours": 48,
+      "escalation_to": "esc-L5",
+      "_dao_guard": "L4 专家介入 — 暂停 SOP 进度时记录原因; ⑤流程教练任务挂起"
+    },
+    {
+      "level_id": "esc-L5",
+      "level_name": "外部转介",
+      "severity": 5,
+      "description": "超出平台服务范围，需外部专业机构介入",
+      "trigger_conditions": [
+        "学生存在明确自伤或危险行为风险 — 立即转介",
+        "家庭危机 (如家暴) 影响学生安全",
+        "L4 专家介入后仍无法在平台框架内提供有效帮助",
+        "法律或监护权纠纷导致服务无法继续"
+      ],
+      "protocol_steps": [
+        "立即上报教学主管和平台合规官",
+        "在 6 小时内完成安全评估并通知家长/监护人",
+        "匿名化事件记录归档 (PIPL 合规: 不含真实姓名和联系方式)",
+        "协助转介至合适的外部机构 (心理咨询/社会服务等)",
+        "平台侧暂停会话安排直至安全确认"
+      ],
+      "required_documentation": [
+        "critical_incident_report",
+        "safety_assessment",
+        "external_referral_record",
+        "guardian_notification_log"
+      ],
+      "timeline_hours": 6,
+      "escalation_to": null,
+      "_dao_guard": "L5 外部转介 — 最高严重等级; 所有记录匿名化 PIPL 合规"
+    }
+  ],
+  "trigger_categories": {
+    "academic_triggers": [
+      "飞轮停滞超 2 周",
+      "月均 QA 评分低于 7.0",
+      "阶位连续下降",
+      "MECE 单维度 θ 持续 ≤ -1.5"
+    ],
+    "sop_compliance_triggers": [
+      "sop05_compliance_rate < 0.80 — ⑤第5步=流程执行合规率守护",
+      "weighted_score < 5.5 连续 3 次 — 触发 L2+",
+      "八步顺序错误连续 2 次"
+    ],
+    "welfare_triggers": [
+      "学生明确表达情绪困扰",
+      "学习动力维度 θ 单次骤降 > 1.0",
+      "学生或家长投诉"
+    ]
+  },
+  "documentation_standards": {
+    "anonymization_rule": "所有升级记录使用平台匿名 student_id 与 coach_id; 禁止存储真实姓名、学校全名、联系方式",
+    "retention_policy": "升级记录保存 3 年后按 PIPL 规定匿名删除",
+    "escalation_record_schema": {
+      "escalation_id": {"type": "string", "pattern": "^ESC-[0-9]{8}-[A-Z0-9]{6}$"},
+      "student_id": {"type": "string", "description": "平台匿名 ID"},
+      "coach_id": {"type": "string", "description": "平台匿名 ID"},
+      "level_id": {"type": "string", "enum": ["esc-L1", "esc-L2", "esc-L3", "esc-L4", "esc-L5"]},
+      "trigger_category": {"type": "string", "enum": ["academic", "sop_compliance", "welfare", "other"]},
+      "trigger_description": {"type": "string", "maxLength": 500},
+      "escalated_at": {"type": "string", "format": "date-time"},
+      "resolved_at": {"type": "string", "format": "date-time", "nullable": true},
+      "outcome": {"type": "string", "enum": ["resolved", "pending", "external_referred", "service_suspended"]}
+    }
+  },
+  "validation_rules": {
+    "escalation_levels_count": 5,
+    "severity_order": "esc-L1 < esc-L2 < esc-L3 < esc-L4 < esc-L5 (severity 1-5 递增)",
+    "sop05_compliance_guard": "sop05_compliance_rate 阈值在 esc-L3 触发条件中守护 ⑤第5步=流程",
+    "timeline_constraints": {
+      "esc-L1": "≤ 24h",
+      "esc-L2": "≤ 48h",
+      "esc-L3": "≤ 72h",
+      "esc-L4": "≤ 48h",
+      "esc-L5": "≤ 6h (紧急)"
+    },
+    "pipl_constraints": "升级记录中 student_id 与 coach_id 均为平台匿名 ID; 不含真实个人识别信息",
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"]
+  }
+}
