@@ -1,0 +1,195 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-effectiveness-metrics.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.5 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练有效性指标体系 — 定义 SOP 效果 KPI、阶位晋升基准与教练质量评分标准",
+    "measurement_periods": ["per_session", "weekly", "monthly", "per_goal"],
+    "usage": "coaching 执行完成 → 本配置 → 效果测量 → student-progress-schema 记录 → 报告输出"
+  },
+  "global_benchmarks": {
+    "stage_advancement": {
+      "target_rate_per_4_sessions": 0.60,
+      "target_rate_description": "每4次会话后阶位有效提升的学生比例目标 ≥ 60%",
+      "min_theta_delta_for_advance": 0.30,
+      "measurement_tool": "IRT re-assessment after milestone completion"
+    },
+    "session_quality": {
+      "min_student_self_eval": 6.0,
+      "min_coach_eval": 7.0,
+      "min_completion_rate": 0.80,
+      "description": "会话质量基线: 学生自评 ≥ 6/10, 教练评分 ≥ 7/10, 完成率 ≥ 80%"
+    },
+    "retention": {
+      "target_7day_retention": 0.70,
+      "target_30day_retention": 0.50,
+      "description": "知识保留率目标: 7天 ≥ 70%, 30天 ≥ 50%"
+    }
+  },
+  "sop_effectiveness_kpis": [
+    {
+      "sop_ref": "sop-01",
+      "eight_step_id": 1,
+      "eight_step_name": "穿透",
+      "target_stages": [1, 2],
+      "kpis": [
+        {"kpi_id": "k01-1", "name": "概念复述准确率", "target": 0.80, "measurement": "会话结束口头测试"},
+        {"kpi_id": "k01-2", "name": "基础题首次正确率", "target": 0.60, "measurement": "随堂练习2题"},
+        {"kpi_id": "k01-3", "name": "阶位提升率(1→2)", "target": 0.70, "measurement": "4次会话后重评"}
+      ]
+    },
+    {
+      "sop_ref": "sop-02",
+      "eight_step_id": 2,
+      "eight_step_name": "提取",
+      "target_stages": [2, 3],
+      "kpis": [
+        {"kpi_id": "k02-1", "name": "自由提取覆盖率", "target": 0.80, "measurement": "封闭书本提取测试"},
+        {"kpi_id": "k02-2", "name": "结构化笔记质量", "target": 7.0, "measurement": "教练评分1-10"},
+        {"kpi_id": "k02-3", "name": "阶位提升率(2→3)", "target": 0.65, "measurement": "3次会话后重评"}
+      ]
+    },
+    {
+      "sop_ref": "sop-03",
+      "eight_step_id": 3,
+      "eight_step_name": "整理",
+      "target_stages": [3, 4],
+      "kpis": [
+        {"kpi_id": "k03-1", "name": "思维导图完整度", "target": 0.85, "measurement": "覆盖知识点比例"},
+        {"kpi_id": "k03-2", "name": "知识关联识别率", "target": 0.70, "measurement": "10个关联点测试"},
+        {"kpi_id": "k03-3", "name": "阶位提升率(3→4)", "target": 0.65, "measurement": "3次会话后重评"}
+      ]
+    },
+    {
+      "sop_ref": "sop-04",
+      "eight_step_id": 4,
+      "eight_step_name": "审题",
+      "target_stages": [4, 5],
+      "kpis": [
+        {"kpi_id": "k04-1", "name": "审题正确率", "target": 0.85, "measurement": "5道审题专项练习"},
+        {"kpi_id": "k04-2", "name": "隐含条件识别率", "target": 0.70, "measurement": "包含3道含隐含条件题"},
+        {"kpi_id": "k04-3", "name": "审题速度(秒/题)", "target": 120, "measurement": "计时测试", "direction": "lower_is_better"}
+      ]
+    },
+    {
+      "sop_ref": "sop-05",
+      "eight_step_id": 5,
+      "eight_step_name": "流程",
+      "target_stages": [4, 5, 6],
+      "kpis": [
+        {"kpi_id": "k05-1", "name": "标准流程遵循率", "target": 0.90, "measurement": "流程步骤完整度检查"},
+        {"kpi_id": "k05-2", "name": "解题速度达标率", "target": 0.75, "measurement": "限时测试通过率"},
+        {"kpi_id": "k05-3", "name": "流程内化度", "target": 8.0, "measurement": "教练评分1-10"},
+        {"kpi_id": "k05-4", "name": "阶位提升率(4→5)", "target": 0.70, "measurement": "4次会话后重评"}
+      ],
+      "_dao_guard": "sop-05 eight_step_name=流程 ✅ ⑤守护合规"
+    },
+    {
+      "sop_ref": "sop-06",
+      "eight_step_id": 6,
+      "eight_step_name": "批改",
+      "target_stages": [4, 5, 6],
+      "kpis": [
+        {"kpi_id": "k06-1", "name": "错题归因准确率", "target": 0.80, "measurement": "错题类型标注正确率"},
+        {"kpi_id": "k06-2", "name": "同类错误再犯率", "target": 0.30, "measurement": "2周后同类题测试", "direction": "lower_is_better"},
+        {"kpi_id": "k06-3", "name": "错题本规范化率", "target": 0.90, "measurement": "格式合规检查"}
+      ]
+    },
+    {
+      "sop_ref": "sop-07",
+      "eight_step_id": 7,
+      "eight_step_name": "分析",
+      "target_stages": [5, 6, 7],
+      "kpis": [
+        {"kpi_id": "k07-1", "name": "多维度分析完整性", "target": 3, "measurement": "知识/思维/习惯3维度均覆盖"},
+        {"kpi_id": "k07-2", "name": "薄弱点自发现率", "target": 0.75, "measurement": "学生主动发现vs教练发现比"},
+        {"kpi_id": "k07-3", "name": "阶位提升率(6→7)", "target": 0.55, "measurement": "3次会话后重评"}
+      ]
+    },
+    {
+      "sop_ref": "sop-08",
+      "eight_step_id": 8,
+      "eight_step_name": "估分",
+      "target_stages": [5, 6, 7],
+      "kpis": [
+        {"kpi_id": "k08-1", "name": "估分误差(分)", "target": 5.0, "measurement": "估分与实际分差绝对值", "direction": "lower_is_better"},
+        {"kpi_id": "k08-2", "name": "元认知准确性", "target": 0.80, "measurement": "高把握题的正确率"},
+        {"kpi_id": "k08-3", "name": "估分校准改善率", "target": 0.60, "measurement": "3次后估分误差缩小比例"}
+      ]
+    }
+  ],
+  "flywheel_effectiveness_kpis": [
+    {
+      "sop_ref": "sop-fw1",
+      "six_flywheel_id": 1,
+      "six_flywheel_name": "计划",
+      "kpis": [
+        {"kpi_id": "kfw1-1", "name": "周计划完成率", "target": 0.80, "measurement": "每周末统计"},
+        {"kpi_id": "kfw1-2", "name": "计划执行偏差率", "target": 0.20, "measurement": "计划时间vs实际时间", "direction": "lower_is_better"}
+      ]
+    },
+    {
+      "sop_ref": "sop-fw2",
+      "six_flywheel_id": 2,
+      "six_flywheel_name": "预习",
+      "kpis": [
+        {"kpi_id": "kfw2-1", "name": "预习问题质量(个)", "target": 3, "measurement": "每次预习有效问题数"},
+        {"kpi_id": "kfw2-2", "name": "课堂参与度提升", "target": 0.20, "measurement": "教师反馈评分变化"}
+      ]
+    },
+    {
+      "sop_ref": "sop-fw3",
+      "six_flywheel_id": 3,
+      "six_flywheel_name": "复习",
+      "kpis": [
+        {"kpi_id": "kfw3-1", "name": "7天知识保留率", "target": 0.70, "measurement": "7天后提取测试"},
+        {"kpi_id": "kfw3-2", "name": "间隔复习执行率", "target": 0.80, "measurement": "复习计划执行统计"}
+      ]
+    },
+    {
+      "sop_ref": "sop-fw4",
+      "six_flywheel_id": 4,
+      "six_flywheel_name": "听课",
+      "kpis": [
+        {"kpi_id": "kfw4-1", "name": "课后内容重述率", "target": 0.80, "measurement": "课后15分钟重述测试"},
+        {"kpi_id": "kfw4-2", "name": "笔记质量评分", "target": 7.0, "measurement": "教练笔记评分1-10"}
+      ]
+    },
+    {
+      "sop_ref": "sop-fw5",
+      "six_flywheel_id": 5,
+      "six_flywheel_name": "作业",
+      "kpis": [
+        {"kpi_id": "kfw5-1", "name": "作业完成率", "target": 1.00, "measurement": "每次会话前检查"},
+        {"kpi_id": "kfw5-2", "name": "当日订正率", "target": 0.90, "measurement": "错题订正情况"}
+      ]
+    },
+    {
+      "sop_ref": "sop-fw6",
+      "six_flywheel_id": 6,
+      "six_flywheel_name": "考试",
+      "kpis": [
+        {"kpi_id": "kfw6-1", "name": "模拟成绩趋势", "target": 0.05, "measurement": "每次模拟分数增量/总分"},
+        {"kpi_id": "kfw6-2", "name": "考试焦虑改善", "target": 0.30, "measurement": "前后测量焦虑量表差值"}
+      ]
+    }
+  ],
+  "aggregated_kpis": {
+    "coach_performance_score": {
+      "formula": "0.4 * stage_advancement_rate + 0.3 * avg_session_quality + 0.2 * student_retention + 0.1 * goal_completion_rate",
+      "threshold_excellent": 0.85,
+      "threshold_good": 0.70,
+      "threshold_needs_improvement": 0.55
+    }
+  },
+  "validation_rules": {
+    "eight_step_name_constraints": {
+      "step_id_5_name": "流程",
+      "note": "sop-05 的 eight_step_name 必须为'流程' — ⑤道层守护"
+    },
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "kpi_direction_values": ["higher_is_better", "lower_is_better"],
+    "kpi_target_constraints": "numeric target; direction determines pass/fail"
+  }
+}

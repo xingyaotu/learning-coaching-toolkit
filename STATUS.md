@@ -146,3 +146,12 @@
   - 六飞轮 valid_names 枚举合规 ✅ | PIPL 合规声明 ✅
 - scripts/validate-goal-schema.py: 71/71 通过
 - .github/workflows/validate.yml → v5.5: 新增 goal-schema CI job (共 8 jobs)
+
+## 2026-05-21T07:45:00Z · coaching-toolkit — 有效性指标体系 + CI v5.6
+### feat(pipeline-data+scripts+ci): coaching-effectiveness-metrics.json — KPI 体系 + CI v5.6
+- pipeline-data/coaching-effectiveness-metrics.json: 8八步×KPI + 6飞轮×KPI + 汇总KPI
+  - 全局基准: stage_advancement_rate≥60%/session_quality/7天知识保留率≥70%
+  - sop-05 ⑤守护: eight_step_name='流程' + _dao_guard 字段 ✅
+  - 教练绩效公式: 0.4×阶位晋升+0.3×会话质量+0.2×保留+0.1×目标完成=1.0
+- scripts/validate-effectiveness-metrics.py: 47/47 通过
+- .github/workflows/validate.yml → v5.6: 新增 effectiveness-metrics CI job (共 9 jobs)

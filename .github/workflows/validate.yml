@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.5 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema
+# 道层 Compliance: v5.6 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema + 有效性指标
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -103,3 +103,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: 运行教练目标 schema 验证脚本
         run: python3 scripts/validate-goal-schema.py
+
+  effectiveness-metrics:
+    name: 教练有效性指标验证(KPI全覆盖 + ⑤守护 + 公式系数)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练有效性指标验证脚本
+        run: python3 scripts/validate-effectiveness-metrics.py
