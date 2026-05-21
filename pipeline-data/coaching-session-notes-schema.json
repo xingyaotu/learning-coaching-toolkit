@@ -1,0 +1,187 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-session-notes.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.20 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练会话笔记 schema — 定义每次教练会话的结构化笔记格式、道层守护字段与隐私边界",
+    "pipl_note": "PIPL 合规: 会话笔记中所有 student_id/coach_id 均为平台匿名 ID; 笔记不含真实姓名/学校/联系方式",
+    "usage": "每次会话后教练填写结构化笔记 → 系统存储 → QA 抽查 → 纵向追踪分析"
+  },
+  "session_notes_schema": {
+    "description": "会话笔记主体结构",
+    "fields": {
+      "note_id": {
+        "type": "string",
+        "pattern": "^NOTE-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "session_id": {
+        "type": "string",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "coach_id": {
+        "type": "string",
+        "description": "平台匿名 coach_id",
+        "required": true
+      },
+      "session_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "session_type": {
+        "type": "string",
+        "enum": ["individual", "group"],
+        "required": true
+      },
+      "sop_id_used": {
+        "type": "string",
+        "description": "本次会话使用的主要 SOP ID",
+        "required": true
+      },
+      "sop05_compliance": {
+        "type": "boolean",
+        "description": "⑤第5步=流程 是否合规执行",
+        "required": true,
+        "_dao_guard": "会话笔记 sop05_compliance — ⑤第5步=流程 每次会话必须记录合规状态"
+      },
+      "current_stage_observation": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "教练本次会话观察到的七阶阶位",
+        "required": true,
+        "_dao_guard": "七阶阶位观察 — 严格按七阶: 不会/模糊/清晰/框架/运用/熟练/创新 记录"
+      },
+      "stage_changed": {
+        "type": "boolean",
+        "description": "本次会话是否观察到阶位变化"
+      },
+      "flywheel_focus_this_session": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "本次会话主要飞轮焦点",
+        "required": true,
+        "_dao_guard": "飞轮焦点记录 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      },
+      "mece_dimension_addressed": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "本次会话主要干预的 MECE 维度"
+      },
+      "student_response_quality": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 5,
+        "description": "学生响应质量评估 [1-5]"
+      },
+      "homework_assigned": {
+        "type": "boolean",
+        "description": "本次会话是否布置作业"
+      },
+      "homework_description": {
+        "type": "string",
+        "description": "作业描述 (不含个人识别信息)"
+      },
+      "next_session_plan": {
+        "type": "object",
+        "properties": {
+          "planned_flywheel_focus": {
+            "type": "string",
+            "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+            "_dao_guard": "下次会话飞轮计划 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+          },
+          "planned_stage_target": {
+            "type": "string",
+            "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"]
+          },
+          "planned_sop_id": {"type": "string"}
+        }
+      },
+      "dropout_risk_flag": {
+        "type": "boolean",
+        "description": "本次会话是否发现脱落风险信号"
+      },
+      "escalation_flag": {
+        "type": "boolean",
+        "description": "本次会话是否需要升级处置"
+      },
+      "note_text": {
+        "type": "string",
+        "description": "自由文本笔记 (不含真实 PII; 由教练填写)",
+        "maxLength": 2000
+      }
+    }
+  },
+  "notes_quality_standards": {
+    "description": "笔记质量标准",
+    "required_completion_time_hours": 2,
+    "sop05_field_mandatory": true,
+    "stage_observation_mandatory": true,
+    "flywheel_focus_mandatory": true,
+    "_dao_guard": "笔记质量标准 — ⑤第5步=流程 合规 + 七阶阶位观察 + 六飞轮焦点 三项必填守护",
+    "pipl_note_prohibition": "note_text 中禁止记录学生真实姓名/学校/家庭信息 — PIPL 合规"
+  },
+  "note_templates": {
+    "description": "按七阶阶位的笔记引导模板",
+    "templates": [
+      {
+        "stage_group": "初阶 (不会/模糊)",
+        "applicable_stages": ["不会", "模糊"],
+        "coaching_focus_prompt": "重点观察学生对六飞轮基础习惯的建立情况",
+        "sop05_prompt": "确认 ⑤第5步=流程 执行: 学生是否理解并能复述流程步骤",
+        "_dao_guard": "初阶模板 — 七阶: 不会/模糊; 飞轮基础建立; ⑤守护"
+      },
+      {
+        "stage_group": "中阶 (清晰/框架)",
+        "applicable_stages": ["清晰", "框架"],
+        "coaching_focus_prompt": "重点观察学生对学习方法框架的掌握稳定性",
+        "sop05_prompt": "确认 ⑤第5步=流程 执行: 学生能否在框架阶位独立执行流程",
+        "_dao_guard": "中阶模板 — 七阶: 清晰/框架; 框架稳定性; ⑤守护"
+      },
+      {
+        "stage_group": "高阶 (运用/熟练/创新)",
+        "applicable_stages": ["运用", "熟练", "创新"],
+        "coaching_focus_prompt": "重点观察学生自主应用和创新迁移能力",
+        "sop05_prompt": "确认 ⑤第5步=流程 执行: 高阶学生是否已将流程内化为自动习惯",
+        "_dao_guard": "高阶模板 — 七阶: 运用/熟练/创新; 自主迁移; ⑤守护"
+      }
+    ]
+  },
+  "privacy_boundaries": {
+    "description": "笔记隐私边界规则",
+    "prohibited_content": [
+      "学生真实姓名",
+      "学校全名",
+      "家长真实姓名或联系方式",
+      "成绩单或考试原始分",
+      "其他学生的信息"
+    ],
+    "allowed_content": [
+      "七阶阶位代码",
+      "MECE 维度代码",
+      "六飞轮名称",
+      "SOP ID",
+      "匿名行为描述"
+    ],
+    "_dao_guard": "笔记隐私边界 — PIPL 合规; 禁止记录真实 PII; 六飞轮/七阶/MECE 代码可记录"
+  },
+  "validation_rules": {
+    "required_note_fields": [
+      "note_id", "session_id", "student_id", "coach_id", "session_date",
+      "session_type", "sop_id_used", "sop05_compliance",
+      "current_stage_observation", "flywheel_focus_this_session"
+    ],
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "sop05_guard": "会话笔记 sop05_compliance 必须记录 — ⑤第5步=流程 笔记合规守护",
+    "note_text_pii_prohibition": "note_text 禁止含真实 PII — PIPL 合规笔记守护",
+    "pipl_constraints": "PIPL 合规: session_notes 中所有 student_id 和 coach_id 均为平台匿名 ID; 不含真实个人信息"
+  }
+}

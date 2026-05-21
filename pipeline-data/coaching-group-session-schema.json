@@ -1,0 +1,134 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-group-session.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.17 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "小组教练会话 schema — 定义 1:N 小组教练会话的结构、分组规则与质量标准",
+    "pipl_note": "PIPL 合规: 小组会话记录中所有 student_id 均为平台匿名 ID; 同组学生互不可见对方的 MECE 诊断数据",
+    "usage": "中级教练 (ccl-3+) 可开展小组教练 → 按七阶/MECE 主瓶颈分组 → 本 schema 记录 → QA 评审"
+  },
+  "group_formation_rules": {
+    "description": "小组组建规则",
+    "min_group_size": 2,
+    "max_group_size": 4,
+    "coach_certification_required": "ccl-3",
+    "grouping_criteria": [
+      {
+        "criterion_id": "gc-stage",
+        "criterion_name": "七阶阶位分组",
+        "description": "同组学生七阶阶位差距 ≤ 1个阶位",
+        "valid_stage_range": 1,
+        "_dao_guard": "七阶分组 — 组内阶位差 ≤ 1; 不会/模糊/清晰/框架/运用/熟练/创新"
+      },
+      {
+        "criterion_id": "gc-bottleneck",
+        "criterion_name": "MECE 主瓶颈分组",
+        "description": "同组学生共享相同的主要 MECE 瓶颈维度",
+        "bottleneck_dimension": {"type": "string", "enum": ["M", "E_exec", "C", "E_env"]},
+        "_dao_guard": "MECE 瓶颈分组 — 主瓶颈维度 M/E_exec/C/E_env 道层守护"
+      },
+      {
+        "criterion_id": "gc-flywheel",
+        "criterion_name": "飞轮焦点分组",
+        "description": "同组学生本阶段教练重点飞轮相同",
+        "flywheel_focus": {
+          "type": "string",
+          "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]
+        },
+        "_dao_guard": "飞轮焦点分组 — 六飞轮: 计划/预习/复习/听课/作业/考试 道层守护"
+      }
+    ],
+    "privacy_rule": "同组学生互不可见对方的 MECE θ 值和详细诊断; 教练可查看全组匿名汇总"
+  },
+  "group_session_schema": {
+    "description": "小组教练会话记录结构",
+    "fields": {
+      "group_session_id": {"type": "string", "pattern": "^GSESS-[0-9]{8}-[A-Z0-9]{6}$", "required": true},
+      "coach_id": {"type": "string", "description": "平台匿名 coach_id", "required": true},
+      "student_ids": {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 2,
+        "maxItems": 4,
+        "description": "参与学生匿名 ID 列表",
+        "required": true
+      },
+      "group_size": {"type": "integer", "minimum": 2, "maximum": 4, "required": true},
+      "session_date": {"type": "string", "format": "date", "required": true},
+      "duration_min": {"type": "integer", "minimum": 30, "required": true},
+      "grouping_criterion_id": {
+        "type": "string",
+        "enum": ["gc-stage", "gc-bottleneck", "gc-flywheel"],
+        "required": true
+      },
+      "shared_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "组内共同七阶阶位 (基于 gc-stage 分组时使用)"
+      },
+      "shared_bottleneck": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "组内共同 MECE 主瓶颈 (基于 gc-bottleneck 分组时使用)"
+      },
+      "shared_flywheel_focus": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "组内共同飞轮焦点 (基于 gc-flywheel 分组时使用)"
+      },
+      "sop_used": {"type": "string", "description": "本次小组会话使用的主要 SOP ID"},
+      "sop05_compliance_group": {
+        "type": "boolean",
+        "description": "⑤第5步=流程 是否在小组会话中合规执行",
+        "_dao_guard": "sop05_compliance_group — ⑤第5步=流程 小组会话合规守护"
+      },
+      "group_qa_scores": {
+        "type": "object",
+        "description": "小组会话 QA 各维度评分",
+        "properties": {
+          "qa-d1": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d2": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d3": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d4": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d5": {"type": "number", "minimum": 1, "maximum": 10}
+        }
+      },
+      "individual_notes": {
+        "type": "array",
+        "description": "每位学生的个人笔记 (匿名化, 互不可见)",
+        "items": {
+          "student_id": {"type": "string"},
+          "note": {"type": "string"},
+          "flywheel_progress": {
+            "type": "string",
+            "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]
+          }
+        }
+      }
+    }
+  },
+  "group_qa_standards": {
+    "description": "小组教练 QA 标准 (比 1:1 稍低, 因复杂度更高)",
+    "min_weighted_score_per_group_session": 5.5,
+    "min_monthly_avg_group_score": 6.5,
+    "sop05_compliance_rate_target": 1.0,
+    "max_group_session_ratio": 0.40,
+    "_dao_guard": "小组 QA 标准 — ⑤第5步=流程 sop05_compliance_rate_target=1.0 道层守护"
+  },
+  "validation_rules": {
+    "group_size_range": [2, 4],
+    "min_coach_certification": "ccl-3",
+    "grouping_criterion_ids": ["gc-stage", "gc-bottleneck", "gc-flywheel"],
+    "required_session_fields": [
+      "group_session_id", "coach_id", "student_ids", "group_size",
+      "session_date", "duration_min", "grouping_criterion_id", "sop05_compliance_group"
+    ],
+    "sop05_guard": "小组会话 sop05_compliance_group 必须记录 — ⑤第5步=流程 小组守护",
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "privacy_guard": "group_session 记录中 student_ids 均为匿名 ID; 组内学生 MECE 详情互不可见",
+    "pipl_constraints": "PIPL 合规: group_session 中所有 student_id 和 coach_id 均为平台匿名 ID; 不含真实个人信息"
+  }
+}
