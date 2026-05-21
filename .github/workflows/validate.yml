@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.1 | JSON 验证 + 内容检查 + 小组会话 schema 验证 + 会话笔记 schema 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,19 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  group-session:
+    name: 小组教练会话 schema 验证(1:N分组/⑤守护/七阶/六飞轮/MECE)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行小组教练会话 schema 验证脚本
+        run: python3 scripts/validate-group-session.py
+
+  session-notes-schema:
+    name: 教练会话笔记 schema 验证(10必填字段/⑤守护/七阶/六飞轮/MECE/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练会话笔记 schema 验证脚本
+        run: python3 scripts/validate-session-notes-schema.py
