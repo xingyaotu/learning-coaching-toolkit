@@ -1,0 +1,231 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-report-template.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.8 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练报告模板 schema — 定义各类教练报告的结构与输出规范",
+    "pipl_note": "PIPL 合规: student_id 为平台匿名 ID; 报告内容不含姓名/联系方式等个人信息",
+    "usage": "coaching-progress-tracker-schema 数据 → 本模板 → 生成结构化报告 → 四门户分发"
+  },
+  "report_types": [
+    {
+      "report_type_id": "session_summary",
+      "report_type_name": "单次会话小结",
+      "frequency": "per_session",
+      "target_portals": ["coach", "student"],
+      "sections": [
+        {
+          "section_id": "s01",
+          "section_name": "会话概况",
+          "required_fields": ["session_date", "duration_min", "sop_ref", "current_stage"],
+          "content_template": "本次会话执行 {sop_ref} — 八步第{eight_step_id}步({eight_step_name}) / 飞轮: {flywheel_name}，当前阶位: {stage_name}"
+        },
+        {
+          "section_id": "s02",
+          "section_name": "KPI 达成情况",
+          "required_fields": ["kpi_results"],
+          "content_template": "本次 KPI 达成 {achieved_count}/{total_count} 项"
+        },
+        {
+          "section_id": "s03",
+          "section_name": "学生反馈",
+          "required_fields": ["student_self_eval", "completion_rate"],
+          "content_template": "学生自评: {student_self_eval}/10 | 完成率: {completion_rate_pct}%"
+        },
+        {
+          "section_id": "s04",
+          "section_name": "下次重点",
+          "required_fields": ["next_session_focus"],
+          "content_template": "{next_session_focus}"
+        }
+      ]
+    },
+    {
+      "report_type_id": "weekly_progress",
+      "report_type_name": "周度进度报告",
+      "frequency": "weekly",
+      "target_portals": ["coach", "student", "parent"],
+      "sections": [
+        {
+          "section_id": "w01",
+          "section_name": "本周概览",
+          "required_fields": ["week_sessions", "avg_completion_rate", "avg_student_eval"],
+          "content_template": "本周完成 {week_sessions} 次会话，平均完成率 {avg_completion_rate_pct}%，学生平均自评 {avg_student_eval}/10"
+        },
+        {
+          "section_id": "w02",
+          "section_name": "飞轮执行情况",
+          "required_fields": ["flywheels_practiced"],
+          "content_template": "本周实践飞轮: {flywheels_practiced_list}",
+          "flywheel_enum_guard": ["计划", "预习", "复习", "听课", "作业", "考试"]
+        },
+        {
+          "section_id": "w03",
+          "section_name": "阶位动态",
+          "required_fields": ["current_stage", "stage_advanced"],
+          "content_template": "当前阶位: {stage_name}({current_stage})，本周{'阶位提升 ✓' if stage_advanced else '维持稳定'}"
+        },
+        {
+          "section_id": "w04",
+          "section_name": "下周计划",
+          "required_fields": ["next_week_focus", "recommended_sops"],
+          "content_template": "下周重点: {next_week_focus}"
+        }
+      ]
+    },
+    {
+      "report_type_id": "milestone_review",
+      "report_type_name": "里程碑阶位回顾报告",
+      "frequency": "per_4_sessions",
+      "target_portals": ["coach", "student", "parent"],
+      "sections": [
+        {
+          "section_id": "m01",
+          "section_name": "IRT 重评结果",
+          "required_fields": ["theta_before", "theta_after", "theta_delta", "stage_advanced"],
+          "content_template": "θ 变化: {theta_before:.2f} → {theta_after:.2f} (Δ={theta_delta:+.2f})，{'阶位提升!' if stage_advanced else '阶位未变'}"
+        },
+        {
+          "section_id": "m02",
+          "section_name": "MECE 四维度画像",
+          "required_fields": ["mece_snapshot"],
+          "content_template": "M(动力)={M_score} | E(执行)={E_exec_score} | C(能力)θ={C_theta:.2f} | E(环境)={E_env_score}"
+        },
+        {
+          "section_id": "m03",
+          "section_name": "阶位对应方法论",
+          "required_fields": ["current_stage"],
+          "content_template": "阶位{current_stage}({stage_name}) → 推荐 SOP: {primary_sop}",
+          "five_step_guard": "八步第5步=流程(不是演示) ⑤道层守护"
+        },
+        {
+          "section_id": "m04",
+          "section_name": "下阶段目标",
+          "required_fields": ["goal_id", "target_stage", "expected_sessions"],
+          "content_template": "目标阶位: {target_stage}({target_stage_name})，预计 {expected_sessions} 次会话"
+        }
+      ]
+    },
+    {
+      "report_type_id": "monthly_summary",
+      "report_type_name": "月度教练旅程汇总报告",
+      "frequency": "monthly",
+      "target_portals": ["coach", "student", "parent", "hq"],
+      "sections": [
+        {
+          "section_id": "mo01",
+          "section_name": "月度成果概览",
+          "required_fields": ["total_sessions", "stage_advances", "avg_coach_eval", "avg_student_eval"],
+          "content_template": "本月 {total_sessions} 次会话，阶位提升 {stage_advances} 次，教练评分 {avg_coach_eval:.1f}/10"
+        },
+        {
+          "section_id": "mo02",
+          "section_name": "教练质量评分",
+          "required_fields": ["coach_performance_score"],
+          "content_template": "综合教练评分: {coach_performance_score:.2f} ({performance_level})",
+          "score_levels": {
+            "excellent": 0.85,
+            "good": 0.70,
+            "needs_improvement": 0.55
+          }
+        },
+        {
+          "section_id": "mo03",
+          "section_name": "六飞轮实践汇总",
+          "required_fields": ["flywheels_practiced"],
+          "content_template": "累计实践飞轮: {flywheels_summary}",
+          "flywheel_enum_guard": ["计划", "预习", "复习", "听课", "作业", "考试"]
+        },
+        {
+          "section_id": "mo04",
+          "section_name": "目标达成状态",
+          "required_fields": ["goal_status", "goal_id"],
+          "content_template": "目标状态: {goal_status_label}",
+          "goal_status_labels": {
+            "on_track": "按计划推进",
+            "ahead": "超前完成",
+            "behind": "需要调整",
+            "completed": "目标达成 🎯",
+            "paused": "暂停"
+          }
+        },
+        {
+          "section_id": "mo05",
+          "section_name": "下月计划",
+          "required_fields": ["next_month_goals", "recommended_adjustments"],
+          "content_template": "下月建议调整: {recommended_adjustments_list}"
+        }
+      ]
+    },
+    {
+      "report_type_id": "goal_completion",
+      "report_type_name": "目标完成报告",
+      "frequency": "on_goal_completion",
+      "target_portals": ["coach", "student", "parent", "hq"],
+      "sections": [
+        {
+          "section_id": "gc01",
+          "section_name": "目标达成证明",
+          "required_fields": ["goal_id", "baseline_stage", "achieved_stage", "total_sessions"],
+          "content_template": "恭喜! 阶位从 {baseline_stage_name}(阶{baseline_stage}) 提升至 {achieved_stage_name}(阶{achieved_stage})，历经 {total_sessions} 次会话"
+        },
+        {
+          "section_id": "gc02",
+          "section_name": "成长路径回顾",
+          "required_fields": ["stage_transitions", "key_sops_used"],
+          "content_template": "关键 SOP 路径: {key_sops_path}"
+        },
+        {
+          "section_id": "gc03",
+          "section_name": "下一目标建议",
+          "required_fields": ["next_goal_recommendation"],
+          "content_template": "建议下一目标: 阶位 {next_target_stage} — {next_goal_rationale}"
+        }
+      ]
+    },
+    {
+      "report_type_id": "hq_analytics",
+      "report_type_name": "总部数据分析报告",
+      "frequency": "monthly",
+      "target_portals": ["hq"],
+      "sections": [
+        {
+          "section_id": "hq01",
+          "section_name": "机构整体指标",
+          "required_fields": ["org_total_students", "org_avg_stage_advance_rate", "org_avg_coach_score"],
+          "content_template": "学生总量: {org_total_students} | 平均阶位提升率: {org_avg_stage_advance_rate:.1%} | 平均教练评分: {org_avg_coach_score:.2f}"
+        },
+        {
+          "section_id": "hq02",
+          "section_name": "科目维度分析",
+          "required_fields": ["subject_breakdown"],
+          "content_template": "各科平均阶位分布与 MECE 主瓶颈分析"
+        }
+      ]
+    }
+  ],
+  "portal_access_control": {
+    "student": ["session_summary", "weekly_progress", "milestone_review", "monthly_summary", "goal_completion"],
+    "parent": ["weekly_progress", "milestone_review", "monthly_summary", "goal_completion"],
+    "coach": ["session_summary", "weekly_progress", "milestone_review", "monthly_summary", "goal_completion"],
+    "hq": ["monthly_summary", "goal_completion", "hq_analytics"]
+  },
+  "dao_layer_guards": {
+    "_dao_guard_five": "八步第5步=流程 ✅ 所有报告涉及 sop-05 时必须显示'流程'不是'演示'",
+    "eight_step_name_constraints": {
+      "step_id_5_name": "流程",
+      "note": "生成报告时 eight_step_id=5 对应名称必须为'流程' — ⑤道层守护"
+    },
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"]
+  },
+  "validation_rules": {
+    "report_type_coverage": "must include: session_summary/weekly_progress/milestone_review/monthly_summary/goal_completion/hq_analytics",
+    "portal_coverage": "portal_access_control must cover: student/parent/coach/hq",
+    "eight_step_name_constraints": {
+      "step_id_5_name": "流程"
+    },
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "pipl_constraints": "报告中 student_id 为平台匿名 ID; 不含真实姓名/联系方式/身份证"
+  }
+}
