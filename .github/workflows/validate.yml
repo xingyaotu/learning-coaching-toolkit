@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.7 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema + 有效性指标 + 进度追踪 schema
+# 道层 Compliance: v5.8 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema + 有效性指标 + 进度追踪 schema + 报告模板 schema
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -119,3 +119,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: 运行教练进度追踪 schema 验证脚本
         run: python3 scripts/validate-progress-tracker.py
+
+  report-template:
+    name: 教练报告模板 schema 验证(6类报告 + 四门户访问控制 + ⑤守护)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练报告模板 schema 验证脚本
+        run: python3 scripts/validate-report-template.py
