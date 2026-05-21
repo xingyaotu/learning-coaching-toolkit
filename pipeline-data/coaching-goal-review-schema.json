@@ -1,0 +1,140 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-goal-review.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.26 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练目标复核 schema — 定义定期目标复核与调整的结构, 评估七阶进展/MECE瓶颈变化/六飞轮掌握度/⑤SOP合规趋势, 决定是否调整教练计划",
+    "pipl_note": "PIPL 合规: 目标复核记录中所有 student_id 和 coach_id 为平台匿名 ID; 不含真实姓名/学校/家庭信息",
+    "usage": "每4-6次会话或七阶晋升后触发目标复核 → 评估进展 → 调整计划 → 记录决策 → 存档"
+  },
+  "goal_review_schema": {
+    "description": "目标复核记录主体结构",
+    "fields": {
+      "review_id": {
+        "type": "string",
+        "pattern": "^GREV-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "coaching_plan_id": {
+        "type": "string",
+        "description": "关联教练计划 ID",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "coach_id": {
+        "type": "string",
+        "description": "教练匿名 ID",
+        "required": true
+      },
+      "review_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "review_trigger": {
+        "type": "string",
+        "enum": ["rt-scheduled", "rt-stage-advance", "rt-stage-regression", "rt-bottleneck-shift", "rt-milestone-reached", "rt-dropout-risk"],
+        "description": "触发本次目标复核的原因",
+        "required": true,
+        "_dao_guard": "目标复核触发 — 含七阶晋升/退步/里程碑/MECE瓶颈转移/脱落风险触发守护"
+      },
+      "stage_at_review": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "复核时当前七阶阶位",
+        "required": true,
+        "_dao_guard": "复核时七阶阶位 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 严格枚举"
+      },
+      "original_target_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "计划原始目标七阶阶位",
+        "_dao_guard": "原始目标七阶 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 目标守护"
+      },
+      "current_primary_bottleneck": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "复核时当前 MECE 主瓶颈",
+        "_dao_guard": "复核 MECE 主瓶颈 — M/E_exec/C/E_env 四维度严格枚举"
+      },
+      "bottleneck_changed": {
+        "type": "boolean",
+        "description": "与上次复核相比 MECE 主瓶颈是否发生变化"
+      },
+      "sop05_compliance_trend_at_review": {
+        "type": "string",
+        "enum": ["improving", "stable", "declining"],
+        "description": "复核时 ⑤第5步=流程 合规趋势",
+        "_dao_guard": "复核 ⑤sop05 合规趋势 — 流程执行趋势守护"
+      },
+      "goal_review_decision": {
+        "type": "string",
+        "enum": ["gr-continue", "gr-adjust-target", "gr-adjust-plan", "gr-escalate", "gr-graduate"],
+        "description": "目标复核决策",
+        "required": true,
+        "_dao_guard": "目标复核决策 — gr-continue/gr-adjust-target/gr-adjust-plan/gr-escalate/gr-graduate 严格枚举"
+      },
+      "new_target_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "调整后目标七阶阶位 (仅 gr-adjust-target 时填写)",
+        "_dao_guard": "调整后目标七阶 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 目标守护"
+      },
+      "flywheel_priority_update": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "复核后调整的优先飞轮 (如有)",
+        "_dao_guard": "复核后优先飞轮 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      }
+    }
+  },
+  "review_progress_summary": {
+    "description": "复核进展摘要结构",
+    "fields": {
+      "sessions_since_last_review": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "stage_advances_since_last_review": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "上次复核以来七阶晋升次数",
+        "_dao_guard": "七阶晋升次数 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 晋升追踪守护"
+      },
+      "flywheel_progress_since_last_review": {
+        "type": "object",
+        "description": "上次复核以来六飞轮掌握度变化",
+        "properties": {
+          "计划": {"type": "number", "minimum": -1, "maximum": 1},
+          "预习": {"type": "number", "minimum": -1, "maximum": 1},
+          "复习": {"type": "number", "minimum": -1, "maximum": 1},
+          "听课": {"type": "number", "minimum": -1, "maximum": 1},
+          "作业": {"type": "number", "minimum": -1, "maximum": 1},
+          "考试": {"type": "number", "minimum": -1, "maximum": 1}
+        },
+        "_dao_guard": "六飞轮进展变化 — 六飞轮: 计划/预习/复习/听课/作业/考试 掌握度变化守护"
+      },
+      "sop05_compliance_rate_since_last_review": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "上次复核以来 ⑤第5步=流程 合规率",
+        "_dao_guard": "复核期间 ⑤sop05 合规率 — 流程执行复核期合规守护"
+      }
+    }
+  },
+  "validation_rules": {
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "review_trigger_codes": ["rt-scheduled", "rt-stage-advance", "rt-stage-regression", "rt-bottleneck-shift", "rt-milestone-reached", "rt-dropout-risk"],
+    "goal_review_decision_codes": ["gr-continue", "gr-adjust-target", "gr-adjust-plan", "gr-escalate", "gr-graduate"],
+    "sop05_guard": "goal_review.sop05_compliance_trend_at_review 必须追踪 — ⑤第5步=流程 复核合规守护",
+    "pipl_constraints": "PIPL 合规: 目标复核记录中所有 student_id 和 coach_id 为平台匿名 ID; 不含真实姓名/学校/家庭信息"
+  }
+}
