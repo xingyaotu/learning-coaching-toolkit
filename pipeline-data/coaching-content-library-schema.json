@@ -1,0 +1,188 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-content-library.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.25 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练内容库 schema — 定义教练使用的学习内容/工具/资源的分类结构, 按六飞轮/七阶/MECE维度标注",
+    "pipl_note": "PIPL 合规: 内容库记录不含个体 student_id 明文; 内容推送记录中所有 student_id 为平台匿名 ID",
+    "usage": "教练根据学生七阶阶位/MECE瓶颈/六飞轮弱项选取内容 → 分配给学生 → 追踪完成度 → 效果反馈"
+  },
+  "content_item_schema": {
+    "description": "内容条目结构",
+    "fields": {
+      "content_id": {
+        "type": "string",
+        "pattern": "^CONT-[A-Z]{3}-[0-9]{4}$",
+        "required": true
+      },
+      "content_title": {
+        "type": "string",
+        "required": true
+      },
+      "content_type": {
+        "type": "string",
+        "enum": ["video", "worksheet", "practice-set", "reflection-prompt", "tool", "template"],
+        "required": true
+      },
+      "target_flywheel": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "主要适用飞轮",
+        "required": true,
+        "_dao_guard": "内容目标飞轮 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      },
+      "target_stage_range": {
+        "type": "object",
+        "description": "内容适用七阶范围",
+        "properties": {
+          "min_stage": {
+            "type": "string",
+            "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"]
+          },
+          "max_stage": {
+            "type": "string",
+            "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"]
+          }
+        },
+        "_dao_guard": "内容适用七阶范围 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 最小/最大阶守护"
+      },
+      "mece_dimension_tags": {
+        "type": "array",
+        "description": "内容关联 MECE 维度标签",
+        "items": {
+          "type": "string",
+          "enum": ["M", "E_exec", "C", "E_env"]
+        },
+        "_dao_guard": "内容 MECE 维度标签 — M/E_exec/C/E_env 四维度严格枚举"
+      },
+      "sop05_alignment": {
+        "type": "boolean",
+        "description": "内容是否强调 ⑤第5步=流程 学习步骤",
+        "_dao_guard": "内容 ⑤sop05 对齐 — 流程执行学习内容守护"
+      },
+      "difficulty_level": {
+        "type": "string",
+        "enum": ["beginner", "intermediate", "advanced"],
+        "required": true
+      },
+      "estimated_duration_minutes": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "is_active": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "content_assignment_schema": {
+    "description": "内容分配记录结构",
+    "fields": {
+      "assignment_id": {
+        "type": "string",
+        "pattern": "^CASN-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "content_id": {
+        "type": "string",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "assigning_coach_id": {
+        "type": "string",
+        "description": "分配教练匿名 ID",
+        "required": true
+      },
+      "assignment_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "student_stage_at_assignment": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "分配时学生七阶阶位",
+        "_dao_guard": "分配时七阶阶位 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 记录守护"
+      },
+      "flywheel_targeted": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "本次分配针对的飞轮",
+        "_dao_guard": "分配目标飞轮 — 六飞轮: 计划/预习/复习/听课/作业/考试 分配守护"
+      },
+      "completion_status": {
+        "type": "string",
+        "enum": ["assigned", "in-progress", "completed", "skipped"],
+        "required": true
+      },
+      "sop05_practiced": {
+        "type": "boolean",
+        "description": "学生在完成内容时是否练习了 ⑤第5步=流程",
+        "_dao_guard": "内容完成 ⑤sop05 练习 — 流程步骤学习记录守护"
+      }
+    }
+  },
+  "content_library_stats": {
+    "description": "内容库统计 (聚合匿名)",
+    "fields": {
+      "total_active_items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "items_by_flywheel": {
+        "type": "object",
+        "description": "各飞轮内容条目数",
+        "properties": {
+          "计划": {"type": "integer", "minimum": 0},
+          "预习": {"type": "integer", "minimum": 0},
+          "复习": {"type": "integer", "minimum": 0},
+          "听课": {"type": "integer", "minimum": 0},
+          "作业": {"type": "integer", "minimum": 0},
+          "考试": {"type": "integer", "minimum": 0}
+        },
+        "_dao_guard": "六飞轮内容统计 — 六飞轮: 计划/预习/复习/听课/作业/考试 条目数统计守护"
+      },
+      "items_by_stage_range": {
+        "type": "object",
+        "description": "各七阶阶位适用内容条目数",
+        "properties": {
+          "不会": {"type": "integer", "minimum": 0},
+          "模糊": {"type": "integer", "minimum": 0},
+          "清晰": {"type": "integer", "minimum": 0},
+          "框架": {"type": "integer", "minimum": 0},
+          "运用": {"type": "integer", "minimum": 0},
+          "熟练": {"type": "integer", "minimum": 0},
+          "创新": {"type": "integer", "minimum": 0}
+        },
+        "_dao_guard": "七阶内容覆盖 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 内容覆盖统计守护"
+      },
+      "avg_completion_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "全平台内容平均完成率"
+      },
+      "sop05_practice_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "完成内容时 ⑤第5步=流程 练习率",
+        "_dao_guard": "内容 ⑤sop05 练习率 — 流程步骤内容实践守护"
+      }
+    }
+  },
+  "validation_rules": {
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "content_type_values": ["video", "worksheet", "practice-set", "reflection-prompt", "tool", "template"],
+    "difficulty_levels": ["beginner", "intermediate", "advanced"],
+    "sop05_guard": "content_item.sop05_alignment 和 assignment.sop05_practiced 必须追踪 — ⑤第5步=流程 内容守护",
+    "pipl_constraints": "PIPL 合规: 内容推送记录中所有 student_id 为平台匿名 ID; 内容库条目不含学生个人信息"
+  }
+}
