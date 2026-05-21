@@ -1,8 +1,8 @@
 {
   "$schema": "https://xingyaotu.cn/schemas/coach-tool-catalog.v1.0.json",
   "version": "1.0",
-  "compliance": "v5.0 道层零漂移",
-  "last_updated": "2026-05-16",
+  "compliance": "v5.1 道层零漂移",
+  "last_updated": "2026-05-21",
   "note": "学习力教练工具包目录 — 按八步+六飞轮双维度索引",
   "tools": [
     {
@@ -13,7 +13,7 @@
       "flywheel_coverage": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
       "stage_range": [1, 7],
       "description": "八大步骤完整流程指导:穿透/提取/整理/审题/流程/批改/分析/估分",
-      "★_critical": "第5步是'流程',绝不是'演示'"
+      "★_critical": "八步⑤名称=流程, 详见 dao-guard 规则#2"
     },
     {
       "tool_id": "T02",
@@ -173,6 +173,6 @@
   "six_flywheel_name_enum": ["计划飞轮", "预习飞轮", "复习飞轮", "听课飞轮", "作业飞轮", "考试飞轮"],
   "anti_drift": {
     "step_5_correct": "流程",
-    "step_5_forbidden": ["演示", "示范", "导入", "讲解", "拆解"]
+    "step_5_note": "八步⑤=流程, 任何替代描述均触发道层守护(详见 .dao-guard.sh 检查#2)"
   }
 }

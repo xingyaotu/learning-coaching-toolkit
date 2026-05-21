@@ -47,3 +47,26 @@
 - STATUS.md 只追加，绝不覆盖 ✅
 
 ---
+
+## 2026-05-21T06:00:00Z · session FlrIo 辅仓 PR 整合 (#3+#8+#6+#5)
+
+- [DONE] PR#10 已合并: `.github/workflows/ci.yml` CI pipeline ✅
+- [CLOSED] PR#4/7/9/11/12/13/14 — 过期诊断/被替代 PR 关闭 ✅
+- [DONE] `scripts/.dao-guard.sh` v5.1 (源自 PR#3) ✅
+- [DONE] `.github/workflows/dao-guard-ci.yml` (源自 PR#3) ✅
+- [DONE] `scripts/validate-sop-completeness.py` v1.1 (源自 PR#8) ✅
+- [DONE] `.github/workflows/validate.yml` 简化版 json+content 两项 (源自 PR#8) ✅
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO1-新生入学流程.md` (源自 PR#6) ✅
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO2-每日伴读流程.md` (源自 PR#6) ✅
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO3-任务执行流程.md` (源自 PR#6) ✅
+- [DONE] `coaching-sops/coach-ops-sops/SOP_CO4-沟通情绪处理.md` (源自 PR#6) ✅
+- [DONE] `SKILL.md` coaching-toolkit-dispatcher (源自 PR#5) ✅
+
+### 道层合规
+- CSO: 0 触发 ✅
+- dao-guard: 6/6 0 命中 ✅
+- 八步⑤=流程（绝非演示）✅
+- 六飞轮：计划/预习/复习/听课/作业/考试 ✅
+- STATUS.md 只追加，绝不覆盖 ✅
+
+---

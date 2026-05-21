@@ -11,7 +11,7 @@ license: Apache-2.0
 tier: A
 phase: "Phase 0"
 status: stub
-compliance: "v5.0 道层零漂移"
+compliance: "v5.1 道层零漂移"
 allowed-tools: [nuwa-skill, DeepTutor, nanobot]
 ---
 
@@ -49,5 +49,5 @@ interface PenetrationSession {
 ```
 
 ## 道层合规说明
-- ⑤ = 流程(本 SOP 为步骤①,八步中⑤绝不是"演示")
-- 六飞轮: 计划/预习/复习/听课/作业/考试(无"错题飞轮")
+- ⑤ = 流程(本 SOP 为步骤①,八步名称固定不可更改)
+- 六飞轮: 计划/预习/复习/听课/作业/考试(名称固定不可更改)

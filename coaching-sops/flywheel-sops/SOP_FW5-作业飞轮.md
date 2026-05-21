@@ -9,7 +9,7 @@ license: Apache-2.0
 tier: A
 phase: "Phase 0"
 status: stub
-compliance: "v5.0 道层零漂移"
+compliance: "v5.1 道层零漂移"
 allowed-tools: [nuwa-skill, DeepTutor, nanobot, OpenClaw]
 ---
 
@@ -49,5 +49,5 @@ interface HomeworkFlywheel {
 ```
 
 ## 道层合规说明
-- ⑤ = 流程(SOP_05),不是演示
-- 六飞轮无"实践飞轮"
+- ⑤ = 流程(SOP_05),名称固定不可更改
+- 六飞轮名称固定不可更改
