@@ -1,0 +1,148 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-reassessment-trigger.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.21 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练复测触发 schema — 定义教练侧触发学生重新测评的条件、申请流程与数据对比规则",
+    "pipl_note": "PIPL 合规: 复测触发记录中所有 student_id/coach_id 均为平台匿名 ID; 不含真实 PII",
+    "usage": "教练发现复测信号 → 填写触发工单 → 测评系统创建复测任务 → 完成后推送对比报告给教练"
+  },
+  "reassessment_signals": {
+    "description": "教练侧复测信号分类",
+    "signals": [
+      {
+        "signal_id": "ras-stage-jump",
+        "signal_name": "阶位跳跃信号",
+        "description": "连续 3 次会话教练观察到学生七阶阶位进阶, 需要测评验证",
+        "consecutive_sessions_required": 3,
+        "priority": "high",
+        "_dao_guard": "阶位跳跃信号 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 连续进阶守护"
+      },
+      {
+        "signal_id": "ras-bottleneck-shift",
+        "signal_name": "瓶颈转移信号",
+        "description": "教练判断学生的 MECE 主瓶颈维度已发生转移, 需要重新诊断",
+        "priority": "high",
+        "_dao_guard": "瓶颈转移信号 — MECE: M/E_exec/C/E_env 瓶颈维度转移检测守护"
+      },
+      {
+        "signal_id": "ras-flywheel-mastery",
+        "signal_name": "飞轮掌握信号",
+        "description": "教练判断学生已掌握核心飞轮, 需要测评验证并更新教练计划",
+        "priority": "standard",
+        "_dao_guard": "飞轮掌握信号 — 六飞轮: 计划/预习/复习/听课/作业/考试 掌握验证守护"
+      },
+      {
+        "signal_id": "ras-plan-milestone",
+        "signal_name": "计划里程碑信号",
+        "description": "学生教练计划已执行到里程碑节点, 定期触发复测",
+        "priority": "standard"
+      },
+      {
+        "signal_id": "ras-regression",
+        "signal_name": "退步信号",
+        "description": "连续 4 次会话教练观察到七阶阶位退步或飞轮退步",
+        "consecutive_sessions_required": 4,
+        "priority": "urgent",
+        "_dao_guard": "退步信号 — 七阶退步/六飞轮退步 紧急复测触发守护"
+      }
+    ]
+  },
+  "reassessment_request_schema": {
+    "description": "复测申请记录结构",
+    "fields": {
+      "request_id": {
+        "type": "string",
+        "pattern": "^RAREQ-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "coach_id": {
+        "type": "string",
+        "description": "平台匿名 coach_id",
+        "required": true
+      },
+      "request_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "signal_id": {
+        "type": "string",
+        "enum": ["ras-stage-jump", "ras-bottleneck-shift", "ras-flywheel-mastery", "ras-plan-milestone", "ras-regression"],
+        "required": true
+      },
+      "coach_observed_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "教练主观观察到的当前七阶阶位",
+        "required": true
+      },
+      "coach_observed_primary_bottleneck": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "教练判断的当前 MECE 主瓶颈"
+      },
+      "coach_observed_flywheel_progress": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]
+        },
+        "description": "教练观察到进步的飞轮",
+        "_dao_guard": "飞轮进步观察 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      },
+      "sop05_compliance_last_session": {
+        "type": "boolean",
+        "description": "最近一次会话 ⑤第5步=流程 是否合规",
+        "_dao_guard": "复测申请 — ⑤第5步=流程 合规状态关联守护"
+      },
+      "request_status": {
+        "type": "string",
+        "enum": ["pending", "approved", "scheduled", "completed", "expired"],
+        "required": true
+      },
+      "linked_retest_id": {
+        "type": "string",
+        "description": "关联的测评复测 ID (复测完成后填写)"
+      }
+    }
+  },
+  "comparison_result_schema": {
+    "description": "教练观察 vs 测评结果对比结构",
+    "fields": {
+      "coach_stage_vs_test_stage": {
+        "description": "教练观察阶位与测评阶位一致性",
+        "coach_stage_enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "test_stage_enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "agreement_levels": ["exact_match", "within_1_stage", "discrepant"],
+        "_dao_guard": "阶位对比 — 教练观察 vs 测评结果 七阶一致性验证守护"
+      },
+      "coach_bottleneck_vs_test_bottleneck": {
+        "description": "教练判断主瓶颈与测评诊断主瓶颈一致性",
+        "valid_dimensions": ["M", "E_exec", "C", "E_env"]
+      },
+      "calibration_feedback": {
+        "type": "string",
+        "description": "对比结果反馈给教练 — 用于提升教练判断校准度"
+      }
+    }
+  },
+  "validation_rules": {
+    "signal_ids": ["ras-stage-jump", "ras-bottleneck-shift", "ras-flywheel-mastery", "ras-plan-milestone", "ras-regression"],
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "sop05_guard": "复测触发申请中 sop05_compliance_last_session 必须记录 — ⑤第5步=流程 合规状态守护",
+    "required_request_fields": [
+      "request_id", "student_id", "coach_id", "request_date",
+      "signal_id", "coach_observed_stage", "request_status"
+    ],
+    "pipl_constraints": "PIPL 合规: reassessment_request 中所有 student_id 和 coach_id 均为平台匿名 ID; 不含真实个人信息"
+  }
+}
