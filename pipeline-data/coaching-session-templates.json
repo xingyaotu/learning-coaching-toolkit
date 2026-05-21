@@ -1,0 +1,403 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-session-templates.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.2 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "Phase 1 教练会话模板 — 为每个阶位定义标准化的教练会话结构与干预脚本",
+    "session_duration_minutes": 45,
+    "template_types": ["eight_step_session", "flywheel_session"],
+    "usage": "stage-to-sop-routing.json → 路由到对应模板 → colleague-skill SKILL.md → 执行"
+  },
+  "eight_step_session_templates": [
+    {
+      "template_id": "tpl-sop01-穿透",
+      "sop_ref": "sop-01",
+      "eight_step_id": 1,
+      "eight_step_name": "穿透",
+      "target_stages": [1, 2],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["检视上次课后作业完成度", "确认本节目标知识点"]
+        },
+        {
+          "phase": "穿透诊断", "duration_min": 10,
+          "activities": ["知识点初始自评(1-7阶)", "快速诊断题(2-3题, 5分钟)"]
+        },
+        {
+          "phase": "穿透讲解", "duration_min": 15,
+          "activities": ["教师穿透讲解核心概念", "学员复述关键步骤", "纠正认知偏差"]
+        },
+        {
+          "phase": "同步练习", "duration_min": 10,
+          "activities": ["1-2道基础题随堂练", "教师即时反馈"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["阶位复评(目标: 从1→2 或 2→3)", "布置预习作业"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-01.skill.md",
+      "success_criteria": "学员能用自己的话复述核心概念; 简单题正确率 ≥ 60%"
+    },
+    {
+      "template_id": "tpl-sop02-提取",
+      "sop_ref": "sop-02",
+      "eight_step_id": 2,
+      "eight_step_name": "提取",
+      "target_stages": [2, 3],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["回顾穿透阶段笔记", "确认提取目标"]
+        },
+        {
+          "phase": "提取训练", "duration_min": 15,
+          "activities": ["封闭书本自由提取关键词", "对照原文补漏", "标记遗忘点"]
+        },
+        {
+          "phase": "结构化整理", "duration_min": 15,
+          "activities": ["将提取内容组织为结构化笔记", "建立知识点间连接"]
+        },
+        {
+          "phase": "验证", "duration_min": 5,
+          "activities": ["向教师口述知识框架", "教师评分与补充"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["阶位复评(目标: 2→3 或 3→4)", "设定下次提取复习计划"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-02.skill.md",
+      "success_criteria": "能不看书提取 ≥ 80% 核心知识点; 能解释知识点关系"
+    },
+    {
+      "template_id": "tpl-sop03-整理",
+      "sop_ref": "sop-03",
+      "eight_step_id": 3,
+      "eight_step_name": "整理",
+      "target_stages": [3, 4],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["展示上次提取笔记", "确定本次整理范围"]
+        },
+        {
+          "phase": "笔记整理", "duration_min": 20,
+          "activities": ["归纳整理成思维导图或表格", "合并相关知识点", "标注重点与难点"]
+        },
+        {
+          "phase": "关联扩展", "duration_min": 10,
+          "activities": ["链接相关章节知识", "找出本节知识的应用场景"]
+        },
+        {
+          "phase": "收尾", "duration_min": 10,
+          "activities": ["阶位复评(目标: 3→4)", "布置整理类型的课后作业"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-03.skill.md",
+      "success_criteria": "完整思维导图/知识框架; 能识别知识点间逻辑关系"
+    },
+    {
+      "template_id": "tpl-sop04-审题",
+      "sop_ref": "sop-04",
+      "eight_step_id": 4,
+      "eight_step_name": "审题",
+      "target_stages": [4, 5],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["回顾常见审题失误类型", "今日专项审题训练目标"]
+        },
+        {
+          "phase": "审题技巧讲解", "duration_min": 10,
+          "activities": ["圈关键词法", "条件整理法", "转化抽象条件法"]
+        },
+        {
+          "phase": "专项练习", "duration_min": 20,
+          "activities": ["3-5道审题练习", "仅完成审题分析不解题", "同伴互评审题过程"]
+        },
+        {
+          "phase": "收尾", "duration_min": 10,
+          "activities": ["总结审题失误模式", "阶位复评(目标: 4→5)"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-04.skill.md",
+      "success_criteria": "审题正确率 ≥ 85%; 能识别题目隐含条件"
+    },
+    {
+      "template_id": "tpl-sop05-流程",
+      "sop_ref": "sop-05",
+      "eight_step_id": 5,
+      "eight_step_name": "流程",
+      "target_stages": [4, 5, 6],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["展示标准解题流程卡", "确认本节目标题型"]
+        },
+        {
+          "phase": "流程建立", "duration_min": 15,
+          "activities": ["教师演示标准解题流程", "学员跟练2道例题", "总结通用流程步骤"]
+        },
+        {
+          "phase": "流程执行练习", "duration_min": 15,
+          "activities": ["按流程独立解题3-4道", "计时限速训练", "流程偏差分析"]
+        },
+        {
+          "phase": "收尾", "duration_min": 10,
+          "activities": ["流程内化检验", "阶位复评(目标: 4→5 或 5→6)"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-05.skill.md",
+      "success_criteria": "能按标准流程解题且无跳步; 基础题解题速度达到考试要求",
+      "_dao_guard": "第5步=流程 ✅ 道层⑤守护合规"
+    },
+    {
+      "template_id": "tpl-sop06-批改",
+      "sop_ref": "sop-06",
+      "eight_step_id": 6,
+      "eight_step_name": "批改",
+      "target_stages": [4, 5, 6],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["收取上次作业", "确认批改重点维度"]
+        },
+        {
+          "phase": "自批+互批", "duration_min": 15,
+          "activities": ["学员先自批对答案", "与同伴互批分析错误", "分类标注错误类型"]
+        },
+        {
+          "phase": "深度订正", "duration_min": 15,
+          "activities": ["教师指导错题深度订正", "找出根本原因(知识/方法/粗心)", "重做错题"]
+        },
+        {
+          "phase": "收尾", "duration_min": 10,
+          "activities": ["错误归因总结", "阶位复评", "调整下阶段练习重心"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-06.skill.md",
+      "success_criteria": "错题本规范建立; 同类错误不再出现率 ≥ 70%"
+    },
+    {
+      "template_id": "tpl-sop07-分析",
+      "sop_ref": "sop-07",
+      "eight_step_id": 7,
+      "eight_step_name": "分析",
+      "target_stages": [5, 6, 7],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["选取近期测试/考试题目", "确认分析维度"]
+        },
+        {
+          "phase": "多维度分析", "duration_min": 20,
+          "activities": ["知识维度分析(哪个知识点)", "思维维度分析(哪个思路欠缺)", "习惯维度分析(时间/粗心)"]
+        },
+        {
+          "phase": "针对性训练", "duration_min": 15,
+          "activities": ["针对分析出的弱点专项训练", "构建变式题理解深度"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["分析报告撰写", "阶位复评(目标: 6→7)"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-07.skill.md",
+      "success_criteria": "能独立进行多维度错误分析; 能设计针对性训练方案"
+    },
+    {
+      "template_id": "tpl-sop08-估分",
+      "sop_ref": "sop-08",
+      "eight_step_id": 8,
+      "eight_step_name": "估分",
+      "target_stages": [5, 6, 7],
+      "session_structure": [
+        {
+          "phase": "导入", "duration_min": 5,
+          "activities": ["回顾上次模拟成绩", "设定本次估分目标精度"]
+        },
+        {
+          "phase": "估分训练", "duration_min": 20,
+          "activities": ["答完后立即估分(不对答案)", "记录每题把握度(高/中/低)", "计算预估总分"]
+        },
+        {
+          "phase": "对比分析", "duration_min": 15,
+          "activities": ["对比估分与实际分数差异", "分析高把握度失分原因", "发现元认知盲点"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["估分误差记录", "阶位复评(目标: 达到7阶创新)"]
+        }
+      ],
+      "skill_interface": "colleague-skills/eight-step-sops/sop-08.skill.md",
+      "success_criteria": "估分误差 ≤ 5分; 具备准确的元认知校准能力"
+    }
+  ],
+  "flywheel_session_templates": [
+    {
+      "template_id": "tpl-fw1-计划",
+      "sop_ref": "sop-fw1",
+      "six_flywheel_id": 1,
+      "six_flywheel_name": "计划",
+      "target_stages": [1, 2, 3, 4, 5, 6, 7],
+      "session_structure": [
+        {
+          "phase": "周计划回顾", "duration_min": 10,
+          "activities": ["上周计划完成率统计", "偏差原因分析"]
+        },
+        {
+          "phase": "新周计划制定", "duration_min": 20,
+          "activities": ["按科目分配学习时间", "设定本周里程碑目标", "预留弹性缓冲时间"]
+        },
+        {
+          "phase": "计划优化", "duration_min": 10,
+          "activities": ["检查计划合理性", "与教师共同修订"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["计划承诺确认", "下次会话约定"]
+        }
+      ],
+      "skill_interface": "colleague-skills/flywheel-sops/sop-fw1.skill.md",
+      "success_criteria": "周计划完成率 ≥ 80%; 计划与执行偏差 < 20%"
+    },
+    {
+      "template_id": "tpl-fw2-预习",
+      "sop_ref": "sop-fw2",
+      "six_flywheel_id": 2,
+      "six_flywheel_name": "预习",
+      "target_stages": [1, 2, 3, 4],
+      "session_structure": [
+        {
+          "phase": "预习目标设定", "duration_min": 5,
+          "activities": ["确认明天课程内容", "设定预习深度目标"]
+        },
+        {
+          "phase": "预习执行", "duration_min": 25,
+          "activities": ["泛读教材", "标记不理解的关键词", "尝试推导公式/规律"]
+        },
+        {
+          "phase": "预习输出", "duration_min": 10,
+          "activities": ["完成预习问题清单", "设计想在课堂上问的3个问题"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["预习质量自评", "教师预习指导反馈"]
+        }
+      ],
+      "skill_interface": "colleague-skills/flywheel-sops/sop-fw2.skill.md",
+      "success_criteria": "预习问题清单质量 ≥ 3个有效问题; 课堂参与度提升"
+    },
+    {
+      "template_id": "tpl-fw3-复习",
+      "sop_ref": "sop-fw3",
+      "six_flywheel_id": 3,
+      "six_flywheel_name": "复习",
+      "target_stages": [2, 3, 4, 5, 6],
+      "session_structure": [
+        {
+          "phase": "间隔复习计划", "duration_min": 5,
+          "activities": ["确定本次复习的知识时间窗", "选择复习方法(间隔/交替/提取)"]
+        },
+        {
+          "phase": "主动提取复习", "duration_min": 25,
+          "activities": ["不看书自由回忆知识点", "完成测试题验证记忆", "标记遗忘点"]
+        },
+        {
+          "phase": "针对性补强", "duration_min": 10,
+          "activities": ["重点复习遗忘点", "构建关联记忆"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["复习效果评估", "设定下次复习时间窗"]
+        }
+      ],
+      "skill_interface": "colleague-skills/flywheel-sops/sop-fw3.skill.md",
+      "success_criteria": "3天后保留率 ≥ 70%; 遗忘曲线明显平缓"
+    },
+    {
+      "template_id": "tpl-fw4-听课",
+      "sop_ref": "sop-fw4",
+      "six_flywheel_id": 4,
+      "six_flywheel_name": "听课",
+      "target_stages": [1, 2, 3, 4, 5],
+      "session_structure": [
+        {
+          "phase": "听课准备", "duration_min": 5,
+          "activities": ["带着预习问题进入课堂", "准备好笔记工具"]
+        },
+        {
+          "phase": "听课中(课堂内)", "duration_min": 25,
+          "activities": ["记录关键词笔记(非全文抄写)", "标记与预习不符的部分", "即时提问"]
+        },
+        {
+          "phase": "课后即时整理", "duration_min": 10,
+          "activities": ["课后15分钟整理笔记", "补全遗漏的知识点", "评估听课质量"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["听课质量自评(1-10)", "教师反馈与指导"]
+        }
+      ],
+      "skill_interface": "colleague-skills/flywheel-sops/sop-fw4.skill.md",
+      "success_criteria": "听课笔记质量提升; 课后能独立重述80%以上核心内容"
+    },
+    {
+      "template_id": "tpl-fw5-作业",
+      "sop_ref": "sop-fw5",
+      "six_flywheel_id": 5,
+      "six_flywheel_name": "作业",
+      "target_stages": [3, 4, 5, 6],
+      "session_structure": [
+        {
+          "phase": "作业规划", "duration_min": 5,
+          "activities": ["今日作业难度排序", "按先易后难排序执行"]
+        },
+        {
+          "phase": "独立完成", "duration_min": 25,
+          "activities": ["限时完成作业", "卡题不超过5分钟即标记跳过", "完成后先自检"]
+        },
+        {
+          "phase": "复盘改错", "duration_min": 10,
+          "activities": ["对照答案批改", "标注错题类型", "订正并理解"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["作业质量评估", "整理进入错题本"]
+        }
+      ],
+      "skill_interface": "colleague-skills/flywheel-sops/sop-fw5.skill.md",
+      "success_criteria": "作业完成率 100%; 当日错题当日订正率 ≥ 90%"
+    },
+    {
+      "template_id": "tpl-fw6-考试",
+      "sop_ref": "sop-fw6",
+      "six_flywheel_id": 6,
+      "six_flywheel_name": "考试",
+      "target_stages": [4, 5, 6, 7],
+      "session_structure": [
+        {
+          "phase": "考前准备", "duration_min": 5,
+          "activities": ["回顾考试策略", "心态调整与目标设定"]
+        },
+        {
+          "phase": "模拟考试", "duration_min": 25,
+          "activities": ["严格限时模拟", "按真实考试流程执行", "把握度标注"]
+        },
+        {
+          "phase": "考后分析", "duration_min": 10,
+          "activities": ["估分对比", "错题分析", "时间分配复盘"]
+        },
+        {
+          "phase": "收尾", "duration_min": 5,
+          "activities": ["制定针对性补强计划", "阶位复评"]
+        }
+      ],
+      "skill_interface": "colleague-skills/flywheel-sops/sop-fw6.skill.md",
+      "success_criteria": "模拟成绩持续提升; 考试焦虑度降低; 估分误差 ≤ 8分"
+    }
+  ]
+}
