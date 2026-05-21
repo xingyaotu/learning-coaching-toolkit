@@ -137,3 +137,12 @@
 - scripts/validate-cross-routing.py: 81项验证 (飞轮模板存在性/八步模板存在性/阶位覆盖/⑤联动守护/catalog range一致)
 - .github/workflows/validate.yml → v5.4: 新增 cross-routing CI job (共 7 jobs)
 - 81/81 全通过 ✅
+
+## 2026-05-21T07:15:00Z · coaching-toolkit — 教练目标 schema + CI v5.5
+### feat(pipeline-data+scripts+ci): coaching-goal-schema.json — 目标管理 schema + CI v5.5
+- pipeline-data/coaching-goal-schema.json: coaching_goal + goal_revision_record schema
+  - 6个目标模板 (1→2 至 6→7 全相邻跃迁); recommended_sops + priority
+  - ⑤守护: validation_rules.step_id_5_name='流程'; gtpl-4to5 含 _sop05_note ✅
+  - 六飞轮 valid_names 枚举合规 ✅ | PIPL 合规声明 ✅
+- scripts/validate-goal-schema.py: 71/71 通过
+- .github/workflows/validate.yml → v5.5: 新增 goal-schema CI job (共 8 jobs)
