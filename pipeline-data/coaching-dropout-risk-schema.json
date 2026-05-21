@@ -1,0 +1,221 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-dropout-risk.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.19 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练脱落风险预警 schema — 定义学生教练中途退出风险的检测指标、预警等级与干预策略",
+    "pipl_note": "PIPL 合规: 风险预警记录中所有 student_id/coach_id 均为平台匿名 ID; 不含真实 PII",
+    "usage": "系统每周自动评估脱落风险 → 生成预警工单 → 教练制定干预计划 → 上报主管"
+  },
+  "dropout_risk_indicators": {
+    "description": "脱落风险检测指标",
+    "session_behavior_indicators": [
+      {
+        "indicator_id": "dri-miss",
+        "indicator_name": "会话缺席",
+        "description": "连续缺席会话次数",
+        "threshold": 2,
+        "unit": "次",
+        "weight": 0.30
+      },
+      {
+        "indicator_id": "dri-late",
+        "indicator_name": "迟到/早退",
+        "description": "最近 4 次会话中迟到或早退次数",
+        "threshold": 3,
+        "unit": "次",
+        "weight": 0.15
+      },
+      {
+        "indicator_id": "dri-engagement",
+        "indicator_name": "参与度下降",
+        "description": "QA 评分连续 3 次低于 5.0",
+        "threshold": 3,
+        "unit": "次",
+        "weight": 0.20
+      }
+    ],
+    "learning_progress_indicators": [
+      {
+        "indicator_id": "dri-stage-stall",
+        "indicator_name": "七阶停滞",
+        "description": "连续 6 次会话七阶阶位无进展",
+        "threshold": 6,
+        "unit": "次",
+        "weight": 0.20,
+        "_dao_guard": "七阶停滞指标 — 阶位判定严格按七阶: 不会/模糊/清晰/框架/运用/熟练/创新"
+      },
+      {
+        "indicator_id": "dri-flywheel-decline",
+        "indicator_name": "飞轮退步",
+        "description": "已掌握飞轮在最近 3 次会话中出现退步",
+        "threshold": 3,
+        "unit": "次",
+        "weight": 0.15,
+        "_dao_guard": "飞轮退步指标 — 六飞轮: 计划/预习/复习/听课/作业/考试 掌握度回落守护"
+      }
+    ],
+    "weight_sum_check": "0.30 + 0.15 + 0.20 + 0.20 + 0.15 = 1.00"
+  },
+  "risk_levels": {
+    "description": "脱落风险等级定义",
+    "levels": [
+      {
+        "level_id": "rl-low",
+        "label": "低风险",
+        "composite_score_range": [0.0, 0.30],
+        "response_action": "常规教练跟进",
+        "escalation_required": false
+      },
+      {
+        "level_id": "rl-medium",
+        "label": "中风险",
+        "composite_score_range": [0.30, 0.60],
+        "response_action": "加强家长沟通 + 调整教练计划",
+        "escalation_required": false
+      },
+      {
+        "level_id": "rl-high",
+        "label": "高风险",
+        "composite_score_range": [0.60, 0.80],
+        "response_action": "主管介入 + 启动干预计划 + 家长面谈",
+        "escalation_required": true
+      },
+      {
+        "level_id": "rl-critical",
+        "label": "危机风险",
+        "composite_score_range": [0.80, 1.00],
+        "response_action": "启动升级处置协议 + 48小时响应",
+        "escalation_required": true,
+        "_dao_guard": "危机风险 — 触发升级处置协议 (esc-L4/L5); PIPL 合规匿名化记录"
+      }
+    ]
+  },
+  "intervention_strategies": {
+    "description": "干预策略库 (按风险等级)",
+    "strategies": [
+      {
+        "strategy_id": "is-sop-adjust",
+        "strategy_name": "SOP 调整",
+        "applicable_risk_levels": ["rl-medium", "rl-high"],
+        "description": "重新评估教练计划中的 SOP 执行方式, ⑤第5步=流程 检查",
+        "_dao_guard": "SOP 调整策略 — ⑤第5步=流程 执行检查; 禁止将'流程'替换为其他步骤名"
+      },
+      {
+        "strategy_id": "is-flywheel-refocus",
+        "strategy_name": "飞轮焦点调整",
+        "applicable_risk_levels": ["rl-medium", "rl-high"],
+        "description": "切换教练飞轮焦点至最薄弱的飞轮",
+        "valid_flywheels": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "_dao_guard": "飞轮焦点调整 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      },
+      {
+        "strategy_id": "is-stage-recalibrate",
+        "strategy_name": "阶位重新校准",
+        "applicable_risk_levels": ["rl-medium", "rl-high"],
+        "description": "重新评估学生七阶阶位, 确认是否需要降阶",
+        "valid_stages": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "_dao_guard": "阶位重新校准 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 重新测定守护"
+      },
+      {
+        "strategy_id": "is-escalate",
+        "strategy_name": "升级处置",
+        "applicable_risk_levels": ["rl-high", "rl-critical"],
+        "description": "按升级处置协议上报主管",
+        "_dao_guard": "升级处置策略 — 触发 esc-L4/esc-L5; PIPL 合规匿名化记录所有 ID"
+      }
+    ]
+  },
+  "dropout_risk_record_schema": {
+    "description": "脱落风险预警记录结构",
+    "fields": {
+      "risk_record_id": {
+        "type": "string",
+        "pattern": "^DRR-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "coach_id": {
+        "type": "string",
+        "description": "平台匿名 coach_id",
+        "required": true
+      },
+      "assessment_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "risk_level_id": {
+        "type": "string",
+        "enum": ["rl-low", "rl-medium", "rl-high", "rl-critical"],
+        "required": true
+      },
+      "composite_risk_score": {
+        "type": "number",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "required": true
+      },
+      "triggered_indicators": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["dri-miss", "dri-late", "dri-engagement", "dri-stage-stall", "dri-flywheel-decline"]
+        },
+        "required": true
+      },
+      "current_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "预警时七阶阶位",
+        "required": true
+      },
+      "primary_mece_concern": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "当前主要 MECE 关注维度"
+      },
+      "intervention_strategy_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["is-sop-adjust", "is-flywheel-refocus", "is-stage-recalibrate", "is-escalate"]
+        }
+      },
+      "sop05_last_compliance": {
+        "type": "boolean",
+        "description": "最近一次会话 ⑤第5步=流程 是否合规",
+        "_dao_guard": "脱落风险记录 — ⑤第5步=流程 合规状态关联守护"
+      },
+      "escalation_triggered": {
+        "type": "boolean",
+        "description": "是否已触发升级处置协议"
+      },
+      "resolution_status": {
+        "type": "string",
+        "enum": ["open", "in_intervention", "resolved", "escalated", "student_withdrew"]
+      }
+    }
+  },
+  "validation_rules": {
+    "risk_level_ids": ["rl-low", "rl-medium", "rl-high", "rl-critical"],
+    "indicator_ids": ["dri-miss", "dri-late", "dri-engagement", "dri-stage-stall", "dri-flywheel-decline"],
+    "strategy_ids": ["is-sop-adjust", "is-flywheel-refocus", "is-stage-recalibrate", "is-escalate"],
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "sop05_guard": "脱落风险预警中 sop05_last_compliance 必须记录 — ⑤第5步=流程 合规状态守护",
+    "indicator_weight_sum": 1.0,
+    "required_risk_fields": [
+      "risk_record_id", "student_id", "coach_id", "assessment_date",
+      "risk_level_id", "composite_risk_score", "triggered_indicators",
+      "current_stage"
+    ],
+    "pipl_constraints": "PIPL 合规: dropout_risk_record 中所有 student_id 和 coach_id 均为平台匿名 ID; 不含真实个人信息"
+  }
+}

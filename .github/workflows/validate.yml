@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.2 | JSON 验证 + 内容检查 + 毕业结案 schema + 脱落风险 schema + 学生档案 schema + 复测触发 schema
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,35 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  graduation-schema:
+    name: 教练毕业结案 schema 验证(3毕业标准/⑤守护/七阶/六飞轮/MECE/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练毕业结案 schema 验证脚本
+        run: python3 scripts/validate-graduation-schema.py
+
+  dropout-risk-schema:
+    name: 教练脱落风险 schema 验证(5指标权重归一/⑤守护/七阶/六飞轮/MECE/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练脱落风险 schema 验证脚本
+        run: python3 scripts/validate-dropout-risk-schema.py
+
+  student-profile-schema:
+    name: 教练学生档案 schema 验证(7必填字段/⑤守护/七阶/MECE/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练学生档案 schema 验证脚本
+        run: python3 scripts/validate-student-profile-schema.py
+
+  reassessment-trigger-schema:
+    name: 教练复测触发 schema 验证(5信号/⑤守护/七阶/MECE/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练复测触发 schema 验证脚本
+        run: python3 scripts/validate-reassessment-trigger-schema.py
