@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.1 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: 运行 SOP 完整性验证脚本
         run: python3 scripts/validate-sop-completeness.py
+
+  colleague-skills:
+    name: colleague-skill SKILL.md 接口验证(14个 + ⑤守护)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 安装 PyYAML
+        run: pip install pyyaml --quiet
+      - name: 运行 colleague-skill 验证脚本
+        run: python3 scripts/validate-colleague-skills.py

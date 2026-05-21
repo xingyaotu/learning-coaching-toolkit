@@ -96,3 +96,21 @@
 
 - [道层] 内容检查 3 项全 0 命中 ✅ | JSON 格式: 有效 ✅ | SOP 完整性 54/54 ✅
 - [Next] colleague-skill 正式注册接口对接(Phase 1) | IRT 参数标定(Phase 2.5)
+
+---
+
+## 2026-05-21T04:25:00Z · coaching-toolkit — colleague-skill 验证脚本
+
+### feat(scripts+ci): validate-colleague-skills.py — SKILL.md frontmatter 合规验证
+
+- `scripts/validate-colleague-skills.py`: 14 SKILL.md frontmatter 验证
+  - 目录结构: eight-step-sops/ + flywheel-sops/ ✓
+  - 八步 × 8: frontmatter 字段完整 + portal 合规 ✓
+  - SOP_05 ⑤守护: eight_step_id=5 + eight_step_name='流程' ✓
+  - 飞轮 × 6: frontmatter 字段完整 + portal 合规 ✓
+  - 六飞轮名称守护: 计划/预习/复习/听课/作业/考试 全枚举 ✓
+  - SKILL.md 总数 14/14 ✓
+- `.github/workflows/validate.yml`: 升级 v5.0→v5.1, 新增 `colleague-skills` CI job
+- 本地验证: 全部通过 ✅
+
+- [道层] 0触发 ✅ | [Next] colleague-skill Phase 1 正式注册接口
