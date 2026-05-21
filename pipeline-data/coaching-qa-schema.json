@@ -1,0 +1,152 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-qa.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.11 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练质量保证 schema — 定义教练培训、同伴督导、会话质量评估与校准流程",
+    "pipl_note": "PIPL 合规: 教练 ID 与学生 ID 均为平台匿名 ID; 不含真实个人识别信息",
+    "usage": "教练执行后 → 本 schema 质量评估 → QA 记录 → 月度校准会议 → 教练能力提升"
+  },
+  "qa_dimensions": [
+    {
+      "dimension_id": "qa-d1",
+      "dimension_name": "SOP 执行合规",
+      "description": "教练是否按照 SOP 步骤完整执行，⑤第5步=流程不误用",
+      "weight": 0.30,
+      "evaluation_criteria": [
+        "SOP 步骤完整度 ≥ 85%",
+        "八步顺序正确 (第1-8步按序执行)",
+        "⑤第5步=流程执行合规 (不混淆为演示)",
+        "飞轮选择与学生阶位匹配"
+      ],
+      "_dao_guard": "⑤第5步名称=流程 ✅ QA 维度合规"
+    },
+    {
+      "dimension_id": "qa-d2",
+      "dimension_name": "学生参与度",
+      "description": "学生在会话中的主动性与参与深度",
+      "weight": 0.25,
+      "evaluation_criteria": [
+        "学生自评 ≥ 6/10",
+        "学生发言时间比例 ≥ 40%",
+        "主动提问次数 ≥ 1"
+      ]
+    },
+    {
+      "dimension_id": "qa-d3",
+      "dimension_name": "目标-会话一致性",
+      "description": "本次会话内容与当前教练目标的关联程度",
+      "weight": 0.20,
+      "evaluation_criteria": [
+        "会话内容与 goal.primary_sops 对齐",
+        "KPI 检查覆盖本次 SOP 对应 KPI",
+        "next_session_focus 与目标进度一致"
+      ]
+    },
+    {
+      "dimension_id": "qa-d4",
+      "dimension_name": "MECE 诊断准确性",
+      "description": "教练对学生 MECE 维度瓶颈的识别准确度",
+      "weight": 0.15,
+      "evaluation_criteria": [
+        "主瓶颈识别与测评结果吻合度 ≥ 70%",
+        "干预选择与 mece-diagnosis-rules 推荐对齐",
+        "飞轮优先级与学生阶位兼容"
+      ]
+    },
+    {
+      "dimension_id": "qa-d5",
+      "dimension_name": "沟通与反馈质量",
+      "description": "教练的沟通技巧、反馈及时性与有效性",
+      "weight": 0.10,
+      "evaluation_criteria": [
+        "会话结束前提供明确的下次重点",
+        "反馈具体可执行 (非泛泛鼓励)",
+        "使用正向强化而非批评式语言"
+      ]
+    }
+  ],
+  "qa_review_types": [
+    {
+      "review_type_id": "qar-self",
+      "review_type_name": "教练自评",
+      "frequency": "per_session",
+      "reviewer": "coach_self",
+      "duration_min": 5,
+      "dimensions_covered": ["qa-d1", "qa-d2", "qa-d3"],
+      "output_record": "session_self_review"
+    },
+    {
+      "review_type_id": "qar-peer",
+      "review_type_name": "同伴督导",
+      "frequency": "monthly",
+      "reviewer": "peer_coach",
+      "duration_min": 30,
+      "dimensions_covered": ["qa-d1", "qa-d2", "qa-d3", "qa-d4", "qa-d5"],
+      "output_record": "peer_review_record"
+    },
+    {
+      "review_type_id": "qar-supervisor",
+      "review_type_name": "督导评审",
+      "frequency": "quarterly",
+      "reviewer": "senior_supervisor",
+      "duration_min": 45,
+      "dimensions_covered": ["qa-d1", "qa-d2", "qa-d3", "qa-d4", "qa-d5"],
+      "output_record": "supervisor_review_record"
+    },
+    {
+      "review_type_id": "qar-calibration",
+      "review_type_name": "集体校准会",
+      "frequency": "quarterly",
+      "reviewer": "group",
+      "duration_min": 90,
+      "dimensions_covered": ["qa-d1", "qa-d2", "qa-d3", "qa-d4", "qa-d5"],
+      "output_record": "calibration_session_record",
+      "calibration_focus": "确保各教练对 SOP 执行标准理解一致"
+    }
+  ],
+  "qa_score_schema": {
+    "description": "QA 评分记录结构",
+    "fields": {
+      "qa_record_id": {"type": "string", "required": true},
+      "session_id": {"type": "string", "required": true},
+      "coach_id": {"type": "string", "description": "教练匿名 ID", "required": true},
+      "reviewer_id": {"type": "string", "description": "评审者匿名 ID", "required": true},
+      "review_type": {"type": "string", "enum": ["qar-self", "qar-peer", "qar-supervisor", "qar-calibration"], "required": true},
+      "dimension_scores": {
+        "type": "object",
+        "description": "各维度评分 1-10",
+        "properties": {
+          "qa-d1": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d2": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d3": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d4": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d5": {"type": "number", "minimum": 1, "maximum": 10}
+        }
+      },
+      "weighted_score": {"type": "number", "minimum": 1, "maximum": 10, "description": "加权综合分"},
+      "sop05_compliance": {"type": "boolean", "description": "⑤第5步=流程执行是否合规"},
+      "improvement_notes": {"type": "string", "description": "改进建议 (不含学生 PII)"},
+      "strengths_noted": {"type": "string"}
+    }
+  },
+  "qa_thresholds": {
+    "min_weighted_score_per_session": 6.0,
+    "min_monthly_avg_score": 7.0,
+    "sop05_compliance_rate_target": 1.0,
+    "intervention_required_below": 5.5,
+    "suspension_required_below": 4.0
+  },
+  "validation_rules": {
+    "qa_dimensions_count": 5,
+    "weight_sum_constraint": "sum(qa_dimensions.weight) == 1.0",
+    "review_types_count": 4,
+    "eight_step_name_constraints": {
+      "step_id_5_name": "流程",
+      "note": "qa-d1 评审标准中 ⑤第5步必须为'流程' — ⑤道层守护"
+    },
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "pipl_constraints": "coach_id 与 reviewer_id 均为平台匿名 ID; improvement_notes 不含 PII"
+  }
+}

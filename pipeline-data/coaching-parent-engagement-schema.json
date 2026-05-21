@@ -1,0 +1,153 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-parent-engagement.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.16 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "家长参与 schema — 定义教练与家长的沟通结构、信息共享范围与隐私保护规则",
+    "pipl_note": "PIPL 合规: 家长沟通记录中 student_id 与 parent_id 均为平台匿名 ID; 分享给家长的信息仅含学生成长进度摘要; 不含详细测评原始数据",
+    "usage": "教练完成阶段性评估 → 生成家长沟通报告 → 按本 schema 结构发送 → 家长确认 → 记录存档"
+  },
+  "parent_communication_types": [
+    {
+      "comm_type_id": "pct-welcome",
+      "comm_type_name": "入学欢迎沟通",
+      "trigger": "学生完成 ob-01 档案建立",
+      "frequency": "once",
+      "content_scope": [
+        "平台服务说明与知情同意确认",
+        "教练信息 (匿名 ID + 认证等级)",
+        "初始阶位摘要 (七阶区间, 不含具体 θ 值)",
+        "学习力提升目标方向"
+      ],
+      "excluded_content": ["IRT θ 原始值", "MECE 诊断详细参数", "同伴学生信息"],
+      "channel": ["app_message", "email"],
+      "response_required": true,
+      "_dao_guard": "欢迎沟通 — 仅分享七阶区间摘要; 不分享 θ 原始值"
+    },
+    {
+      "comm_type_id": "pct-weekly",
+      "comm_type_name": "每周进度简报",
+      "trigger": "每周教练会话完成后",
+      "frequency": "weekly",
+      "content_scope": [
+        "本周会话次数与时长",
+        "飞轮进展摘要 (六飞轮中本周重点飞轮名称)",
+        "学生参与度评分 (qa-d2, 1-10 分)",
+        "下周教练重点方向"
+      ],
+      "excluded_content": ["QA 详细评分", "⑤SOP 执行细节", "教练内部督导记录"],
+      "channel": ["app_message"],
+      "response_required": false,
+      "_dao_guard": "每周简报 — 六飞轮名称: 计划/预习/复习/听课/作业/考试 严格枚举"
+    },
+    {
+      "comm_type_id": "pct-milestone",
+      "comm_type_name": "里程碑进度报告",
+      "trigger": "学生阶位上升 (七阶进阶) 或达成教练目标",
+      "frequency": "milestone_triggered",
+      "content_scope": [
+        "阶位晋升详情 (从 X 阶 → Y 阶)",
+        "MECE 主要改善维度 (维度名称, 非 θ 值)",
+        "已完成的教练计划目标",
+        "下阶段教练计划方向"
+      ],
+      "excluded_content": ["其他学生比较数据", "θ 原始值", "诊断算法细节"],
+      "channel": ["app_message", "email"],
+      "response_required": false,
+      "_dao_guard": "里程碑报告 — 七阶名称: 不会/模糊/清晰/框架/运用/熟练/创新 严格枚举"
+    },
+    {
+      "comm_type_id": "pct-concern",
+      "comm_type_name": "关注预警通知",
+      "trigger": "学生连续 2 次会话质量低于阈值 (qa_thresholds.min_weighted_score_per_session < 6.0) 或阶位下降",
+      "frequency": "triggered",
+      "content_scope": [
+        "进度关注说明 (不含具体评分数字)",
+        "建议家长沟通频率调整",
+        "需要家长配合的支持事项",
+        "下次教练会话安排"
+      ],
+      "excluded_content": ["内部 QA 评分", "教练督导记录", "其他学生数据"],
+      "channel": ["app_message", "phone_call"],
+      "response_required": true,
+      "_dao_guard": "关注预警 — 不得向家长透露内部 QA 评分细节"
+    },
+    {
+      "comm_type_id": "pct-monthly",
+      "comm_type_name": "月度综合报告",
+      "trigger": "每月月底",
+      "frequency": "monthly",
+      "content_scope": [
+        "月度会话统计 (次数/时长)",
+        "本月最活跃飞轮 (六飞轮名称)",
+        "MECE 各维度定性评价 (强/中/弱, 非 θ 值)",
+        "阶位变化摘要",
+        "下月教练重点"
+      ],
+      "excluded_content": ["θ 原始数值", "IRT 参数", "同伴督导内容"],
+      "channel": ["app_message", "email"],
+      "response_required": false,
+      "_dao_guard": "月度报告 — MECE 维度定性评价不得包含 θ 原始数值"
+    }
+  ],
+  "parent_record_schema": {
+    "description": "家长沟通记录结构",
+    "fields": {
+      "comm_record_id": {"type": "string", "pattern": "^PCOM-[0-9]{8}-[A-Z0-9]{6}$"},
+      "student_id": {"type": "string", "description": "平台匿名 student_id"},
+      "parent_id": {"type": "string", "description": "平台匿名 parent_id"},
+      "coach_id": {"type": "string", "description": "平台匿名 coach_id"},
+      "comm_type_id": {
+        "type": "string",
+        "enum": ["pct-welcome", "pct-weekly", "pct-milestone", "pct-concern", "pct-monthly"]
+      },
+      "sent_at": {"type": "string", "format": "date-time"},
+      "channel_used": {"type": "string", "enum": ["app_message", "email", "phone_call"]},
+      "parent_acknowledged": {"type": "boolean"},
+      "acknowledged_at": {"type": "string", "format": "date-time", "nullable": true},
+      "content_summary": {"type": "string", "description": "沟通内容摘要 (不含 PII)"}
+    }
+  },
+  "information_sharing_boundaries": {
+    "allowed_to_share": [
+      "stage_estimate (七阶等级名称, 不含 θ 值)",
+      "flywheel_names_discussed (六飞轮名称)",
+      "session_count_and_duration",
+      "coach_certification_level",
+      "goal_completion_status"
+    ],
+    "prohibited_to_share": [
+      "irt_theta_values (任何 θ 原始数值)",
+      "qa_scores_numerical (内部 QA 数字评分)",
+      "peer_coach_supervision_content",
+      "other_student_data",
+      "guardian_id_hash (不得向任何第三方分享)",
+      "real_name_or_contact_info"
+    ],
+    "_dao_guard": "信息共享边界 — 七阶名称可分享; θ 值禁止分享; 六飞轮名称: 计划/预习/复习/听课/作业/考试"
+  },
+  "minor_parent_rules": {
+    "description": "未成年学生家长参与特殊规则",
+    "mandatory_for_under14": [
+      "pct-welcome 沟通中必须确认监护人书面同意",
+      "pct-concern 通知必须在 24 小时内送达家长",
+      "月度报告必须明确标注学生为未成年人身份 (不含年龄或出生日期)"
+    ],
+    "pipl_constraint": "PIPL 第14条: < 14岁学生的家长沟通记录额外保留至学生成年后",
+    "_dao_guard": "< 14岁学生家长沟通 — PIPL 第14条强制守护"
+  },
+  "validation_rules": {
+    "comm_types_count": 5,
+    "required_record_fields": [
+      "comm_record_id", "student_id", "parent_id", "coach_id",
+      "comm_type_id", "sent_at", "channel_used"
+    ],
+    "comm_type_ids": ["pct-welcome", "pct-weekly", "pct-milestone", "pct-concern", "pct-monthly"],
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "theta_sharing_prohibited": true,
+    "sop05_guard": "家长报告中不得包含 ⑤第5步=流程 执行细节 — 内部 SOP 信息保护",
+    "pipl_constraints": "PIPL 合规: student_id 与 parent_id 均为平台匿名 ID; 家长沟通内容不含真实个人识别信息"
+  }
+}
