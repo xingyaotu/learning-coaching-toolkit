@@ -1,0 +1,140 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-onboarding.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.10 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练入学流程 schema — 定义新学生入学建档、基线测评路由与初次目标设定的完整流程",
+    "pipl_note": "PIPL 合规: student_id 为平台匿名 ID; 不存储真实姓名/身份证/联系方式",
+    "usage": "新学生注册 → 本 schema 路由 → 基线测评(assessment-session-schema) → 初始目标(coaching-goal-schema) → 首次会话计划"
+  },
+  "onboarding_stages": [
+    {
+      "stage_id": "ob-01",
+      "stage_name": "学生档案建立",
+      "sequence": 1,
+      "description": "建立匿名学生档案，收集学习背景信息",
+      "required_inputs": ["student_id", "grade_level", "subjects_of_concern", "learning_context"],
+      "outputs": ["student_profile_stub"],
+      "pipl_constraint": "仅收集年级/关注科目/学习背景; 不收集真实姓名/联系方式",
+      "duration_estimate_min": 10
+    },
+    {
+      "stage_id": "ob-02",
+      "stage_name": "科目与工具选择",
+      "sequence": 2,
+      "description": "根据学生关注科目，从 mece-subject-profiles 选择对应 MECE 权重配置",
+      "required_inputs": ["student_profile_stub", "subjects_of_concern"],
+      "outputs": ["selected_subject_profiles", "recommended_tools"],
+      "tool_routing": {
+        "all_subjects": ["assess_mece_motivation", "assess_mece_execution", "assess_mece_capability", "assess_mece_environment"],
+        "add_if_jumeq_context": ["assess_jumeq_jobplacement", "assess_jumeq_university", "assess_jumeq_major"],
+        "add_if_career_context": ["assess_camiq_character", "assess_camiq_aptitude", "assess_camiq_interest"],
+        "always_include": ["assess_flywheels_self_eval", "assess_mastery_stages"]
+      },
+      "duration_estimate_min": 5
+    },
+    {
+      "stage_id": "ob-03",
+      "stage_name": "基线 CAT 测评",
+      "sequence": 3,
+      "description": "执行初始 CAT 自适应测评，建立各维度基线 θ",
+      "required_inputs": ["recommended_tools", "cat-config.json"],
+      "outputs": ["baseline_assessment_sessions", "baseline_theta_profile"],
+      "assessment_order": [
+        {"priority": 1, "tool": "assess_mece_capability",  "rationale": "核心能力基线优先"},
+        {"priority": 2, "tool": "assess_mece_motivation",  "rationale": "动力状态"},
+        {"priority": 3, "tool": "assess_mece_execution",   "rationale": "执行力基线"},
+        {"priority": 4, "tool": "assess_flywheels_self_eval", "rationale": "六飞轮习惯基线"},
+        {"priority": 5, "tool": "assess_mastery_stages",   "rationale": "阶位判断"}
+      ],
+      "estimated_total_min": 60,
+      "breaks_recommended": true,
+      "duration_estimate_min": 60
+    },
+    {
+      "stage_id": "ob-04",
+      "stage_name": "MECE 诊断与阶位确认",
+      "sequence": 4,
+      "description": "基于基线测评结果，运行 mece-diagnosis-rules 生成初始诊断",
+      "required_inputs": ["baseline_theta_profile", "mece-subject-profiles.json", "mece-diagnosis-rules.json"],
+      "outputs": ["initial_mece_diagnosis", "identified_bottleneck", "initial_stage"],
+      "diagnosis_logic": "composite_theta → irt-scoring-thresholds.json 分类 → primary_bottleneck 识别 → mece-diagnosis-rules 路由",
+      "duration_estimate_min": 15
+    },
+    {
+      "stage_id": "ob-05",
+      "stage_name": "初始目标设定",
+      "sequence": 5,
+      "description": "基于诊断结果，选择对应 goal_template 建立首个教练目标",
+      "required_inputs": ["initial_stage", "coaching-goal-schema.json"],
+      "outputs": ["initial_coaching_goal"],
+      "goal_template_selection": "gtpl-{initial_stage}to{initial_stage+1}",
+      "flywheel_initial_focus": {
+        "rule": "mece_diagnosis.primary_bottleneck → mece-diagnosis-rules.flywheel_stage_compatibility 查询高兼容飞轮",
+        "fallback": ["计划", "复习"]
+      },
+      "eight_step_initial_focus": {
+        "rule": "initial_stage → stage-to-sop-routing.json eight_step_focus[0]",
+        "five_step_guard": "若 initial_stage ∈ [4,5,6] 则 sop-05=流程 为候选 ⑤守护"
+      },
+      "duration_estimate_min": 20
+    },
+    {
+      "stage_id": "ob-06",
+      "stage_name": "首次会话计划",
+      "sequence": 6,
+      "description": "基于初始目标，从 coaching-session-templates 选择首次会话模板",
+      "required_inputs": ["initial_coaching_goal", "coaching-session-templates.json"],
+      "outputs": ["first_session_plan"],
+      "session_template_selection": "primary_sop from initial_coaching_goal → coaching-session-templates lookup",
+      "duration_estimate_min": 10
+    }
+  ],
+  "onboarding_checklist": {
+    "description": "入学完成检查清单",
+    "required_completions": [
+      "student_id 已生成(匿名 ID)",
+      "baseline_theta_profile 覆盖 MECE 四维度",
+      "initial_stage ∈ [1,7] 已确认",
+      "primary_bottleneck ∈ {C, M, E_exec, E_env} 已识别",
+      "initial_coaching_goal 已创建",
+      "first_session_plan 已生成",
+      "flywheels_baseline: 六飞轮全覆盖评估"
+    ],
+    "pipl_checklist": [
+      "student_id 为平台匿名 ID ✓",
+      "未存储真实姓名 ✓",
+      "未存储联系方式 ✓",
+      "未存储身份证号 ✓"
+    ]
+  },
+  "data_flow_summary": {
+    "input_schemas": [
+      "cat-config.json",
+      "mece-subject-profiles.json",
+      "mece-diagnosis-rules.json",
+      "irt-scoring-thresholds.json",
+      "coaching-goal-schema.json",
+      "coaching-session-templates.json",
+      "stage-to-sop-routing.json"
+    ],
+    "output_schemas": [
+      "assessment-session-schema.json (baseline)",
+      "student-progress-schema.json (initial record)",
+      "coaching-progress-tracker-schema.json (session_progress_record)"
+    ]
+  },
+  "validation_rules": {
+    "onboarding_stage_count": 6,
+    "onboarding_stage_sequence": "stages must be sequential 1-6",
+    "assessment_order_tools": "priority 1 must be assess_mece_capability",
+    "eight_step_name_constraints": {
+      "step_id_5_name": "流程",
+      "note": "ob-05 five_step_guard 中 sop-05 对应八步第5步=流程 — ⑤道层守护"
+    },
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "goal_template_selection_pattern": "gtpl-{N}to{N+1}",
+    "pipl_constraints": "student_id 为平台匿名 ID; 仅收集年级/科目/学习背景; 不收集个人识别信息"
+  }
+}
