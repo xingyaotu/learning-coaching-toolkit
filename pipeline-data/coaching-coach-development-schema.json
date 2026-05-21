@@ -1,0 +1,144 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-coach-development.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.27 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练职业发展 schema — 定义教练持续专业发展(CPD)记录结构, 含认证进阶/道层培训/⑤SOP合规培训/六飞轮/七阶教学法追踪",
+    "pipl_note": "PIPL 合规: 职业发展记录中所有 coach_id 为平台匿名 ID; 不含真实姓名/身份证/联系方式",
+    "usage": "教练完成培训/通过认证/接受督导 → 更新 CPD 记录 → 追踪 ⑤SOP 合规培训完成度 → 生成认证晋级建议"
+  },
+  "coach_development_record_schema": {
+    "description": "教练职业发展记录主体结构",
+    "fields": {
+      "cpd_record_id": {
+        "type": "string",
+        "pattern": "^CPD-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "coach_id": {
+        "type": "string",
+        "description": "教练平台匿名 ID",
+        "required": true
+      },
+      "current_certification_level": {
+        "type": "string",
+        "enum": ["ccl-1", "ccl-2", "ccl-3", "ccl-4", "ccl-5"],
+        "required": true,
+        "_dao_guard": "教练认证等级 — ccl-1至ccl-5五级认证体系守护"
+      },
+      "sop05_training_completed": {
+        "type": "boolean",
+        "description": "是否完成 ⑤第5步=流程 道层核心培训",
+        "required": true,
+        "_dao_guard": "⑤sop05 培训完成 — 流程教学法核心培训合规守护"
+      },
+      "sop05_training_date": {
+        "type": "string",
+        "format": "date",
+        "description": "⑤第5步=流程 培训完成日期",
+        "_dao_guard": "⑤sop05 培训日期 — 流程培训日期追踪守护"
+      },
+      "total_cpd_hours": {
+        "type": "number",
+        "minimum": 0,
+        "description": "累计 CPD 学时"
+      },
+      "cpd_hours_by_domain": {
+        "type": "object",
+        "description": "各培训领域 CPD 学时",
+        "properties": {
+          "flywheel_teaching": {"type": "number", "minimum": 0},
+          "stage_assessment": {"type": "number", "minimum": 0},
+          "mece_diagnosis": {"type": "number", "minimum": 0},
+          "sop_compliance": {"type": "number", "minimum": 0},
+          "pipl_data_protection": {"type": "number", "minimum": 0}
+        },
+        "_dao_guard": "CPD 领域学时 — 飞轮教学/七阶测评/MECE诊断/SOP合规/PIPL数据保护 五领域守护"
+      }
+    }
+  },
+  "flywheel_teaching_competency": {
+    "description": "六飞轮教学能力评估",
+    "fields": {
+      "competency_by_flywheel": {
+        "type": "object",
+        "description": "各飞轮教学能力评分 [0,1]",
+        "properties": {
+          "计划": {"type": "number", "minimum": 0, "maximum": 1},
+          "预习": {"type": "number", "minimum": 0, "maximum": 1},
+          "复习": {"type": "number", "minimum": 0, "maximum": 1},
+          "听课": {"type": "number", "minimum": 0, "maximum": 1},
+          "作业": {"type": "number", "minimum": 0, "maximum": 1},
+          "考试": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "_dao_guard": "六飞轮教学能力 — 六飞轮: 计划/预习/复习/听课/作业/考试 教学能力评分守护"
+      },
+      "weakest_flywheel_teaching": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "教练最薄弱的飞轮教学能力",
+        "_dao_guard": "最薄弱飞轮教学 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      }
+    }
+  },
+  "stage_teaching_competency": {
+    "description": "七阶教学能力评估",
+    "fields": {
+      "competency_by_stage": {
+        "type": "object",
+        "description": "各七阶阶位教学能力评分 [0,1]",
+        "properties": {
+          "不会": {"type": "number", "minimum": 0, "maximum": 1},
+          "模糊": {"type": "number", "minimum": 0, "maximum": 1},
+          "清晰": {"type": "number", "minimum": 0, "maximum": 1},
+          "框架": {"type": "number", "minimum": 0, "maximum": 1},
+          "运用": {"type": "number", "minimum": 0, "maximum": 1},
+          "熟练": {"type": "number", "minimum": 0, "maximum": 1},
+          "创新": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "_dao_guard": "七阶教学能力 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 教学能力评分守护"
+      },
+      "max_eligible_stage_to_coach": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "当前认证等级下最高可教学的七阶阶位",
+        "_dao_guard": "最高可教七阶 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 认证等级授权守护"
+      }
+    }
+  },
+  "certification_progression": {
+    "description": "认证晋级追踪",
+    "fields": {
+      "next_certification_level": {
+        "type": "string",
+        "enum": ["ccl-2", "ccl-3", "ccl-4", "ccl-5"],
+        "description": "下一目标认证等级"
+      },
+      "cpd_hours_required_for_next": {
+        "type": "number",
+        "minimum": 0,
+        "description": "晋级所需额外 CPD 学时"
+      },
+      "sop05_mastery_required": {
+        "type": "boolean",
+        "description": "晋级是否要求 ⑤第5步=流程 掌握认证",
+        "_dao_guard": "晋级 ⑤sop05 要求 — 流程教学法掌握是认证晋级必要条件守护"
+      },
+      "estimated_eligible_date": {
+        "type": "string",
+        "format": "date",
+        "description": "预计满足晋级条件日期"
+      }
+    }
+  },
+  "validation_rules": {
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "certification_levels": ["ccl-1", "ccl-2", "ccl-3", "ccl-4", "ccl-5"],
+    "cpd_domains": ["flywheel_teaching", "stage_assessment", "mece_diagnosis", "sop_compliance", "pipl_data_protection"],
+    "sop05_guard": "coach_development.sop05_training_completed 必须追踪 — ⑤第5步=流程 道层培训合规守护",
+    "pipl_constraints": "PIPL 合规: 职业发展记录中所有 coach_id 为平台匿名 ID; 不含真实姓名/身份证/联系方式"
+  }
+}
