@@ -59,5 +59,24 @@
 - 道层漂移: 0 命中 ✅ | JSON 格式: 有效 ✅
 
 ### [Next] coaching-toolkit
-- [ ] validate-sop-completeness.py 扩展: 校验 sop-skill-catalog.json 条目与 SOP 文件一致性
+- [x] validate-sop-completeness.py 扩展: 校验 sop-skill-catalog.json 条目与 SOP 文件一致性 ✅
 - [ ] colleague-skill 正式接口对接(Phase 0.5)
+
+---
+
+## 2026-05-21T00:00:00Z · coaching-toolkit — validate-sop-completeness.py v1.1 交叉验证
+
+### feat(scripts): validate-sop-completeness.py v1.1 — sop-skill-catalog.json 交叉验证
+
+- `scripts/validate-sop-completeness.py` 升级 v1.0 → v1.1
+  - [5] 新增 `validate_sop_skill_catalog()` — sop-skill-catalog.json 交叉验证
+    - $schema 字段存在性
+    - 条目总数 14/14 (八步8 + 飞轮6)
+    - catalog → 文件: 14/14 file 路径存在
+    - SOP_05.eight_step_name='流程' + eight_step_id=5 ⑤守护
+    - 六飞轮 name 枚举守护 (合规/非法变体检测)
+    - 文件 → catalog 反向检查: 14/14 每个 SOP 文件有对应条目
+  - 本地验证: 54/54 通过 ✅
+
+- [道层] 0 触发 ✅ | JSON 格式: 有效 ✅
+- [Next] colleague-skill 正式接口对接(Phase 0.5)
