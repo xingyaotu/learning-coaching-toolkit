@@ -1,0 +1,187 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/sop-skill-catalog.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.0 道层零漂移",
+  "last_updated": "2026-05-20",
+  "_meta": {
+    "total_sops": 14,
+    "eight_step_sops": 8,
+    "flywheel_sops": 6,
+    "interface": "colleague-skill v1.0"
+  },
+  "eight_step_sops": [
+    {
+      "sop_id": "SOP_01",
+      "name": "SOP_01-穿透",
+      "description": "八步学习法第1步:概念穿透 SOP — 帮助学员突破表层记忆,深度理解知识点本质",
+      "eight_step_id": 1,
+      "eight_step_name": "穿透",
+      "stage_range": [1, 3],
+      "primary_flywheel": "预习飞轮",
+      "flywheel_id": 2,
+      "use_when": "学员处于不会(1)至清晰(3)阶;概念模糊无法用自己语言表达;需要从根本建立直觉锚点",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "file": "coaching-sops/eight-step-sops/SOP_01-穿透.md"
+    },
+    {
+      "sop_id": "SOP_02",
+      "name": "SOP_02-提取",
+      "description": "八步学习法第2步:关键信息提取 SOP — 从题目/材料中精准定位核心信息",
+      "eight_step_id": 2,
+      "eight_step_name": "提取",
+      "stage_range": [2, 4],
+      "primary_flywheel": "预习飞轮",
+      "flywheel_id": 2,
+      "use_when": "学员处于模糊(2)至框架(4)阶;信息提取不全或过度提取导致方向偏差;需训练信息筛选能力",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "file": "coaching-sops/eight-step-sops/SOP_02-提取.md"
+    },
+    {
+      "sop_id": "SOP_03",
+      "name": "SOP_03-整理",
+      "description": "八步学习法第3步:知识结构整理 SOP — 构建 MECE 知识体系框架",
+      "eight_step_id": 3,
+      "eight_step_name": "整理",
+      "stage_range": [3, 4],
+      "primary_flywheel": "复习飞轮",
+      "flywheel_id": 3,
+      "use_when": "学员处于清晰(3)至框架(4)阶;知识点碎片化无法系统化;需用 MECE 框架整合",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "file": "coaching-sops/eight-step-sops/SOP_03-整理.md"
+    },
+    {
+      "sop_id": "SOP_04",
+      "name": "SOP_04-审题",
+      "description": "八步学习法第4步:审题分析 SOP — 精准解码题目意图,建立解题策略",
+      "eight_step_id": 4,
+      "eight_step_name": "审题",
+      "stage_range": [4, 5],
+      "primary_flywheel": "作业飞轮",
+      "flywheel_id": 5,
+      "use_when": "学员处于框架(4)至运用(5)阶;审题不准导致解题方向错误;需系统训练审题五步法",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "file": "coaching-sops/eight-step-sops/SOP_04-审题.md"
+    },
+    {
+      "sop_id": "SOP_05",
+      "name": "SOP_05-流程",
+      "description": "八步学习法第5步:解题流程 SOP — 标准化执行解题步骤(★第5步=流程)",
+      "eight_step_id": 5,
+      "eight_step_name": "流程",
+      "stage_range": [4, 6],
+      "primary_flywheel": "作业飞轮",
+      "flywheel_id": 5,
+      "use_when": "学员处于框架(4)至熟练(6)阶;思路有但执行步骤混乱;需建立可重复的标准解题流程",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "★_note": "第5步名称=流程 ✅ 道层合规",
+      "file": "coaching-sops/eight-step-sops/SOP_05-流程.md"
+    },
+    {
+      "sop_id": "SOP_06",
+      "name": "SOP_06-批改",
+      "description": "八步学习法第6步:批改复盘 SOP — MECE 四维归因错误,防止重复犯错",
+      "eight_step_id": 6,
+      "eight_step_name": "批改",
+      "stage_range": [4, 6],
+      "primary_flywheel": "作业飞轮",
+      "flywheel_id": 5,
+      "use_when": "学员处于框架(4)至熟练(6)阶;错题处理停留在抄答案层面;需建立 MECE 归因错题机制",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "file": "coaching-sops/eight-step-sops/SOP_06-批改.md"
+    },
+    {
+      "sop_id": "SOP_07",
+      "name": "SOP_07-分析",
+      "description": "八步学习法第7步:深度分析 SOP — 举一反三,跨题型迁移运用",
+      "eight_step_id": 7,
+      "eight_step_name": "分析",
+      "stage_range": [5, 7],
+      "primary_flywheel": "考试飞轮",
+      "flywheel_id": 6,
+      "use_when": "学员处于运用(5)至创新(7)阶;题型迁移能力弱,无法举一反三;需建立跨题型分析框架",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "file": "coaching-sops/eight-step-sops/SOP_07-分析.md"
+    },
+    {
+      "sop_id": "SOP_08",
+      "name": "SOP_08-估分",
+      "description": "八步学习法第8步:估分预判 SOP — 考前精准估分,优化答题策略",
+      "eight_step_id": 8,
+      "eight_step_name": "估分",
+      "stage_range": [5, 7],
+      "primary_flywheel": "考试飞轮",
+      "flywheel_id": 6,
+      "use_when": "学员处于运用(5)至创新(7)阶;考前焦虑或估分失准;需系统训练得分点分析与风险预判",
+      "allowed_tools": ["nuwa-skill", "DeepTutor", "nanobot"],
+      "file": "coaching-sops/eight-step-sops/SOP_08-估分.md"
+    }
+  ],
+  "flywheel_sops": [
+    {
+      "sop_id": "SOP_FW1",
+      "name": "SOP_FW1-计划飞轮",
+      "description": "六飞轮第1飞轮:计划飞轮 SOP — 建立高质量学习计划执行体系",
+      "six_flywheel_id": 1,
+      "six_flywheel_name": "计划",
+      "stage_range": [1, 7],
+      "use_when": "需要制定学期/月/周学习计划;现有计划执行率低或方向偏差;需 JUMEQ 目标框架驱动计划",
+      "allowed_tools": ["colleague-skill", "nuwa-skill", "gbrain"],
+      "file": "coaching-sops/flywheel-sops/SOP_FW1-计划飞轮.md"
+    },
+    {
+      "sop_id": "SOP_FW2",
+      "name": "SOP_FW2-预习飞轮",
+      "description": "六飞轮第2飞轮:预习飞轮 SOP — 高效预习建立知识脚手架",
+      "six_flywheel_id": 2,
+      "six_flywheel_name": "预习",
+      "stage_range": [1, 4],
+      "use_when": "学员处于不会(1)至框架(4)阶;课前预习效果差或跳过预习;需通过SOP_01穿透+SOP_02提取建立预习框架",
+      "allowed_tools": ["nuwa-skill", "gbrain"],
+      "file": "coaching-sops/flywheel-sops/SOP_FW2-预习飞轮.md"
+    },
+    {
+      "sop_id": "SOP_FW3",
+      "name": "SOP_FW3-复习飞轮",
+      "description": "六飞轮第3飞轮:复习飞轮 SOP — 主动重建式复习超越被动重读",
+      "six_flywheel_id": 3,
+      "six_flywheel_name": "复习",
+      "stage_range": [2, 6],
+      "use_when": "学员处于模糊(2)至熟练(6)阶;复习停留在重读层面效果不佳;需 Karpathy 重建式复习法",
+      "allowed_tools": ["nuwa-skill", "gbrain"],
+      "file": "coaching-sops/flywheel-sops/SOP_FW3-复习飞轮.md"
+    },
+    {
+      "sop_id": "SOP_FW4",
+      "name": "SOP_FW4-听课飞轮",
+      "description": "六飞轮第4飞轮:听课飞轮 SOP — 课堂主动参与最大化学习增益",
+      "six_flywheel_id": 4,
+      "six_flywheel_name": "听课",
+      "stage_range": [1, 5],
+      "use_when": "学员处于不会(1)至运用(5)阶;课堂注意力分散或被动接收;需建立带问题听课的主动参与机制",
+      "allowed_tools": ["nuwa-skill", "gbrain", "Hermes"],
+      "file": "coaching-sops/flywheel-sops/SOP_FW4-听课飞轮.md"
+    },
+    {
+      "sop_id": "SOP_FW5",
+      "name": "SOP_FW5-作业飞轮",
+      "description": "六飞轮第5飞轮:作业飞轮 SOP — 将作业转化为高价值刻意练习",
+      "six_flywheel_id": 5,
+      "six_flywheel_name": "作业",
+      "stage_range": [3, 6],
+      "use_when": "学员处于清晰(3)至熟练(6)阶;作业完成质量低或仅追求完成率;需 SOP_04-SOP_06 闭环提升作业价值",
+      "allowed_tools": ["nuwa-skill", "gbrain", "Hermes", "colleague-skill"],
+      "file": "coaching-sops/flywheel-sops/SOP_FW5-作业飞轮.md"
+    },
+    {
+      "sop_id": "SOP_FW6",
+      "name": "SOP_FW6-考试飞轮",
+      "description": "六飞轮第6飞轮:考试飞轮 SOP — 考前冲刺、考中策略、考后分析三段闭环",
+      "six_flywheel_id": 6,
+      "six_flywheel_name": "考试",
+      "stage_range": [4, 7],
+      "use_when": "学员处于框架(4)至创新(7)阶;考前焦虑或考场发挥失常;需 SOP_07-SOP_08 支撑的三段闭环",
+      "allowed_tools": ["nuwa-skill", "gbrain", "Hermes", "colleague-skill"],
+      "file": "coaching-sops/flywheel-sops/SOP_FW6-考试飞轮.md"
+    }
+  ]
+}

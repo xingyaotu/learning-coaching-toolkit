@@ -1,0 +1,172 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-goal-schema.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.4 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练目标管理 schema — 为每个学生-科目对定义阶位晋升目标与里程碑",
+    "goal_framework": "基于七阶掌握度的 SMART 目标设定",
+    "privacy_note": "PIPL 合规: student_id 为平台匿名 ID; 不存储个人身份信息",
+    "usage": "assessment 阶位评估 → 设定晋升目标 → coaching 执行 → 阶位复评 → 目标完成"
+  },
+  "schema_definitions": {
+    "coaching_goal": {
+      "description": "单个学生-科目的教练目标记录",
+      "fields": {
+        "goal_id": {"type": "string", "format": "uuid-v4", "required": true},
+        "student_id": {"type": "string", "required": true, "note": "平台匿名 ID"},
+        "subject": {"type": "string", "required": true},
+        "goal_created_at": {"type": "string", "format": "ISO 8601 datetime"},
+        "baseline_assessment_id": {"type": "string", "note": "触发目标设定的评估记录 ID"},
+        "baseline_stage": {"type": "integer", "range": [1, 7], "required": true},
+        "baseline_stage_name": {"type": "string", "required": true},
+        "target_stage": {"type": "integer", "range": [1, 7], "required": true},
+        "target_stage_name": {"type": "string", "required": true},
+        "target_deadline": {"type": "string", "format": "ISO 8601 date", "note": "目标完成日期"},
+        "primary_sops": {
+          "type": "array",
+          "items": {
+            "sop_ref": {"type": "string", "note": "e.g. sop-05 or sop-fw3"},
+            "priority": {"type": "string", "enum": ["必做", "强化", "巩固", "精进"]}
+          }
+        },
+        "success_criteria": {
+          "type": "object",
+          "fields": {
+            "target_theta_min": {"type": "number", "note": "目标阶位所需最低 θ 值"},
+            "confidence_required": {"type": "number", "range": [0.5, 1.0]},
+            "assessment_verification": {"type": "boolean", "note": "是否需要正式测评验证"}
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "completed", "suspended", "revised"],
+          "required": true
+        },
+        "milestones": {
+          "type": "array",
+          "items": {
+            "milestone_id": {"type": "string"},
+            "description": {"type": "string"},
+            "target_date": {"type": "string", "format": "ISO 8601 date"},
+            "achieved": {"type": "boolean"},
+            "achieved_at": {"type": "string", "format": "ISO 8601 datetime", "nullable": true}
+          }
+        }
+      }
+    },
+    "goal_revision_record": {
+      "description": "目标修订记录 — 当阶位评估结果不符预期时的调整",
+      "fields": {
+        "revision_id": {"type": "string", "format": "uuid-v4"},
+        "goal_id": {"type": "string"},
+        "revision_date": {"type": "string", "format": "ISO 8601 date"},
+        "reason": {"type": "string", "enum": ["ahead_of_schedule", "behind_schedule", "strategy_change", "external_factors"]},
+        "old_target_stage": {"type": "integer", "range": [1, 7]},
+        "new_target_stage": {"type": "integer", "range": [1, 7]},
+        "old_deadline": {"type": "string"},
+        "new_deadline": {"type": "string"}
+      }
+    }
+  },
+  "goal_templates": [
+    {
+      "template_id": "gtpl-1to2",
+      "description": "阶1→阶2 基础建立目标模板",
+      "baseline_stage": 1, "target_stage": 2,
+      "recommended_sessions": 4,
+      "recommended_sops": [
+        {"sop_ref": "sop-fw1", "priority": "必做"},
+        {"sop_ref": "sop-fw2", "priority": "必做"},
+        {"sop_ref": "sop-fw4", "priority": "必做"},
+        {"sop_ref": "sop-01", "priority": "强化"}
+      ],
+      "success_criteria": {"confidence_required": 0.60, "assessment_verification": true}
+    },
+    {
+      "template_id": "gtpl-2to3",
+      "description": "阶2→阶3 清晰化目标模板",
+      "baseline_stage": 2, "target_stage": 3,
+      "recommended_sessions": 3,
+      "recommended_sops": [
+        {"sop_ref": "sop-fw2", "priority": "强化"},
+        {"sop_ref": "sop-fw3", "priority": "必做"},
+        {"sop_ref": "sop-fw4", "priority": "强化"},
+        {"sop_ref": "sop-01", "priority": "强化"},
+        {"sop_ref": "sop-02", "priority": "必做"}
+      ],
+      "success_criteria": {"confidence_required": 0.65, "assessment_verification": true}
+    },
+    {
+      "template_id": "gtpl-3to4",
+      "description": "阶3→阶4 框架构建目标模板",
+      "baseline_stage": 3, "target_stage": 4,
+      "recommended_sessions": 3,
+      "recommended_sops": [
+        {"sop_ref": "sop-fw3", "priority": "强化"},
+        {"sop_ref": "sop-fw4", "priority": "巩固"},
+        {"sop_ref": "sop-fw5", "priority": "必做"},
+        {"sop_ref": "sop-02", "priority": "强化"},
+        {"sop_ref": "sop-03", "priority": "必做"}
+      ],
+      "success_criteria": {"confidence_required": 0.70, "assessment_verification": true}
+    },
+    {
+      "template_id": "gtpl-4to5",
+      "description": "阶4→阶5 运用提升目标模板",
+      "baseline_stage": 4, "target_stage": 5,
+      "recommended_sessions": 4,
+      "recommended_sops": [
+        {"sop_ref": "sop-fw3", "priority": "巩固"},
+        {"sop_ref": "sop-fw5", "priority": "强化"},
+        {"sop_ref": "sop-fw6", "priority": "必做"},
+        {"sop_ref": "sop-04", "priority": "必做"},
+        {"sop_ref": "sop-05", "priority": "必做"},
+        {"sop_ref": "sop-06", "priority": "强化"}
+      ],
+      "success_criteria": {"confidence_required": 0.75, "assessment_verification": true},
+      "_sop05_note": "sop-05 step_name=流程 ✅ ⑤道层守护合规"
+    },
+    {
+      "template_id": "gtpl-5to6",
+      "description": "阶5→阶6 熟练精进目标模板",
+      "baseline_stage": 5, "target_stage": 6,
+      "recommended_sessions": 4,
+      "recommended_sops": [
+        {"sop_ref": "sop-fw5", "priority": "精进"},
+        {"sop_ref": "sop-fw6", "priority": "强化"},
+        {"sop_ref": "sop-05", "priority": "精进"},
+        {"sop_ref": "sop-06", "priority": "强化"},
+        {"sop_ref": "sop-07", "priority": "必做"}
+      ],
+      "success_criteria": {"confidence_required": 0.80, "assessment_verification": true}
+    },
+    {
+      "template_id": "gtpl-6to7",
+      "description": "阶6→阶7 创新突破目标模板",
+      "baseline_stage": 6, "target_stage": 7,
+      "recommended_sessions": 3,
+      "recommended_sops": [
+        {"sop_ref": "sop-fw6", "priority": "精进"},
+        {"sop_ref": "sop-07", "priority": "强化"},
+        {"sop_ref": "sop-08", "priority": "必做"},
+        {"sop_ref": "sop-fw1", "priority": "精进"}
+      ],
+      "success_criteria": {"confidence_required": 0.85, "assessment_verification": true}
+    }
+  ],
+  "validation_rules": {
+    "goal_constraints": [
+      "target_stage > baseline_stage (目标阶位必须高于基线阶位)",
+      "target_stage - baseline_stage ≤ 3 (单目标最大跨度 3 阶, 避免过度乐观)",
+      "status='completed' requires target_stage reached in assessment",
+      "milestones must be ordered by target_date ascending"
+    ],
+    "eight_step_name_constraints": {
+      "note": "推荐 SOP 中 sop-05 对应步骤名称必须为'流程' — ⑤道层守护",
+      "step_id_5_name": "流程"
+    },
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "priority_values": ["必做", "强化", "巩固", "精进"]
+  }
+}
