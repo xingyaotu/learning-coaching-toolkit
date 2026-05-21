@@ -1,0 +1,155 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-progress-tracker.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.7 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练进度追踪 schema — 记录学生每次教练会话的执行情况、阶位变化与 KPI 达成",
+    "pipl_note": "PIPL 合规: student_id 为平台匿名 ID; 不存储姓名/身份证/联系方式等个人敏感信息",
+    "usage": "coaching 执行完成 → 本 schema 记录 → coaching-effectiveness-metrics.json KPI 对比 → 报告"
+  },
+  "record_schemas": {
+    "session_progress_record": {
+      "description": "单次教练会话进度记录",
+      "fields": {
+        "record_id": {"type": "string", "format": "spr-{uuid}", "required": true},
+        "student_id": {"type": "string", "description": "平台匿名 ID", "required": true},
+        "session_id": {"type": "string", "format": "sess-{uuid}", "required": true},
+        "session_date": {"type": "date", "required": true},
+        "goal_id": {"type": "string", "description": "关联 coaching_goal.goal_id", "required": true},
+        "subject": {"type": "string", "enum": ["math", "chinese", "english", "physics", "chemistry", "biology", "history", "geography", "politics"], "required": true},
+        "current_stage": {"type": "integer", "minimum": 1, "maximum": 7, "required": true},
+        "session_template_id": {"type": "string", "description": "关联 coaching-session-templates.json template_id", "required": true},
+        "sop_ref": {"type": "string", "description": "执行的 SOP 参考 (e.g. sop-01, sop-fw3)", "required": true},
+        "eight_step_id": {"type": "integer", "minimum": 1, "maximum": 8, "description": "若为八步 SOP 则填写; 飞轮 SOP 填 null"},
+        "eight_step_name": {"type": "string", "description": "对应八步名称; 第5步必须为'流程'"},
+        "flywheel_id": {"type": "integer", "minimum": 1, "maximum": 6, "description": "若为飞轮 SOP 则填写; 八步 SOP 填 null"},
+        "flywheel_name": {"type": "string", "description": "对应飞轮名称"},
+        "session_duration_min": {"type": "integer", "minimum": 15, "maximum": 90},
+        "activities_completed": {"type": "array", "items": {"type": "string"}, "description": "本次会话完成的活动列表"},
+        "kpi_results": {
+          "type": "array",
+          "description": "KPI 实测结果",
+          "items": {
+            "kpi_id": {"type": "string"},
+            "kpi_name": {"type": "string"},
+            "target": {"type": "number"},
+            "actual": {"type": "number"},
+            "achieved": {"type": "boolean"}
+          }
+        },
+        "student_self_eval": {"type": "number", "minimum": 1, "maximum": 10, "description": "学生自评 1-10"},
+        "coach_eval": {"type": "number", "minimum": 1, "maximum": 10, "description": "教练评分 1-10"},
+        "completion_rate": {"type": "number", "minimum": 0, "maximum": 1, "description": "会话任务完成率"},
+        "session_notes": {"type": "string", "description": "教练会话备注(不含 PII)"},
+        "next_session_focus": {"type": "string", "description": "下次会话重点方向"}
+      }
+    },
+    "stage_progress_record": {
+      "description": "阶位进展记录 — 记录里程碑阶位变化事件",
+      "fields": {
+        "record_id": {"type": "string", "format": "stg-{uuid}", "required": true},
+        "student_id": {"type": "string", "required": true},
+        "goal_id": {"type": "string", "required": true},
+        "subject": {"type": "string", "required": true},
+        "assessment_date": {"type": "date", "required": true},
+        "sessions_completed": {"type": "integer", "minimum": 1, "description": "累计完成会话数"},
+        "previous_stage": {"type": "integer", "minimum": 1, "maximum": 7},
+        "current_stage": {"type": "integer", "minimum": 1, "maximum": 7},
+        "theta_before": {"type": "number", "description": "前次 IRT θ 估计值"},
+        "theta_after": {"type": "number", "description": "本次 IRT θ 估计值"},
+        "theta_delta": {"type": "number", "description": "θ 变化量 = theta_after - theta_before"},
+        "stage_advanced": {"type": "boolean", "description": "是否发生阶位提升"},
+        "advancement_trigger": {"type": "string", "description": "触发阶位提升的关键因素"},
+        "mece_snapshot": {
+          "type": "object",
+          "description": "阶位变化时的 MECE 四维度快照",
+          "properties": {
+            "M_score": {"type": "number"},
+            "E_exec_score": {"type": "number"},
+            "C_theta": {"type": "number"},
+            "E_env_score": {"type": "number"}
+          }
+        }
+      }
+    },
+    "coaching_journey_summary": {
+      "description": "学生教练旅程汇总 — 周期性汇总报告",
+      "fields": {
+        "summary_id": {"type": "string", "format": "cjs-{uuid}", "required": true},
+        "student_id": {"type": "string", "required": true},
+        "goal_id": {"type": "string", "required": true},
+        "subject": {"type": "string", "required": true},
+        "period_start": {"type": "date", "required": true},
+        "period_end": {"type": "date", "required": true},
+        "total_sessions": {"type": "integer", "minimum": 0},
+        "initial_stage": {"type": "integer", "minimum": 1, "maximum": 7},
+        "current_stage": {"type": "integer", "minimum": 1, "maximum": 7},
+        "stage_advances": {"type": "integer", "minimum": 0, "description": "周期内阶位提升次数"},
+        "avg_student_eval": {"type": "number", "minimum": 1, "maximum": 10},
+        "avg_coach_eval": {"type": "number", "minimum": 1, "maximum": 10},
+        "avg_completion_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "flywheels_practiced": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]},
+          "description": "周期内实践的飞轮列表"
+        },
+        "eight_steps_practiced": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1, "maximum": 8},
+          "description": "周期内实践的八步 ID 列表"
+        },
+        "goal_status": {"type": "string", "enum": ["on_track", "ahead", "behind", "completed", "paused"]},
+        "coach_performance_score": {"type": "number", "minimum": 0, "maximum": 1, "description": "教练综合评分 (0-1)"},
+        "key_insights": {"type": "array", "items": {"type": "string"}, "description": "周期关键洞察(不含 PII)"},
+        "recommended_adjustments": {"type": "array", "items": {"type": "string"}, "description": "建议调整项"}
+      }
+    }
+  },
+  "tracker_templates": [
+    {
+      "template_id": "tpl-weekly-review",
+      "template_name": "周度进度回顾",
+      "frequency": "weekly",
+      "required_records": ["session_progress_record"],
+      "kpi_check": ["avg_completion_rate", "avg_student_eval"],
+      "trigger_stage_review": "sessions_completed % 4 == 0",
+      "description": "每周汇总本周会话记录，检查 KPI 达成情况"
+    },
+    {
+      "template_id": "tpl-milestone-check",
+      "template_name": "里程碑阶位检查",
+      "frequency": "per_4_sessions",
+      "required_records": ["session_progress_record", "stage_progress_record"],
+      "kpi_check": ["stage_advanced", "theta_delta"],
+      "min_theta_delta": 0.30,
+      "description": "每4次会话后进行 IRT 重评，更新 stage_progress_record"
+    },
+    {
+      "template_id": "tpl-monthly-summary",
+      "template_name": "月度教练旅程汇总",
+      "frequency": "monthly",
+      "required_records": ["session_progress_record", "stage_progress_record", "coaching_journey_summary"],
+      "kpi_check": ["coach_performance_score", "stage_advances", "goal_status"],
+      "description": "月度全量汇总，生成 coaching_journey_summary 并计算教练综合评分"
+    }
+  ],
+  "data_retention_rules": {
+    "session_progress_record": "retain_months: 24",
+    "stage_progress_record": "retain_months: 60",
+    "coaching_journey_summary": "retain_months: 60",
+    "anonymization_trigger": "student_inactive_months >= 12",
+    "pipl_delete_on_request": true
+  },
+  "validation_rules": {
+    "eight_step_name_constraints": {
+      "step_id_5_name": "流程",
+      "note": "eight_step_id=5 时 eight_step_name 必须为'流程' — ⑤道层守护"
+    },
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "seven_stage_range": "current_stage ∈ [1, 7]",
+    "theta_delta_advancement_threshold": 0.30,
+    "coach_performance_formula": "0.4 * stage_advancement_rate + 0.3 * avg_session_quality + 0.2 * student_retention + 0.1 * goal_completion_rate",
+    "pipl_constraints": "student_id 为平台匿名 ID; 不存储真实姓名/联系方式/身份证号"
+  }
+}

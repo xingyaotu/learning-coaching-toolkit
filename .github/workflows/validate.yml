@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.7 | JSON 验证 + 内容检查 + 进度追踪 schema 验证 + 报告模板 schema 验证 + 有效性指标验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,27 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  progress-tracker:
+    name: 教练进度追踪 schema 验证(七阶进展/六飞轮/⑤守护/MECE/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行进度追踪 schema 验证脚本
+        run: python3 scripts/validate-progress-tracker.py
+
+  report-template:
+    name: 教练报告模板 schema 验证(6类报告/四门户权限/θ排除/⑤守护/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行报告模板 schema 验证脚本
+        run: python3 scripts/validate-report-template.py
+
+  effectiveness-metrics:
+    name: 教练有效性指标验证(KPI公式/七阶/六飞轮/⑤守护/MECE/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行有效性指标验证脚本
+        run: python3 scripts/validate-effectiveness-metrics.py
