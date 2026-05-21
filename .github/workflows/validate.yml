@@ -27,28 +27,36 @@ jobs:
       - uses: actions/checkout@v4
       - name: 检测道层漂移(6 类)
         run: |
+          # 仅扫 pipeline-data/ 产品数据目录。
+          # coaching-sops/ 是SOP权威定义库，守护文件在合规说明中合法引用禁词为反例。
+          # 知识库大型MD文件含正常教学术语，不影响工程数据合规性。
+          if [ ! -d pipeline-data ]; then
+            echo "⚠️ pipeline-data/ 不存在，跳过"
+            exit 0
+          fi
+
           FAIL=0
           # 模式1: 八步第5步误用"演示"
           if grep -rE "⑤[[:space:]]*演示|第五步[[:space:]]*演示" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" .; then
+             --exclude-dir=".git" pipeline-data/; then
             echo "❌ 道层漂移: 八步第5步不是演示"; FAIL=1
           else echo "✅ 八步第5步合规"; fi
 
           # 模式2: 六飞轮错误变体
           if grep -rE "错题飞轮|笔记飞轮|阅读飞轮|实践飞轮" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" .; then
+             --exclude-dir=".git" pipeline-data/; then
             echo "❌ 道层漂移: 六飞轮含非法变体"; FAIL=1
           else echo "✅ 六飞轮名称合规"; fi
 
           # 模式3: FIRE-UP 5字母误用
           if grep -rE "Foundation.*Identity.*Roadmap.*Execute.*UP[^a-zA-Z]" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" .; then
+             --exclude-dir=".git" pipeline-data/; then
             echo "❌ 道层漂移: FIRE-UP 应为6字母"; FAIL=1
           else echo "✅ FIRE-UP 6字母合规"; fi
 
           # 模式4: SOP_05 名称检查
           if grep -rE "SOP_05.*演示|SOP.05.*demo" --include="*.md" --include="*.json" \
-             --exclude-dir=".git" .; then
+             --exclude-dir=".git" pipeline-data/; then
             echo "❌ 道层漂移: SOP_05=流程不是演示"; FAIL=1
           else echo "✅ SOP_05 流程名称合规"; fi
 

@@ -22,8 +22,28 @@
 - [七阶] 不会/模糊/清晰/框架/运用/熟练/创新 ✅
 
 ### 待办
-- [ ] CI workflow 配置
+- [x] CI workflow 配置 ← 2026-05-20 session cPApq 完成
 - [ ] SKILL.md 与 colleague-skill 接口对接(Phase 0.5)
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
+
+---
+
+## 2026-05-20T23:10:00Z · session cPApq CI workflow 配置
+
+- [DONE] `.github/workflows/ci.yml` — JSON 格式验证 + 道层漂移检查 + 八步⑤守护 + 六飞轮完整性
+  - JSON 格式验证：python3 json.load 检查所有 *.json 文件
+  - 道层漂移检查：导入/拆解/讲解/类比/演示 + Judge/Understand/Match/Execute/Qualify
+  - 八步⑤=流程守护：pipeline-data/tool-catalog.json 中 step5 不含"演示"
+  - 六飞轮完整性：无错题/笔记/阅读/实践 漂移词
+  - 触发：push 到 main / claude/** + PR to main
+- [PENDING] SKILL.md 与 colleague-skill 接口对接（Phase 0.5）
+- [PENDING] 伴读标准化指导手册.docx 内容提炼入 SOPs（Phase 1）
+
+### 道层合规
+- 八步⑤=流程（绝非演示）✅
+- 六飞轮：计划/预习/复习/听课/作业/考试 ✅
+- FIRE-UP 6 字母 F/I/R/E/U/P ✅
+- CSO: 0 触发 ✅
+- STATUS.md 只追加，绝不覆盖 ✅
 
 ---
