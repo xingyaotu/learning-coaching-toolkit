@@ -38,7 +38,7 @@ portals: [xyt-coach]
 
 ### 步骤 4：工具与平台说明
 
-1. 演示 xyt-student 端操作路径
+1. 引导学员操作 xyt-student 端功能路径
 2. 说明 Hermes Agent 交互规则
 3. 确认家长端（xyt-parent）通知设置
 
@@ -51,7 +51,7 @@ portals: [xyt-coach]
 ### 步骤 6：入学完成确认
 
 1. 学员/家长签署学习承诺（FIRE-UP 六维）
-2. 触发计划飞轮第一圈启动
+2. 触发计划飞轮第一圈含动
 3. 教练备注入学状态：`[ONBOARDED]`
 
 ## 道层合规检查
