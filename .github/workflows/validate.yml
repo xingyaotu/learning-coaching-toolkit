@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.5 | JSON 验证 + 内容检查 + 目标复核 schema 验证 + 教练职业发展 schema 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,19 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  goal-review-schema:
+    name: 教练目标复核 schema 验证(复核字段/⑤守护/七阶/MECE/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练目标复核 schema 验证脚本
+        run: python3 scripts/validate-goal-review-schema.py
+
+  coach-development-schema:
+    name: 教练职业发展 schema 验证(CPD/认证/⑤守护/七阶/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练职业发展 schema 验证脚本
+        run: python3 scripts/validate-coach-development-schema.py
