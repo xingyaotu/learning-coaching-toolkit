@@ -1,0 +1,207 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-certification.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.14 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练认证等级 schema — 定义教练能力认证标准、晋级条件与道层合规考核要求",
+    "pipl_note": "PIPL 合规: 认证记录中 coach_id 为平台匿名 ID; 不含真实姓名或联系方式",
+    "usage": "教练完成培训 → 能力考核 → 认证等级评定 → 定期复核 → 等级晋升"
+  },
+  "certification_levels": [
+    {
+      "level_id": "ccl-1",
+      "level_name": "见习教练",
+      "level_name_en": "Trainee Coach",
+      "rank": 1,
+      "description": "完成基础培训，在督导下开展教练会话",
+      "entry_requirements": {
+        "training_hours_completed": 40,
+        "supervised_sessions_completed": 10,
+        "sop_theory_exam_score_min": 75,
+        "dao_layer_exam_passed": true
+      },
+      "competency_standards": {
+        "sop05_compliance_rate_min": 0.70,
+        "min_session_qa_score": 5.5,
+        "mece_diagnosis_accuracy_min": 0.50,
+        "flywheel_selection_accuracy_min": 0.60
+      },
+      "privileges": ["开展 1:1 教练会话 (需督导在场)", "访问基础工具包"],
+      "_dao_guard": "ccl-1 见习教练 — ⑤第5步=流程 合规率 ≥ 0.70 道层入门守护"
+    },
+    {
+      "level_id": "ccl-2",
+      "level_name": "初级教练",
+      "level_name_en": "Junior Coach",
+      "rank": 2,
+      "description": "独立开展教练会话，SOP 执行稳定达标",
+      "entry_requirements": {
+        "months_at_ccl1": 3,
+        "independent_sessions_completed": 30,
+        "sop05_compliance_rate_min": 0.85,
+        "peer_review_avg_score_min": 6.0,
+        "dao_layer_exam_passed": true
+      },
+      "competency_standards": {
+        "sop05_compliance_rate_min": 0.85,
+        "min_session_qa_score": 6.0,
+        "min_monthly_avg_score": 6.5,
+        "mece_diagnosis_accuracy_min": 0.65,
+        "flywheel_selection_accuracy_min": 0.70
+      },
+      "privileges": [
+        "独立开展 1:1 教练会话",
+        "访问完整工具包",
+        "担任见习教练的配对督导"
+      ],
+      "_dao_guard": "ccl-2 初级教练 — ⑤第5步=流程 合规率 ≥ 0.85 道层稳定守护"
+    },
+    {
+      "level_id": "ccl-3",
+      "level_name": "中级教练",
+      "level_name_en": "Associate Coach",
+      "rank": 3,
+      "description": "精通 SOP 全流程，能处理复杂 MECE 诊断情形",
+      "entry_requirements": {
+        "months_at_ccl2": 6,
+        "independent_sessions_completed": 100,
+        "sop05_compliance_rate_min": 0.92,
+        "supervisor_review_avg_score_min": 7.0,
+        "stage_advancement_rate_min": 0.40,
+        "dao_layer_exam_passed": true
+      },
+      "competency_standards": {
+        "sop05_compliance_rate_min": 0.92,
+        "min_session_qa_score": 6.5,
+        "min_monthly_avg_score": 7.0,
+        "mece_diagnosis_accuracy_min": 0.75,
+        "flywheel_selection_accuracy_min": 0.80,
+        "stage_advancement_rate_min": 0.40
+      },
+      "privileges": [
+        "独立开展 1:1 和 1:3 小组教练",
+        "担任同伴督导主导方",
+        "参与月度校准会议",
+        "访问 MECE 诊断高级工具"
+      ],
+      "_dao_guard": "ccl-3 中级教练 — ⑤第5步=流程 合规率 ≥ 0.92 道层熟练守护"
+    },
+    {
+      "level_id": "ccl-4",
+      "level_name": "高级教练",
+      "level_name_en": "Senior Coach",
+      "rank": 4,
+      "description": "能培训和督导其他教练，承担教练质量保证职责",
+      "entry_requirements": {
+        "months_at_ccl3": 12,
+        "independent_sessions_completed": 300,
+        "sop05_compliance_rate_min": 0.95,
+        "qa_calibration_sessions_participated": 4,
+        "coaches_mentored_min": 3,
+        "dao_layer_exam_passed": true,
+        "supervisor_certification": true
+      },
+      "competency_standards": {
+        "sop05_compliance_rate_min": 0.95,
+        "min_session_qa_score": 7.0,
+        "min_monthly_avg_score": 7.5,
+        "mece_diagnosis_accuracy_min": 0.85,
+        "flywheel_selection_accuracy_min": 0.88,
+        "stage_advancement_rate_min": 0.55
+      },
+      "privileges": [
+        "所有教练权限",
+        "开展 qar-supervisor 评审",
+        "参与 qar-calibration 校准会设计",
+        "审阅和批准 L3+ 升级处置方案",
+        "参与 pipeline-data schema 更新建议"
+      ],
+      "_dao_guard": "ccl-4 高级教练 — ⑤第5步=流程 合规率 ≥ 0.95 道层精通守护"
+    },
+    {
+      "level_id": "ccl-5",
+      "level_name": "首席教练",
+      "level_name_en": "Master Coach",
+      "rank": 5,
+      "description": "平台教练体系的最高认证等级，负责道层标准制定与校准",
+      "entry_requirements": {
+        "months_at_ccl4": 18,
+        "independent_sessions_completed": 600,
+        "sop05_compliance_rate_min": 0.98,
+        "published_coaching_insights_min": 2,
+        "dao_layer_exam_passed": true,
+        "platform_committee_approval": true
+      },
+      "competency_standards": {
+        "sop05_compliance_rate_min": 0.98,
+        "min_session_qa_score": 8.0,
+        "min_monthly_avg_score": 8.0,
+        "mece_diagnosis_accuracy_min": 0.90,
+        "flywheel_selection_accuracy_min": 0.92,
+        "stage_advancement_rate_min": 0.65
+      },
+      "privileges": [
+        "全部教练权限",
+        "主导 qar-calibration 校准会议",
+        "审批道层标准更新 (六飞轮/七阶/⑤流程名称)",
+        "审批 pipeline-data schema 重大变更"
+      ],
+      "_dao_guard": "ccl-5 首席教练 — ⑤第5步=流程 合规率 ≥ 0.98 道层守护最高等级"
+    }
+  ],
+  "dao_layer_exam_content": {
+    "description": "道层合规考试内容 — 所有等级均须通过",
+    "topics": [
+      "八步 ⑤第5步=流程名称 (区分'演示'与'流程')",
+      "六飞轮严格枚举: 计划/预习/复习/听课/作业/考试",
+      "七阶阶位判断: 不会/模糊/清晰/框架/运用/熟练/创新",
+      "MECE 四维度: M-动力/E-执行力/C-能力/E-环境",
+      "PIPL 合规: 匿名 ID 使用规范",
+      "升级协议触发条件识别"
+    ],
+    "passing_score": 80,
+    "_dao_guard": "道层考试涵盖 ⑤第5步=流程守护 — 考题不得将'流程'误写为'演示'"
+  },
+  "certification_record_schema": {
+    "description": "教练认证记录结构",
+    "fields": {
+      "cert_id": {"type": "string", "pattern": "^CERT-[0-9]{8}-[A-Z0-9]{6}$"},
+      "coach_id": {"type": "string", "description": "平台匿名 coach_id"},
+      "level_id": {
+        "type": "string",
+        "enum": ["ccl-1", "ccl-2", "ccl-3", "ccl-4", "ccl-5"]
+      },
+      "certified_at": {"type": "string", "format": "date"},
+      "expires_at": {"type": "string", "format": "date"},
+      "sop05_compliance_rate_at_cert": {"type": "number", "minimum": 0, "maximum": 1},
+      "dao_layer_exam_score": {"type": "number", "minimum": 0, "maximum": 100},
+      "certifying_authority": {
+        "type": "string",
+        "enum": ["auto_system", "supervisor", "committee"]
+      },
+      "status": {
+        "type": "string",
+        "enum": ["active", "expired", "suspended", "revoked"]
+      }
+    }
+  },
+  "recertification_cycle": {
+    "ccl-1": {"months": 12, "requirements": "重新通过道层考试 + 10次会话复核"},
+    "ccl-2": {"months": 12, "requirements": "重新通过道层考试 + sop05_compliance_rate ≥ 0.85"},
+    "ccl-3": {"months": 18, "requirements": "重新通过道层考试 + supervisor_review ≥ 7.0"},
+    "ccl-4": {"months": 24, "requirements": "重新通过道层考试 + 主持 1 次 calibration 会议"},
+    "ccl-5": {"months": 36, "requirements": "committee 年度评审 + 道层标准贡献记录"}
+  },
+  "validation_rules": {
+    "certification_levels_count": 5,
+    "rank_order": "ccl-1 < ccl-2 < ccl-3 < ccl-4 < ccl-5 (rank 1-5 递增)",
+    "sop05_compliance_progression": "0.70 → 0.85 → 0.92 → 0.95 → 0.98 (各等级递增)",
+    "dao_layer_exam_mandatory_for_all_levels": true,
+    "five_level_ids": ["ccl-1", "ccl-2", "ccl-3", "ccl-4", "ccl-5"],
+    "sop05_guard": "各认证等级 sop05_compliance_rate_min 递增 — ⑤第5步=流程合规率道层守护",
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "pipl_constraints": "coach 认证记录中 coach_id 为平台匿名 ID; PIPL 合规: 不含真实个人识别信息"
+  }
+}

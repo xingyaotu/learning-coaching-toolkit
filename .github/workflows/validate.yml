@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.10 | JSON 验证 + 内容检查 + 认证 schema 验证 + 会话模板验证 + colleague-skills 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,27 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  certification-schema:
+    name: 教练认证等级 schema 验证(5等级/⑤守护递增/七阶/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行认证等级 schema 验证脚本
+        run: python3 scripts/validate-certification-schema.py
+
+  session-templates:
+    name: 教练会话模板验证(14模板/八步+六飞轮/⑤守护/skill_interface)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行会话模板验证脚本
+        run: python3 scripts/validate-session-templates.py
+
+  colleague-skills:
+    name: colleague-skills SKILL.md 完整性验证(14文件/八步8+飞轮6)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行colleague-skills验证脚本
+        run: python3 scripts/validate-colleague-skills.py
