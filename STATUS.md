@@ -114,3 +114,12 @@
 - 本地验证: 全部通过 ✅
 
 - [道层] 0触发 ✅ | [Next] colleague-skill Phase 1 正式注册接口
+
+## 2026-05-21T05:30:00Z · coaching-toolkit — Stage→SOP 路由矩阵 Phase 1
+### feat(pipeline-data+scripts+ci): stage-to-sop-routing.json — 七阶→SOP 路由矩阵 + CI v5.2
+- pipeline-data/stage-to-sop-routing.json: 七阶×六飞轮×八步 路由矩阵
+  - 7阶位各含: primary_flywheels/eight_step_focus/intervention_strategy/confidence_required
+  - ⑤守护: step 5 = 流程 ✅
+  - 六飞轮枚举合规 ✅ | confidence_required 递进 0.60→0.90 ✅
+- scripts/validate-stage-routing.py: 59项验证全通过
+- .github/workflows/validate.yml → v5.2: 新增 stage-routing CI job

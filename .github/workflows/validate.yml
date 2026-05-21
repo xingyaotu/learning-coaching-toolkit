@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.1 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口
+# 道层 Compliance: v5.2 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -71,3 +71,11 @@ jobs:
         run: pip install pyyaml --quiet
       - name: 运行 colleague-skill 验证脚本
         run: python3 scripts/validate-colleague-skills.py
+
+  stage-routing:
+    name: Stage→SOP 路由矩阵验证(七阶×飞轮×八步 合规)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行 Stage→SOP 路由验证脚本
+        run: python3 scripts/validate-stage-routing.py

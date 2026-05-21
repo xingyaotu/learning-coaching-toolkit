@@ -1,0 +1,122 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/stage-to-sop-routing.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.1 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "Phase 1 七阶→SOP 路由矩阵 — 将测评所得七阶位映射到推荐 SOP/飞轮干预策略",
+    "stage_system": "七阶掌握度: 1不会/2模糊/3清晰/4框架/5运用/6熟练/7创新",
+    "routing_logic": "primary_flywheels 为首推飞轮; eight_step_focus 为重点八步; confidence_required 为推进到下一阶所需最低把握度",
+    "usage": "assessment 结果 → stage_id → 本矩阵 → coaching-toolkit SOP 推荐"
+  },
+  "routing_matrix": [
+    {
+      "stage_id": 1,
+      "stage_name": "不会",
+      "stage_description": "对知识点完全陌生，无从下手",
+      "primary_flywheels": ["计划", "预习", "听课"],
+      "eight_step_focus": [
+        {"step_id": 1, "step_name": "穿透", "priority": "必做"}
+      ],
+      "intervention_strategy": "先建立基础认知框架，重点执行预习穿透+听课专注，配合计划飞轮建立学习节奏",
+      "confidence_required": 0.60,
+      "expected_sessions": 4,
+      "next_stage_indicators": ["能用自己的话描述知识点", "听课时能跟上节奏"]
+    },
+    {
+      "stage_id": 2,
+      "stage_name": "模糊",
+      "stage_description": "对知识点有印象但表述不清，应用出错",
+      "primary_flywheels": ["预习", "听课", "复习"],
+      "eight_step_focus": [
+        {"step_id": 1, "step_name": "穿透", "priority": "强化"},
+        {"step_id": 2, "step_name": "提取", "priority": "必做"}
+      ],
+      "intervention_strategy": "强化概念提取与整理，通过复习飞轮巩固听课输入，建立清晰的知识框架",
+      "confidence_required": 0.65,
+      "expected_sessions": 3,
+      "next_stage_indicators": ["能准确定义知识点", "能列出关键步骤"]
+    },
+    {
+      "stage_id": 3,
+      "stage_name": "清晰",
+      "stage_description": "能清楚描述知识点，但遇到变式题容易出错",
+      "primary_flywheels": ["预习", "复习", "听课"],
+      "eight_step_focus": [
+        {"step_id": 2, "step_name": "提取", "priority": "强化"},
+        {"step_id": 3, "step_name": "整理", "priority": "必做"}
+      ],
+      "intervention_strategy": "深度整理知识结构，建立知识点关联图，通过复习飞轮固化理解",
+      "confidence_required": 0.70,
+      "expected_sessions": 3,
+      "next_stage_indicators": ["能绘制知识框架图", "能解释知识点之间的关联"]
+    },
+    {
+      "stage_id": 4,
+      "stage_name": "框架",
+      "stage_description": "有完整知识框架，基本题目能做，综合题不稳定",
+      "primary_flywheels": ["复习", "作业", "听课"],
+      "eight_step_focus": [
+        {"step_id": 3, "step_name": "整理", "priority": "巩固"},
+        {"step_id": 4, "step_name": "审题", "priority": "必做"},
+        {"step_id": 5, "step_name": "流程", "priority": "必做"},
+        {"step_id": 6, "step_name": "批改", "priority": "强化"}
+      ],
+      "intervention_strategy": "重点训练解题流程标准化，通过审题-流程-批改三步循环提升稳定性，作业飞轮提供足量练习量",
+      "confidence_required": 0.75,
+      "expected_sessions": 4,
+      "next_stage_indicators": ["基础题正确率 ≥ 90%", "能识别题型并选择对应解法"]
+    },
+    {
+      "stage_id": 5,
+      "stage_name": "运用",
+      "stage_description": "能稳定解决常规题，综合题有思路但效率不足",
+      "primary_flywheels": ["作业", "考试", "复习"],
+      "eight_step_focus": [
+        {"step_id": 5, "step_name": "流程", "priority": "精进"},
+        {"step_id": 6, "step_name": "批改", "priority": "强化"},
+        {"step_id": 7, "step_name": "分析", "priority": "必做"}
+      ],
+      "intervention_strategy": "引入考试飞轮，在限时条件下强化解题效率；通过错题分析深化薄弱点攻克",
+      "confidence_required": 0.80,
+      "expected_sessions": 4,
+      "next_stage_indicators": ["综合题正确率 ≥ 70%", "解题速度达到考试要求"]
+    },
+    {
+      "stage_id": 6,
+      "stage_name": "熟练",
+      "stage_description": "能高效解决各类题目，偶有盲区，缺乏创新解法",
+      "primary_flywheels": ["考试", "作业"],
+      "eight_step_focus": [
+        {"step_id": 6, "step_name": "批改", "priority": "精进"},
+        {"step_id": 7, "step_name": "分析", "priority": "强化"},
+        {"step_id": 8, "step_name": "估分", "priority": "必做"}
+      ],
+      "intervention_strategy": "通过估分训练元认知能力，分析高难度错题背后的思维盲区，向创新阶冲刺",
+      "confidence_required": 0.85,
+      "expected_sessions": 3,
+      "next_stage_indicators": ["估分误差 ≤ 5分", "能主动发现并修正解法漏洞"]
+    },
+    {
+      "stage_id": 7,
+      "stage_name": "创新",
+      "stage_description": "能创造性解决问题，具备举一反三和教学输出能力",
+      "primary_flywheels": ["考试", "计划"],
+      "eight_step_focus": [
+        {"step_id": 7, "step_name": "分析", "priority": "精进"},
+        {"step_id": 8, "step_name": "估分", "priority": "精进"}
+      ],
+      "intervention_strategy": "维持高水平竞技状态；引导输出教学(以教促学)；通过计划飞轮布局跨科协同",
+      "confidence_required": 0.90,
+      "expected_sessions": 2,
+      "next_stage_indicators": ["能向他人讲清楚复杂题目", "能设计变式题"]
+    }
+  ],
+  "_flywheel_priority_legend": {
+    "必做": "此阶段核心干预，每周至少执行3次",
+    "强化": "重点推进，每周至少执行2次",
+    "巩固": "维持已有成果，每周至少执行1次",
+    "精进": "在现有熟练基础上追求更高质量"
+  },
+  "_routing_usage_note": "路由矩阵由 assess 测评结果驱动; coaching-toolkit SKILL.md 文件实现具体执行接口"
+}
