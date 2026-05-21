@@ -1,0 +1,199 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-platform-analytics.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.23 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练平台分析 schema — 定义全平台教练效果聚合统计结构, 用于平台运营分析与教练质量监控",
+    "pipl_note": "PIPL 合规: 平台分析数据为聚合匿名统计; 不含个体 student_id 或 coach_id 明文; 最小样本量 ≥ 50 才输出",
+    "usage": "每月/每季度运行聚合分析 → 输出平台分析报告 → 更新教练质量基准 → 推送运营看板"
+  },
+  "platform_analytics_schema": {
+    "description": "平台分析报告主体结构",
+    "fields": {
+      "analytics_report_id": {
+        "type": "string",
+        "pattern": "^PANA-[0-9]{6}-[A-Z0-9]{4}$",
+        "required": true
+      },
+      "report_period": {
+        "type": "object",
+        "properties": {
+          "start_date": {"type": "string", "format": "date"},
+          "end_date": {"type": "string", "format": "date"},
+          "period_type": {"type": "string", "enum": ["monthly", "quarterly", "annual"]}
+        },
+        "required": true
+      },
+      "total_active_students": {
+        "type": "integer",
+        "minimum": 50,
+        "description": "统计期内活跃学生总人数",
+        "required": true
+      },
+      "total_sessions_completed": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "统计期内完成会话总数",
+        "required": true
+      },
+      "stage_distribution_platform": {
+        "type": "object",
+        "description": "全平台七阶分布 (比例和 = 1.0)",
+        "properties": {
+          "不会": {"type": "number", "minimum": 0, "maximum": 1},
+          "模糊": {"type": "number", "minimum": 0, "maximum": 1},
+          "清晰": {"type": "number", "minimum": 0, "maximum": 1},
+          "框架": {"type": "number", "minimum": 0, "maximum": 1},
+          "运用": {"type": "number", "minimum": 0, "maximum": 1},
+          "熟练": {"type": "number", "minimum": 0, "maximum": 1},
+          "创新": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "required": true,
+        "_dao_guard": "全平台七阶分布 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 分布和 = 1.0"
+      },
+      "stage_advance_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "统计期内学生七阶晋升率 (晋升人次/总人次)",
+        "_dao_guard": "七阶晋升率 — 七阶: 不会/模糊/清晰/框架/运用/熟练/创新 晋升追踪守护"
+      },
+      "bottleneck_distribution_platform": {
+        "type": "object",
+        "description": "全平台 MECE 主瓶颈分布",
+        "properties": {
+          "M": {"type": "number", "minimum": 0, "maximum": 1},
+          "E_exec": {"type": "number", "minimum": 0, "maximum": 1},
+          "C": {"type": "number", "minimum": 0, "maximum": 1},
+          "E_env": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "required": true,
+        "_dao_guard": "主瓶颈分布 — MECE: M/E_exec/C/E_env 分布和 = 1.0 守护"
+      },
+      "flywheel_mastery_platform_means": {
+        "type": "object",
+        "description": "全平台六飞轮平均掌握度",
+        "properties": {
+          "计划": {"type": "number", "minimum": 0, "maximum": 1},
+          "预习": {"type": "number", "minimum": 0, "maximum": 1},
+          "复习": {"type": "number", "minimum": 0, "maximum": 1},
+          "听课": {"type": "number", "minimum": 0, "maximum": 1},
+          "作业": {"type": "number", "minimum": 0, "maximum": 1},
+          "考试": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "required": true,
+        "_dao_guard": "六飞轮平均掌握度 — 六飞轮: 计划/预习/复习/听课/作业/考试 道层守护"
+      },
+      "sop05_compliance_rate_platform": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "全平台 ⑤第5步=流程 合规率",
+        "_dao_guard": "全平台 ⑤sop05 合规率 — 流程执行全平台合规追踪守护"
+      },
+      "graduation_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "统计期内学生毕业率"
+      },
+      "dropout_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "统计期内学生脱落率"
+      },
+      "avg_sessions_to_graduation": {
+        "type": "number",
+        "minimum": 0,
+        "description": "平均毕业所需会话数"
+      },
+      "most_common_stage_platform": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "全平台最常见七阶阶位 (众数)",
+        "_dao_guard": "最常见七阶阶位 — 严格七阶枚举: 不会/模糊/清晰/框架/运用/熟练/创新"
+      },
+      "most_common_bottleneck_platform": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "全平台最常见 MECE 主瓶颈"
+      },
+      "weakest_flywheel_platform": {
+        "type": "string",
+        "enum": ["计划", "预习", "复习", "听课", "作业", "考试"],
+        "description": "全平台最薄弱飞轮 (平均掌握度最低)",
+        "_dao_guard": "最薄弱飞轮统计 — 六飞轮: 计划/预习/复习/听课/作业/考试 严格枚举"
+      }
+    }
+  },
+  "coach_performance_summary": {
+    "description": "教练表现聚合摘要 (匿名化)",
+    "fields": {
+      "total_active_coaches": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "avg_sop05_compliance_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "全平台教练平均 ⑤流程合规率",
+        "_dao_guard": "教练平均 ⑤sop05 合规率 — 流程执行教练层合规追踪守护"
+      },
+      "avg_student_stage_advance_per_coach": {
+        "type": "number",
+        "minimum": 0,
+        "description": "每位教练平均促成七阶晋升人次"
+      },
+      "certification_distribution": {
+        "type": "object",
+        "description": "教练认证等级分布 (ccl-1 至 ccl-5)",
+        "properties": {
+          "ccl-1": {"type": "number", "minimum": 0, "maximum": 1},
+          "ccl-2": {"type": "number", "minimum": 0, "maximum": 1},
+          "ccl-3": {"type": "number", "minimum": 0, "maximum": 1},
+          "ccl-4": {"type": "number", "minimum": 0, "maximum": 1},
+          "ccl-5": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    }
+  },
+  "trend_analysis": {
+    "description": "趋势分析配置",
+    "stage_distribution_trend": {
+      "description": "七阶分布季度趋势",
+      "periods_required": 4,
+      "stage_enum_guard": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+      "_dao_guard": "七阶分布趋势 — 连续4期七阶分布变化; 阶位名称严格枚举守护"
+    },
+    "flywheel_trend": {
+      "description": "六飞轮平均掌握度趋势",
+      "flywheel_enum_guard": ["计划", "预习", "复习", "听课", "作业", "考试"],
+      "_dao_guard": "六飞轮趋势分析 — 飞轮名称: 计划/预习/复习/听课/作业/考试 严格枚举守护"
+    },
+    "sop05_compliance_trend": {
+      "description": "⑤第5步=流程 合规率趋势",
+      "trend_values": {"type": "string", "enum": ["improving", "stable", "declining"]},
+      "_dao_guard": "sop05 合规率趋势 — ⑤第5步=流程 合规趋势追踪守护"
+    }
+  },
+  "minimum_cell_size_rule": {
+    "description": "最小单元格样本量规则 (防止反向识别个体)",
+    "min_cell_size": 50,
+    "suppression_action": "小于 50 的单元格数据不输出, 标记为 suppressed",
+    "_dao_guard": "最小样本量规则 — PIPL 合规: 防止通过小样本反向识别个体; 最小 50 人"
+  },
+  "validation_rules": {
+    "seven_stage_valid_names": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "mece_dimension_codes": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "stage_distribution_sum_constraint": "stage_distribution_platform 之和必须 = 1.0",
+    "bottleneck_distribution_sum_constraint": "bottleneck_distribution_platform 之和必须 = 1.0",
+    "sop05_guard": "platform_analytics.sop05_compliance_rate_platform 必须追踪 — ⑤第5步=流程 全平台合规守护",
+    "min_cell_size": 50,
+    "certification_levels": ["ccl-1", "ccl-2", "ccl-3", "ccl-4", "ccl-5"],
+    "pipl_constraints": "PIPL 合规: 平台分析数据为聚合匿名统计; 不含个体 student_id 或 coach_id 明文; 最小单元格 50 人"
+  }
+}

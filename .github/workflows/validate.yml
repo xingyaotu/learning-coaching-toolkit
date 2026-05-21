@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.3 | JSON 验证 + 内容检查 + 平台分析 schema 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,11 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  platform-analytics-schema:
+    name: 教练平台分析 schema 验证(七阶/MECE/六飞轮/⑤守护/趋势/最小样本/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练平台分析 schema 验证脚本
+        run: python3 scripts/validate-platform-analytics-schema.py
