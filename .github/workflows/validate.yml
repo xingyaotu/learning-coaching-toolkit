@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.0 | JSON 验证 + 内容检查
+# 道层 Compliance: v5.8 | JSON 验证 + 内容检查 + QA schema 验证 + 入学流程 schema 验证 + 家长参与 schema 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -61,3 +61,27 @@ jobs:
           else echo "✅ SOP_05 流程名称合规"; fi
 
           exit $FAIL
+
+  qa-schema:
+    name: 教练质量保证 schema 验证(5维度/4类评审/⑤守护/七阶/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行QA schema 验证脚本
+        run: python3 scripts/validate-qa-schema.py
+
+  onboarding-schema:
+    name: 教练入学流程 schema 验证(6阶段/⑤守护/七阶/MECE/六飞轮/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行入学流程 schema 验证脚本
+        run: python3 scripts/validate-onboarding-schema.py
+
+  parent-engagement:
+    name: 家长参与 schema 验证(5类沟通/六飞轮/七阶/⑤守护/PIPL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行家长参与 schema 验证脚本
+        run: python3 scripts/validate-parent-engagement.py
