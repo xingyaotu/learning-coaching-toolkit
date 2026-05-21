@@ -1,0 +1,220 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-graduation.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.18 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练毕业/结案 schema — 定义学生完成教练陪伴的毕业标准、结案流程与档案结构",
+    "pipl_note": "PIPL 合规: 毕业档案中所有 student_id 均为平台匿名 ID; 毕业报告不含真实姓名或学校信息",
+    "usage": "学生达到毕业标准 → 教练发起结案 → QA 审核 → 生成毕业档案 → 推送家长报告"
+  },
+  "graduation_criteria": {
+    "description": "学生教练毕业标准定义",
+    "standard_graduation": {
+      "criteria_id": "gc-standard",
+      "criteria_name": "标准毕业",
+      "description": "学生达到目标七阶阶位且六飞轮稳定运转",
+      "requirements": {
+        "target_stage_reached": true,
+        "min_stage_reached": "运用",
+        "stage_sustained_sessions": 3,
+        "flywheel_stability_threshold": 0.70,
+        "sop05_compliance_final_sessions": true,
+        "min_total_sessions": 12
+      },
+      "_dao_guard": "标准毕业 — 目标七阶阶位: 不会/模糊/清晰/框架/运用/熟练/创新; 六飞轮稳定守护"
+    },
+    "early_graduation": {
+      "criteria_id": "gc-early",
+      "criteria_name": "提前毕业",
+      "description": "学生表现卓越, 提前达到或超过目标阶位且自主学习能力充分",
+      "requirements": {
+        "stage_exceeded_target": true,
+        "min_stage_reached": "熟练",
+        "flywheel_mastery_threshold": 0.85,
+        "self_directed_learning_score": 8.0,
+        "coach_recommendation_required": true,
+        "supervisor_approval_required": true,
+        "min_total_sessions": 8
+      },
+      "_dao_guard": "提前毕业 — 七阶最低熟练; 六飞轮自主掌握度 ≥ 0.85 道层守护"
+    },
+    "milestone_graduation": {
+      "criteria_id": "gc-milestone",
+      "criteria_name": "里程碑毕业",
+      "description": "学生完成特定学习里程碑 (如升学考试) 后结案",
+      "requirements": {
+        "milestone_achieved": true,
+        "milestone_type": {
+          "type": "string",
+          "enum": ["gaokao", "zhongkao", "competition", "enrollment", "semester_end"]
+        },
+        "final_stage_recorded": true,
+        "min_total_sessions": 6
+      },
+      "_dao_guard": "里程碑毕业 — 结案时七阶阶位必须记录; 六飞轮最终状态归档道层守护"
+    }
+  },
+  "graduation_process": {
+    "description": "结案流程 (SOP 执行步骤)",
+    "steps": [
+      "教练评估学生是否满足毕业标准 (七阶/六飞轮/会话数)",
+      "教练完成最终会话并记录 sop05_compliance (⑤第5步=流程)",
+      "生成毕业报告草稿 (含七阶进展/MECE变化/六飞轮完成情况)",
+      "主管审核毕业报告并确认合规",
+      "发送家长毕业通知 (不含 θ 值, 不含 QA 评分数字)",
+      "封存学生档案并标记 graduation_status=graduated"
+    ],
+    "sop05_final_check": {
+      "description": "最终会话 ⑤第5步=流程 执行确认",
+      "_dao_guard": "结案最终会话 — ⑤第5步=流程 必须合规执行; sop05_compliance=true 才可发起毕业"
+    }
+  },
+  "graduation_record_schema": {
+    "description": "毕业档案记录结构",
+    "fields": {
+      "graduation_id": {
+        "type": "string",
+        "pattern": "^GRAD-[0-9]{8}-[A-Z0-9]{6}$",
+        "required": true
+      },
+      "student_id": {
+        "type": "string",
+        "description": "平台匿名 student_id",
+        "required": true
+      },
+      "coach_id": {
+        "type": "string",
+        "description": "平台匿名 coach_id",
+        "required": true
+      },
+      "graduation_date": {
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      "graduation_criteria_id": {
+        "type": "string",
+        "enum": ["gc-standard", "gc-early", "gc-milestone"],
+        "required": true
+      },
+      "total_sessions_completed": {
+        "type": "integer",
+        "minimum": 1,
+        "required": true
+      },
+      "initial_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "入学时七阶阶位",
+        "required": true
+      },
+      "final_stage": {
+        "type": "string",
+        "enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+        "description": "毕业时七阶阶位",
+        "required": true
+      },
+      "stage_gain": {
+        "type": "integer",
+        "description": "七阶跨越阶位数 (final_stage_rank - initial_stage_rank)",
+        "minimum": 0
+      },
+      "primary_bottleneck_resolved": {
+        "type": "string",
+        "enum": ["M", "E_exec", "C", "E_env"],
+        "description": "主要突破的 MECE 瓶颈维度"
+      },
+      "flywheel_completion_summary": {
+        "type": "object",
+        "description": "六飞轮完成情况汇总",
+        "properties": {
+          "计划": {"type": "number", "minimum": 0, "maximum": 1},
+          "预习": {"type": "number", "minimum": 0, "maximum": 1},
+          "复习": {"type": "number", "minimum": 0, "maximum": 1},
+          "听课": {"type": "number", "minimum": 0, "maximum": 1},
+          "作业": {"type": "number", "minimum": 0, "maximum": 1},
+          "考试": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "_dao_guard": "飞轮完成情况 — 六飞轮: 计划/预习/复习/听课/作业/考试 掌握度 [0,1] 归档"
+      },
+      "sop05_final_compliance": {
+        "type": "boolean",
+        "description": "最终会话 ⑤第5步=流程 是否合规",
+        "required": true,
+        "_dao_guard": "毕业档案 — ⑤第5步=流程 最终合规确认守护"
+      },
+      "graduation_status": {
+        "type": "string",
+        "enum": ["pending_review", "approved", "graduated", "deferred", "withdrawn"],
+        "required": true
+      },
+      "parent_notified": {
+        "type": "boolean",
+        "description": "家长是否已收到毕业通知"
+      },
+      "coach_notes": {
+        "type": "string",
+        "description": "教练毕业备注 (匿名化, 不含真实 PII)"
+      }
+    }
+  },
+  "graduation_report_template": {
+    "description": "毕业报告模板 (家长版 — 不含 θ 值和数字 QA 评分)",
+    "sections": [
+      {
+        "section_id": "gr-s1",
+        "title": "学习力成长概述",
+        "content_fields": ["initial_stage", "final_stage", "stage_gain", "total_sessions_completed"]
+      },
+      {
+        "section_id": "gr-s2",
+        "title": "六飞轮成长亮点",
+        "content_fields": ["flywheel_completion_summary"],
+        "_dao_guard": "毕业报告六飞轮部分 — 严格使用: 计划/预习/复习/听课/作业/考试 名称"
+      },
+      {
+        "section_id": "gr-s3",
+        "title": "自主学习能力评估",
+        "content_fields": ["primary_bottleneck_resolved", "coach_notes"]
+      }
+    ],
+    "prohibited_in_report": ["irt_theta_values", "qa_scores_numerical", "other_student_comparisons", "real_name", "school_full_name"],
+    "_dao_guard": "毕业报告 — 不含 θ 值/数字QA评分; 七阶名称严格枚举; 六飞轮名称严格枚举"
+  },
+  "graduation_analytics": {
+    "description": "毕业分析统计 (聚合, 不含个体数据)",
+    "metrics": {
+      "avg_sessions_to_graduation": {"type": "number", "description": "平均毕业所需会话数"},
+      "avg_stage_gain": {"type": "number", "description": "平均七阶跨越数"},
+      "graduation_rate_by_criteria": {
+        "type": "object",
+        "properties": {
+          "gc-standard": {"type": "number"},
+          "gc-early": {"type": "number"},
+          "gc-milestone": {"type": "number"}
+        }
+      },
+      "flywheel_mastery_distribution": {
+        "type": "object",
+        "description": "毕业时各飞轮掌握度分布",
+        "_dao_guard": "毕业统计 — 六飞轮: 计划/预习/复习/听课/作业/考试 统计维度道层守护"
+      }
+    },
+    "pipl_note": "PIPL 合规: 毕业分析数据为聚合统计; 不含个体 student_id; 最小样本量 ≥ 20"
+  },
+  "validation_rules": {
+    "graduation_criteria_ids": ["gc-standard", "gc-early", "gc-milestone"],
+    "valid_stage_enum": ["不会", "模糊", "清晰", "框架", "运用", "熟练", "创新"],
+    "valid_mece_dimensions": ["M", "E_exec", "C", "E_env"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "sop05_guard": "毕业档案 sop05_final_compliance 必须为 true — ⑤第5步=流程 结案守护",
+    "required_graduation_fields": [
+      "graduation_id", "student_id", "coach_id", "graduation_date",
+      "graduation_criteria_id", "total_sessions_completed",
+      "initial_stage", "final_stage", "sop05_final_compliance", "graduation_status"
+    ],
+    "report_theta_prohibition": "毕业报告中禁止包含 IRT θ 值 — 家长版严格执行",
+    "pipl_constraints": "PIPL 合规: graduation_record 中所有 student_id 和 coach_id 均为平台匿名 ID; 不含真实个人信息"
+  }
+}
