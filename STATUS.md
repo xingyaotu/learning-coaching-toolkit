@@ -123,3 +123,11 @@
   - 六飞轮枚举合规 ✅ | confidence_required 递进 0.60→0.90 ✅
 - scripts/validate-stage-routing.py: 59项验证全通过
 - .github/workflows/validate.yml → v5.2: 新增 stage-routing CI job
+
+## 2026-05-21T06:00:00Z · coaching-toolkit — 教练会话模板 Phase 1
+### feat(pipeline-data+scripts+ci): coaching-session-templates.json — 14模板 + CI v5.3
+- pipeline-data/coaching-session-templates.json: 八步×8 + 飞轮×6 = 14 标准会话模板
+  - 每模板含: session_structure/target_stages/skill_interface/success_criteria
+  - ⑤守护: sop-05 eight_step_name=流程 ✅ | 六飞轮枚举合规 ✅
+- scripts/validate-session-templates.py: 62/62 通过 (数量/枚举/⑤守护/路径/时长)
+- .github/workflows/validate.yml → v5.3: 新增 session-templates CI job
