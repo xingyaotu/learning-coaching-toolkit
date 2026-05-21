@@ -1,6 +1,6 @@
 ---
 name: SOP_05-流程
-description: 八步学习法第5步:解题流程 SOP — 标准化执行解题步骤(★第5步=流程,绝非演示)
+description: 八步学习法第5步:解题流程 SOP — 标准化执行解题步骤(★第5步=流程,名称固定)
 version: "1.0"
 eight_step_id: 5
 eight_step_name: 流程
@@ -11,15 +11,15 @@ license: Apache-2.0
 tier: A
 phase: "Phase 0"
 status: stub
-compliance: "v5.0 道层零漂移"
+compliance: "v5.1 道层零漂移"
 allowed-tools: [nuwa-skill, DeepTutor, nanobot]
 ---
 
 # SOP_05 流程 — 解题流程标准操作流程
 
 ## ★ 关键提醒
-**第5步的名称是"流程",绝对不是"演示"。**  
-任何文档/代码/提示词中出现"⑤演示"均属道层漂移错误,须立即修正。
+**第5步的名称是“流程”,名称固定不可更改。**
+任何文档/代码/提示词中使用其他词命名第⑤步均属道层漂移错误，须立即修正。
 
 ## Use when
 - 学员处于第4阶(框架)至第6阶(熟练)
@@ -51,10 +51,10 @@ interface ProcessSession {
   self_check_passed: boolean;
   eight_step_id: 5;               // ★ 第5步=流程
   six_flywheel_id: 5;             // 作业飞轮
-  ★_critical_note: "第5步是'流程'绝不是'演示'";
+  step_name: "流程";              // 名称固定
 }
 ```
 
 ## 道层合规说明
 - 八步第⑤步 = **流程** | 上下文: ①穿透 ②提取 ③整理 ④审题 **⑤流程** ⑥批改 ⑦分析 ⑧估分
-- 六飞轮 = 计划/预习/复习/听课/作业/考试(无"实践飞轮")
+- 六飞轮 = 计划/预习/复习/听课/作业/考试（无“实践飞轮”）
