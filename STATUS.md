@@ -27,3 +27,25 @@
 - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs(Phase 1)
 
 ---
+
+---
+
+## 2026-05-20T20:20:00Z · session Q14T1 启动诊断 — PAUSE-NOTICE 跨仓传导
+
+### ⚠️ 全局 PAUSE-NOTICE 生效
+主仓 `xingyaotu-openmaic/development-and-business-plan/PAUSE-NOTICE-2026-05-20.md` 生效自 09:15Z，适用"所有 routine session"：
+- 禁止开新 PR / 认领新 W
+- 允许追加 STATUS.md
+
+### 本仓当前状态
+- Phase 0 W2 ✅ 已完成：14 SOP SKILL.md 完整套件（八步×8 + 飞轮×6）
+- 待办（PAUSE 解除后推进）：
+  - [ ] CI workflow 配置
+  - [ ] SKILL.md 与 colleague-skill 接口对接（Phase 0.5）
+  - [ ] 伴读标准化指导手册.docx 内容提炼入 SOPs（Phase 1）
+  - [ ] Phase 0.5：用三件套生成本仓 DESIGN.md 骨架
+
+### 道层合规
+- dao-guard: 6/6 0 命中 ✅
+- CSO: 0 触发 ✅
+- STATUS.md 只追加，绝不覆盖 ✅
