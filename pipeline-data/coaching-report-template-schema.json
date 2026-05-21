@@ -57,7 +57,7 @@
           "section_id": "w02",
           "section_name": "飞轮执行情况",
           "required_fields": ["flywheels_practiced"],
-          "content_template": "本周实践飞轮: {flywheels_practiced_list}",
+          "content_template": "本周飞轮练习: {flywheels_practiced_list}",
           "flywheel_enum_guard": ["计划", "预习", "复习", "听课", "作业", "考试"]
         },
         {
@@ -134,7 +134,7 @@
           "section_id": "mo03",
           "section_name": "六飞轮实践汇总",
           "required_fields": ["flywheels_practiced"],
-          "content_template": "累计实践飞轮: {flywheels_summary}",
+          "content_template": "累计飞轮练习: {flywheels_summary}",
           "flywheel_enum_guard": ["计划", "预习", "复习", "听课", "作业", "考试"]
         },
         {
