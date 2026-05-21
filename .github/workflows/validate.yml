@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.15 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema + 有效性指标 + 进度追踪 schema + 报告模板 schema + 干预手册验证 + 入学流程验证 + 质量保证 schema 验证 + 升级处置协议验证 + 同伴督导 schema 验证 + 认证等级 schema 验证 + 教练计划 schema 验证
+# 道层 Compliance: v5.16 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema + 有效性指标 + 进度追踪 schema + 报告模板 schema + 干预手册验证 + 入学流程验证 + 质量保证 schema 验证 + 升级处置协议验证 + 同伴督导 schema 验证 + 认证等级 schema 验证 + 教练计划 schema 验证 + 家长参与 schema 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -183,3 +183,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: 运行个性化教练计划 schema 验证脚本
         run: python3 scripts/validate-coaching-plan-schema.py
+
+  parent-engagement:
+    name: 家长参与 schema 验证(5类沟通 + 六飞轮 + 七阶 + θ禁止共享 + PIPL第14条)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行家长参与 schema 验证脚本
+        run: python3 scripts/validate-parent-engagement.py
