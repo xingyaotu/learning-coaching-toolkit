@@ -1,0 +1,134 @@
+{
+  "$schema": "https://xingyaotu.cn/schemas/coaching-peer-supervision.v1.0.json",
+  "version": "1.0",
+  "compliance": "v5.13 道层零漂移",
+  "last_updated": "2026-05-21",
+  "_meta": {
+    "description": "教练同伴督导 schema — 定义教练之间的同伴督导结构、配对规则与督导记录",
+    "pipl_note": "PIPL 合规: 督导记录中所有 coach_id 与 student_id 均为平台匿名 ID; 不含真实个人信息",
+    "usage": "教练完成会话后 → 每月至少一次同伴督导 (qar-peer) → 填写本 schema 记录 → 汇总至月度校准会"
+  },
+  "supervision_pair_schema": {
+    "description": "同伴督导配对结构",
+    "fields": {
+      "pair_id": {"type": "string", "pattern": "^PSP-[0-9]{6}-[A-Z0-9]{4}$", "required": true},
+      "coach_a_id": {"type": "string", "description": "教练 A 匿名 ID", "required": true},
+      "coach_b_id": {"type": "string", "description": "教练 B 匿名 ID", "required": true},
+      "pair_start_date": {"type": "string", "format": "date", "required": true},
+      "pair_end_date": {"type": "string", "format": "date", "description": "轮换日期"},
+      "rotation_period_months": {"type": "integer", "minimum": 1, "maximum": 6, "description": "配对轮换周期(月)"},
+      "shared_focus_dimensions": {
+        "type": "array",
+        "items": {"type": "string", "enum": ["qa-d1", "qa-d2", "qa-d3", "qa-d4", "qa-d5"]},
+        "description": "双方共同关注的 QA 维度"
+      }
+    }
+  },
+  "supervision_session_schema": {
+    "description": "单次同伴督导会话记录",
+    "fields": {
+      "supervision_id": {"type": "string", "pattern": "^SUP-[0-9]{8}-[A-Z0-9]{6}$", "required": true},
+      "pair_id": {"type": "string", "required": true},
+      "supervisee_id": {"type": "string", "description": "被督导教练匿名 ID", "required": true},
+      "supervisor_id": {"type": "string", "description": "督导教练匿名 ID", "required": true},
+      "supervision_date": {"type": "string", "format": "date", "required": true},
+      "duration_min": {"type": "integer", "minimum": 20, "required": true},
+      "review_type_id": {"type": "string", "enum": ["qar-peer"], "required": true},
+      "case_session_ids": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "本次督导复盘的会话 ID 列表 (匿名化学生 session_id)"
+      },
+      "focus_dimensions": {
+        "type": "array",
+        "items": {"type": "string", "enum": ["qa-d1", "qa-d2", "qa-d3", "qa-d4", "qa-d5"]},
+        "description": "本次督导重点关注的 QA 维度"
+      },
+      "sop_compliance_review": {
+        "type": "object",
+        "description": "⑤第5步=流程 合规复盘",
+        "properties": {
+          "sop05_sessions_reviewed": {"type": "integer", "minimum": 0},
+          "sop05_compliant_count": {"type": "integer", "minimum": 0},
+          "sop05_issues_found": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "发现的 ⑤流程执行问题描述"
+          },
+          "correction_agreed": {"type": "boolean"},
+          "_dao_guard": "⑤第5步=流程 合规复盘必须包含在同伴督导记录中"
+        }
+      },
+      "dimension_scores_given": {
+        "type": "object",
+        "description": "督导方对被督导教练的 QA 维度评分",
+        "properties": {
+          "qa-d1": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d2": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d3": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d4": {"type": "number", "minimum": 1, "maximum": 10},
+          "qa-d5": {"type": "number", "minimum": 1, "maximum": 10}
+        }
+      },
+      "strengths_noted": {"type": "string", "description": "优势记录 (不含学生 PII)"},
+      "improvement_areas": {"type": "string", "description": "改进方向 (不含学生 PII)"},
+      "flywheel_coaching_review": {
+        "type": "object",
+        "description": "六飞轮教练策略复盘",
+        "properties": {
+          "flywheels_discussed": {
+            "type": "array",
+            "items": {"type": "string", "enum": ["计划", "预习", "复习", "听课", "作业", "考试"]},
+            "description": "本次督导讨论的飞轮策略"
+          },
+          "alignment_with_student_stage": {"type": "boolean", "description": "飞轮选择与学生阶位是否匹配"}
+        }
+      },
+      "next_supervision_focus": {"type": "string", "description": "下次督导重点方向"}
+    }
+  },
+  "supervision_cycle_schema": {
+    "description": "月度督导周期汇总",
+    "fields": {
+      "cycle_id": {"type": "string", "pattern": "^SCYC-[0-9]{6}$"},
+      "month": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$"},
+      "total_supervision_sessions": {"type": "integer", "minimum": 0},
+      "coaches_supervised_count": {"type": "integer", "minimum": 0},
+      "avg_qa_d1_score": {"type": "number", "minimum": 1, "maximum": 10},
+      "sop05_compliance_rate_this_cycle": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "本周期 ⑤第5步=流程 合规率"
+      },
+      "coaches_flagged_for_l3": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "本周期触发 L3 督导评审的教练数"
+      },
+      "calibration_session_scheduled": {"type": "boolean", "description": "是否安排了校准会 (qar-calibration)"}
+    }
+  },
+  "pairing_rules": {
+    "min_pair_experience_diff_months": 6,
+    "rotation_period_default_months": 3,
+    "max_pairs_per_coach": 2,
+    "supervision_frequency": "monthly (至少每月 1 次 qar-peer)",
+    "sop05_review_mandatory": true,
+    "_dao_guard": "每次同伴督导必须包含 ⑤第5步=流程 合规复盘 — pairing_rules 强制守护"
+  },
+  "validation_rules": {
+    "supervision_session_required_fields": [
+      "supervision_id", "pair_id", "supervisee_id", "supervisor_id",
+      "supervision_date", "duration_min", "review_type_id",
+      "focus_dimensions", "sop_compliance_review", "dimension_scores_given"
+    ],
+    "duration_min_threshold": 20,
+    "review_type_must_be": "qar-peer",
+    "sop05_review_mandatory": true,
+    "five_qa_dimensions": ["qa-d1", "qa-d2", "qa-d3", "qa-d4", "qa-d5"],
+    "six_flywheel_valid_names": ["计划", "预习", "复习", "听课", "作业", "考试"],
+    "sop05_compliance_guard": "同伴督导记录必须含 sop_compliance_review — ⑤第5步=流程 守护",
+    "pipl_constraints": "supervision 记录中 coach_id 与 student session_id 均为平台匿名 ID; 不含真实个人识别信息"
+  }
+}
