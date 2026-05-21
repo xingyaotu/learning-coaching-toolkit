@@ -1,5 +1,5 @@
 name: Validate
-# 道层 Compliance: v5.10 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema + 有效性指标 + 进度追踪 schema + 报告模板 schema + 干预手册验证 + 入学流程验证
+# 道层 Compliance: v5.11 | JSON 验证 + 内容检查 + SOP 完整性 + colleague-skill 接口 + Stage→SOP 路由矩阵 + 教练会话模板 + 跨数据一致性 + 目标 schema + 有效性指标 + 进度追踪 schema + 报告模板 schema + 干预手册验证 + 入学流程验证 + 质量保证 schema 验证
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -143,3 +143,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: 运行教练入学流程 schema 验证脚本
         run: python3 scripts/validate-onboarding-schema.py
+
+  coaching-qa-schema:
+    name: 教练质量保证 schema 验证(5维度 + 4类评审 + ⑤守护 + 权重归一)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 运行教练质量保证 schema 验证脚本
+        run: python3 scripts/validate-qa-schema.py
